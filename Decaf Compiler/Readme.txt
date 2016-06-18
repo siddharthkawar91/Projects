@@ -1,4 +1,3 @@
-HW6
 
 The following directory contains the four modules , listed below:
 1) decafc.py
