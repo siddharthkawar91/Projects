@@ -1,0 +1,14 @@
+class A{
+	public static void main(){
+		int i;
+		int n;
+	
+		n = 19;
+		int sum;
+		sum = 0;
+		for(i = 0; i < n; i++){
+			sum = sum + i;
+		}
+		return;
+	}
+}
