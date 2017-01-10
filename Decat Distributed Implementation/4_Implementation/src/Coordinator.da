@@ -1,0 +1,428 @@
+import random
+import time
+import mapper
+import datetime
+from Version import Version
+
+class Coordinator(process):
+
+    def setup(coordIndexToCoordProcessMapper:dict, objectList:tuple, workersList:list, requestIdGenerator, dbProcess, logger):
+
+        self.id_ = -1
+        self.objects = []
+        self.coordIndexToCoordProcessMapper = coordIndexToCoordProcessMapper
+        self.logger = logger
+        self.dbProcess = dbProcess
+        self.numWorkers = len(workersList)
+        self.requestIdGenerator = requestIdGenerator
+        self.workersList = workersList
+        self.initAcksFromWorkersReceived = 0
+        self.versionInfo = dict()
+        self.writeRequestQueue = list()
+        self.readRequestQueue = list()
+
+        # find your own self id
+        for i in range(len(coordIndexToCoordProcessMapper)):
+            if coordIndexToCoordProcessMapper[i] == self:
+                self.id_ = i
+                self.name = "<Coordinator" + str(self.id_) + ">"
+                self.logger.write("<Coordinator" + str(self.id_) + "> is actually" + str(self))
+                break
+
+        # find out the object that your responsible for
+        for object in objectList:
+            if(hash(object)%len(coordIndexToCoordProcessMapper) == self.id_):
+                self.objects.append(object)
+
+        self.logger.write(self.name + ": responsible object list" + str(self.objects))
+        # contact your respective workers
+        for worker in workersList:
+            self.logger.write(str(self.name) + "sending ('COORDINATOR_TO_WORKER_INIT', " + str(self.id_) + ") to " + str(worker))
+            send(('COORDINATOR_TO_WORKER_INIT', self.id,), to= worker)
+
+
+    def run():
+        await(self.initAcksFromWorkersReceived == self.numWorkers)
+        self.logger.write(self.name + " is setup and functioning")
+        self.logger.write(self.name + " is responsible for subjects " + str(self.objects))
+
+    def getTimestamp():
+        ts = time.time()
+        return float(ts)
+
+    def latestVersion(obj, attr):
+        return self.latestVersionBefore(obj, attr, self.getTimestamp())
+
+    def latestVersionBefore(objId, attr, ts):
+        # if the version exist then find beyond this time stamp
+        key = (objId, attr)
+
+        if key in self.versionInfo:
+            for version in self.versionInfo[key]:
+                if (version.wts <= ts):
+                    return version
+        else:
+            self.versionInfo[key] = [Version(0,0,None)]
+            return self.versionInfo[key][0]
+
+    def getCacheUpdates(objId, ts):
+        self.logger.write("get cached updates at timeStamp")
+        retVal = dict()
+        
+        for key in self.versionInfo:
+            id = key[0]
+            attr = key[1]
+            if id == objId:
+                versionList = self.versionInfo[key]
+                # versionList always contains versions in reverse chronological order
+                # so we can start in the beginning
+                for version in versionList:
+                    if version.wts <= ts and version.val != None:
+                        retVal[attr] = version.val
+                        break
+        return retVal
+
+    def putCacheUpdates(updates, timeStamp):
+        self.logger.write("caching updates......")
+        objId = updates['id']
+
+        for attr in updates:
+            key = (objId, attr)
+            if key not in self.versionInfo:
+                self.versionInfo[key] = list()
+            
+            self.versionInfo[key].append(Version(0, timeStamp, updates[attr]))
+            
+            # sort it in reverse order with wts as key
+            self.versionInfo[key].sort(reverse=True, key=lambda version: version.wts)
+
+
+        self.logger.write("caching updates.....completed")
+
+
+    def receive(msg=('READ_COORDINATOR_INITIAL', request), from_= p):
+        
+        state = 'READ_COORDINATOR_INITIAL'
+        self.logger.write(self.name + "received ('" + state + "', " + str(request) + ") from " + str(p))
+
+        self.sleepIfRequested(state, request)
+
+        request['requestId'] = self.requestIdGenerator.getNext()
+        self.logger.write("request assigned Id " + str(request['requestId']))
+
+        readObj = request['readObjectId']
+        request['timeStamp'] = self.getTimestamp()
+
+        request['cachedUpdate'] = dict()
+        request['cachedUpdate']['readObject'] = self.getCacheUpdates(readObj,request['timeStamp'])
+
+        # if mightWriteObj field is not empty then this is probably read-write requests
+        if(int(request['mightWriteObj']) > 0):
+            self.logger.write("request " + str(request['requestId']) + " is read-write request")
+            attrList = getAttrList(request, 'readObjectAttr')
+            # print()
+            # print(request['requestId'])
+            for attr in attrList:
+                # print("attr in read: " + str(attr))
+                v = latestVersionBefore(readObj, attr, request['timeStamp'])
+                # print(v)
+                # print()
+                v.pendMightRead.append(request['requestId'])            
+        else:
+            # if mightWriteObj field is empty then this is probably read-read request
+            self.logger.write("request " + str(request['requestId']) + " is read-read request")
+
+            if(len(self.writeRequestQueue) > 0):
+                self.logger.write("Write request in write queue. Checking if request had dependency")
+                tup = checkForReadWriteConflicts(request)
+                if(tup[0]):
+                    self.logger.write("Starvation Prevention: This read request is going to read updates which will be written by waiting writeRequest " + str(tup[1]))
+                    self.logger.write("Putting request " + request['requestId'] + " in read wait queue ")
+                    self.readRequestQueue.append((request,tup[1]))
+                    return        
+
+            attr = request['defReadAttr']['readObjectAttr']
+            if attr != "":
+                v = latestVersionBefore(readObj, attr, request['timeStamp'])
+                v.rts = request['timeStamp']
+
+            attr = request['mightReadAttr']['readObjectAttr']
+            if attr != "":
+                v = latestVersionBefore(readObj, attr, request['timeStamp'])
+                v.pendMightRead.append(request['requestId'])
+            
+        coord = mapper.getCoordinator(request['writeObjectId'], self.coordIndexToCoordProcessMapper)
+        self.logger.write("request " + str(request['requestId']) + "is being to sent to writeObject Coord" + str(coord))
+        send(('WRITE_COORDINATOR_INITIAL',request), to= coord)
+
+    def receive(msg=('WRITE_COORDINATOR_INITIAL', request), from_= p):
+        state = 'WRITE_COORDINATOR_INITIAL'
+        self.logger.write(self.name + "received ('" + state + "'," + str(request) + ") from " + str(p))
+
+        self.sleepIfRequested(state, request)
+
+        writeObj = request['writeObjectId']
+        request['cachedUpdate']['writeObject'] = self.getCacheUpdates(writeObj, request['timeStamp'])
+
+        if(int(request['mightWriteObj']) > 0):
+            self.logger.write("request " + str(request['requestId']) + " is read-write request")
+
+            attrList = getAttrList(request, 'writeObjectAttr')
+            # print()
+            # print(request['requestId'])
+            for attr in attrList:
+                # print("attr in write: " + str(attr))
+                v = latestVersionBefore(writeObj, attr, request['timeStamp'])
+                # print(v)
+                # print()
+                v.pendMightRead.append(request['requestId'])
+        else:
+            # read -read request
+            self.logger.write("request " + str(request['requestId']) + " is read-read request")
+
+            attr = request['defReadAttr']['writeObjectAttr']
+            if attr != "":
+                v = latestVersionBefore(writeObj, attr, request['timeStamp'])
+                v.rts = request['timeStamp']
+
+            attr = request['mightReadAttr']['writeObjectAttr']
+            if attr != "":
+                v = latestVersionBefore(writeObj, attr, request['timeStamp'])
+                v.pendMightRead.append(request['requestId'])
+
+        worker = random.choice(self.workersList)
+        self.logger.write("request " + str(request['requestId']) + "is being sent to worker" + str(worker))
+        send(('WORKER_INITIAL', request,), to= worker)
+
+    def receive(msg=('RESULT',request,), from_= p):
+        state = 'RESULT'
+        #print("result")
+        self.logger.write(self.name + "received ('" + state + "'," + str(request) + ") from " + str(p))
+
+        self.sleepIfRequested(state, request)
+
+        x = request['updatedObj']
+        conflict = self.checkForConflicts(x, request)
+        
+        if (not conflict):
+            if isPendMightReadNonEmpty(x,request):
+                self.logger.write("pendingMightRead non empty; adding request " + str(request['requestId']) + " to write request queue")
+                self.writeRequestQueue.append(request)
+                return
+
+            conflict = self.checkForConflicts(x, request)
+            if (not conflict):
+                self.logger.write(self.name + "sending updates to database")
+                send(('UPDATE_OBJECT', request['updates']['writeObject'], request['timeStamp'],), to= self.dbProcess)
+
+                attrList = getAttrList(request, 'writeObjectAttr')
+                for attr in attrList:
+                    v = latestVersionBefore(x, attr, request['timeStamp'])
+                    v.pendMightRead.remove(request['requestId'])
+                    drainRequestQueue()
+                    if attr in request['readAttr']['writeObject'] or attr in request['readAttr']['readObject']:
+                        v.rts = request['timeStamp']
+                
+                self.putCacheUpdates(request['updates']['writeObject'], request['timeStamp'])
+
+                self.logger.write("sending decision to client for request " + str(request['requestId']))
+                send(('CLIENT_DECISION',request['result'], request), to= request['client'])
+                coord = mapper.getCoordinator(request['readObj'], self.coordIndexToCoordProcessMapper)
+                self.logger.write("sending message READ_ATTR to " +str(coord) + "for request : " +str(request['requestId']))
+                
+                send(("READ_ATTR",request, 1), to= coord)
+                wake_up_pendingRead(request)
+                
+            else:
+                self.logger.write("Conflict found for request " + str(request['requestId']))
+                self.restart(request)
+        else:
+            self.logger.write("Conflict found for request " + str(request['requestId']))
+            self.restart(request)
+    
+    def receive(msg=('READ_ATTR', request, coordType), from_=p):
+        state = 'READ_ATTR'
+        self.logger.write(self.name + "received ('" + state + "'," + str(request) + ", " + str(coordType) + ") from " + str(p))
+        #print()
+        #print(self.name + "received ('" + state + "'," + str(request) + ", " + str(coordType) + ") from " + str(p))
+        self.sleepIfRequested(state, request)
+
+        if coordType == 1:
+            x = request['readObjectId']
+            attrKey = 'readObjectAttr'
+        else:
+            x = request['writeObjectId']
+            attrKey = 'writeObjectAttr'
+
+        attr = request['mightReadAttr'][attrKey]
+        if attr is not "":
+            #print("attr: " + attr)
+            v = latestVersionBefore(x, attr, request['timeStamp'])
+            v.pendMightRead.remove(request['requestId'])
+            if attr in request['readAttr']['readObject'] or attr in request['readAttr']['writeObject']:
+                v.rts = request['timeStamp']
+            drainRequestQueue()
+
+    def restart(request):
+        self.logger.write("Trying to Restart request " + str(request['requestId']))
+        # print()
+        # print("restart " + str(request['requestId']))
+
+        pendMightReadElementRemoved = False
+
+        attrList = getAttrList(request, 'readObjectAttr')
+        x = request['readObjectId']
+        for attr in attrList:
+            v = latestVersionBefore(x, attr, request['timeStamp'])
+            # print(str(attr) + ", " + str(v))
+            # print()
+            if request['requestId'] in v.pendMightRead:
+                v.pendMightRead.remove(request['requestId'])
+                pendMightReadElementRemoved = True
+
+        attrList = getAttrList(request, 'writeObjectAttr')
+        x = request['writeObjectId']
+        for attr in attrList:
+            v = latestVersionBefore(x, attr, request['timeStamp'])
+            # print(str(attr) + ", " + str(v))
+            # print()
+            if request['requestId'] in v.pendMightRead:
+                v.pendMightRead.remove(request['requestId'])
+                pendMightReadElementRemoved = True
+
+        if pendMightReadElementRemoved:
+            drainRequestQueue()
+
+        coord = mapper.getCoordinator(request['readObj'], self.coordIndexToCoordProcessMapper)
+        if coord == self:
+            resetRequestObject(request)
+            self.logger.write("Restarting request " + str(request['requestId']) + "; sending ('READ_COORDINATOR_INITIAL'," + str(request) + ") to " + str(coord))
+            send(('READ_COORDINATOR_INITIAL', request,), to= coord)
+        else:
+            self.logger.write(self.name + " sending ('RESTART, " + str(request) + "') to " + str(coord))
+            send(('RESTART',request,), to=coord)
+
+
+    def receive(msg=('RESTART', request), from_=p):
+        self.logger.write(self.name + " received ('RESTART', " + str(request) + ") from " + str(p))
+
+        pendMightReadElementRemoved = False
+
+        attrList = getAttrList(request, 'readObjectAttr')
+        x = request['readObjectId']
+        for attr in attrList:
+            v = latestVersionBefore(x, attr, request['timeStamp'])
+            # print(str(attr) + ", " + str(v))
+            # print()
+            if request['requestId'] in v.pendMightRead:
+                v.pendMightRead.remove(request['requestId'])
+                pendMightReadElementRemoved = True
+
+        attrList = getAttrList(request, 'writeObjectAttr')
+        x = request['writeObjectId']
+        for attr in attrList:
+            v = latestVersionBefore(x, attr, request['timeStamp'])
+            # print(str(attr) + ", " + str(v))
+            # print()
+            if request['requestId'] in v.pendMightRead:
+                v.pendMightRead.remove(request['requestId'])
+                pendMightReadElementRemoved = True
+
+        if pendMightReadElementRemoved:
+            drainRequestQueue()
+
+        coord = mapper.getCoordinator(request['readObj'], self.coordIndexToCoordProcessMapper)
+        resetRequestObject(request)
+        self.logger.write("Restarting request " + str(request['requestId']) + "; sending ('READ_COORDINATOR_INITIAL'," + str(request) + ") to " + str(coord))
+        send(('READ_COORDINATOR_INITIAL', request,), to= coord)
+
+    def getAttrList(request, obj):
+        attrList = [request['defReadAttr'][obj]] + [request['mightReadAttr'][obj]]
+        return list(filter(lambda attr: attr!="" , attrList)) 
+
+    def isPendMightReadNonEmpty(x, request):
+        #print(request['updates']['writeObject'])
+        for attr in request['updates']['writeObject']:
+            if attr != "id":
+                #print(self.latestVersionBefore(x, attr, request['timeStamp']))
+                pass
+            if attr != "id" and len(self.latestVersionBefore(x, attr, request['timeStamp']).pendMightRead) > 1:
+                return True
+        return False
+
+    # used before restarting a request, or before sending the request back to client with result
+    # Removes extra properties that were attached to the request object during the normal flow
+    # of it through different coordinators and workers ...
+    def resetRequestObject(request):
+        attrsToKeep = ['readObjectId', 'writeObjectId', 'defReadAttr', 'mightReadAttr',\
+                         'mightWriteAttr', 'mightWriteObj', 'action', 'delay', 'client','requestId']
+        attrsToDelete = []
+        for key in request:
+            if key not in attrsToKeep:
+                attrsToDelete.append(key)
+        for key in attrsToDelete:
+            del request[key]
+
+    def checkForConflicts(x, request):
+        # print(request['requestId'])
+        # print(request['updates'])
+        # print(x)
+        # print()
+
+        for attr in request['updates']['writeObject']:
+            if attr != "id":
+                v = latestVersionBefore(x, attr, request['timeStamp'])
+                # print(v)
+                # print(request['timeStamp'])
+                if (v.rts > request['timeStamp']):
+                    return True
+        return False
+
+
+    def drainRequestQueue():
+        #self.logger.write("Draining request queue")
+        while len(self.writeRequestQueue) > 0:
+            #print("inside")
+            request = self.writeRequestQueue.pop()
+            coord = mapper.getCoordinator(request['updatedObj'], self.coordIndexToCoordProcessMapper)
+            self.logger.write("Resending waiting request " + str(request['requestId']) + " to " + str(coord))
+            send(('RESULT', request,), to=coord)
+
+    # used for delaying a message in a particular stage
+    # used for demoing purposes to show various scenarios of the algorithm
+    def sleepIfRequested(state, request):
+        if state in request['delay']:
+            delay = int(request['delay'][state])
+            self.logger.write(self.name + " sleeping for " + str(delay) + " second(s)")
+            time.sleep(delay)
+        if state in request['delay']:
+            self.logger.write(self.name + " resumed from sleeping")
+
+    def checkForReadWriteConflicts(request):
+        # print("request")
+        # print(request)
+        # print()
+        attr = getAttrList(request, 'readObjectAttr') + getAttrList(request, 'writeObjectAttr')
+        # print("attr")
+        # print(attr)
+        # print()
+        for writeReq in self.writeRequestQueue:
+            # print("writeRequest")
+            # print(writeReq)
+            # print()
+            for writeAttr in writeReq['updates']['writeObject']:
+                if writeAttr != 'id' and (writeAttr in attr):
+                    return (True, writeReq['requestId']) 
+        return (False,None)
+
+    def wake_up_pendingRead(request):
+        time.sleep(1)
+        #print("inside wake_up")
+        #print(str(self.readRequestQueue))
+        for readRequest in self.readRequestQueue:
+            #print("for")
+            if (readRequest[1] == request['requestId']):
+                self.logger.write('waking up read request' + str(request))
+                coord = mapper.getCoordinator(readRequest[0]['readObjectId'], self.coordIndexToCoordProcessMapper)
+                send(('READ_COORDINATOR_INITIAL',readRequest[0],),to=coord)
+        #print("exit in wake up")

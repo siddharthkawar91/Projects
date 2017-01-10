@@ -1,0 +1,20 @@
+[
+    {
+        "action" : "view",
+        "subjectId" : "1",
+        "resourceId" : "101",
+
+        "delay" : {
+            "CLIENT" : "1"
+        }
+    },
+     {
+        "action" : "view",
+        "subjectId" : "1",
+        "resourceId" : "102",
+
+        "delay" : {
+            "CLIENT" : "1"
+        }
+    }
+]

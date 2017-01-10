@@ -1,0 +1,23 @@
+Final Database State 
+('2', 'objectId'):{ ts: 0, value: 2} 
+('3', 'paymentDone'):{ ts: 0, value: True} 
+('3', 'moviesWatched'):{ ts: 0, value: 10} 
+('2', 'moviesWatched'):{ ts: 0, value: 5} 
+('101', 'payViewCount'):{ ts: 0, value: 0} 
+('102', 'watched'):{ ts: 0, value: true} 
+('3', 'objectId'):{ ts: 0, value: 3} 
+('2', 'paymentDone'):{ ts: 0, value: True} 
+('102', 'name'):{ ts: 0, value: Shawshank Redemption} 
+('101', 'watched'):{ ts: 0, value: false} 
+('102', 'payViewCount'):{ ts: 0, value: 0} 
+('101', 'viewCount'):{ ts: 0, value: 49} 
+('101', 'objectId'):{ ts: 0, value: 101} 
+('1', 'objectId'):{ ts: 0, value: 1} 
+('102', 'objectId'):{ ts: 0, value: 102} 
+('102', 'viewCount'):{ ts: 0, value: 40} { ts: 1480985351.7319186, value: 41} 
+('1', 'moviesWatched'):{ ts: 0, value: 9} 
+('1', 'paymentDone'):{ ts: 0, value: True} 
+('2', 'name'):{ ts: 0, value: Shikhar} 
+('101', 'name'):{ ts: 0, value: The Matrix} 
+('3', 'name'):{ ts: 0, value: Dexter} 
+('1', 'name'):{ ts: 0, value: Siddharth} 

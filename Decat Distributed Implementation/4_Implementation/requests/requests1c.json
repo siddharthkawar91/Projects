@@ -1,0 +1,43 @@
+[
+  {
+      "action"            : "view",
+      "readObjectId"      : "2",
+      "writeObjectId"     : "102",
+      "defReadAttr"       : {
+        "readObjectAttr"  : "",
+        "writeObjectAttr" : "viewCount"
+      },
+      "mightReadAttr"     : {
+        "readObjectAttr"  : "paymentDone",
+        "writeObjectAttr" : ""
+      },
+      "mightWriteAttr"     : {
+        "writeObjectAttr" :  "payViewCount",
+        "readObjectAttr"  : ""
+      },
+      "mightWriteObj" : "2",
+      "delay" : {
+        "WORKER_INITIAL" : "2"
+      }
+  },
+  {
+      "action"            : "stat2",
+      "readObjectId"      : "2",
+      "writeObjectId"     : "102",
+      "defReadAttr"       : {
+        "readObjectAttr"  : "",
+        "writeObjectAttr" : ""
+      },
+      "mightReadAttr"     : {
+        "readObjectAttr"  : "paymentDone",
+        "writeObjectAttr" : ""
+      },
+      "mightWriteAttr"     : {
+        "writeObjectAttr" :  "",
+        "readObjectAttr"  : ""
+      },
+      "mightWriteObj" : "0",
+      "delay" : {
+      }
+  }
+]

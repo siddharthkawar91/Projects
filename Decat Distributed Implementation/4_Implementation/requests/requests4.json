@@ -1,0 +1,45 @@
+[
+  {
+      "action"            : "view",
+      "readObjectId"      : "2",
+      "writeObjectId"     : "102",
+      "defReadAttr"       : {
+        "readObjectAttr"  : "",
+        "writeObjectAttr" : "viewCount"
+      },
+      "mightReadAttr"     : {
+        "readObjectAttr"  : "paymentDone",
+        "writeObjectAttr" : ""
+      },
+      "mightWriteAttr"     : {
+        "writeObjectAttr" :  "payViewCount",
+        "readObjectAttr"  : ""
+      },
+      "mightWriteObj" : "2",
+      "delay" : {
+        "WORKER_INITIAL" : "2"
+      }
+  },
+  {
+      "action"            : "stat",
+      "readObjectId"      : "2",
+      "writeObjectId"     : "102",
+      "defReadAttr"       : {
+        "readObjectAttr"  : "moviesWatched",
+        "writeObjectAttr" : ""
+      },
+      "mightReadAttr"     : {
+        "readObjectAttr"  : "",
+        "writeObjectAttr" : "viewCount"
+      },
+      "mightWriteAttr"     : {
+        "writeObjectAttr" :  "",
+        "readObjectAttr"  : ""
+      },
+      "mightWriteObj" : "0",
+      "delay" : {
+        "CLIENT" : "1",
+        "WORKER_INITIAL" : "3"
+      }
+  }
+]

@@ -1,0 +1,32 @@
+[
+    {
+        "action" : "view",
+        "subjectId" : "1",
+        "resourceId" : "101",
+
+        "delay" : {
+            "WORKER_INITIAL" : "2"
+        }
+    },
+     {
+        "action" : "view",
+        "subjectId" : "2",
+        "resourceId" : "101",
+
+        "delay" : {
+            "CLIENT" : "1",
+            "ANSWER_SUBJECT_RESOURCE" : "2",
+            "RESOURCE_COORDINATOR_VALIDATE" : "5"
+        }
+    },
+    {
+        "action" : "view",
+        "subjectId" : "2",
+        "resourceId" : "102",
+
+        "delay" : {
+            "CLIENT" : "4",
+            "RESOURCE_COORDINATOR_INITIAL" : "3"
+        }
+    }
+]

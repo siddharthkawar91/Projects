@@ -1,0 +1,50 @@
+import mapper
+import json
+import time
+import random
+
+class Client(process):
+
+    def setup(coordIndexToCoordProcessMapper, config, logger, master, clientNum):
+        self.coordIndexToCoordProcessMapper = coordIndexToCoordProcessMapper
+        self.logger = logger
+        self.requestFilename = config['requestsFile' + str(clientNum)]
+        self.name = "<Client " + str(self.id) + ">"
+        self.numPoliciesEvaluated = 0
+        self.numTotalPolicies = 0
+        self.master = master
+
+    def run():
+        self.logger.write("Client is up")
+        requests = json.load(open(self.requestFilename, 'r'))
+        self.numTotalPolicies = len(requests)
+        self.logger.write("contents of requests : " + str(requests))
+        
+        state = "CLIENT"
+        for request in requests:
+            # delay for client
+            if state in request['delay']:
+                delay = int(request['delay'][state])
+                self.logger.write(self.name + " sleeping for " + str(delay) + " second(s)")
+                time.sleep(delay)
+            if state in request['delay']:
+                self.logger.write(self.name + " resumed from sleeping")
+
+            request['client'] = self.id
+            # find the coordinator which is responsible for the read object
+            coord = mapper.getCoordinator(request['readObjectId'], self.coordIndexToCoordProcessMapper)
+            self.logger.write("Client sending ('READ_COORDINATOR_INITIAL'," + str(request) + ") to " + str(coord))
+            send(('READ_COORDINATOR_INITIAL', request,), to= coord)
+        await(False)
+
+    def receive(msg=('CLIENT_DECISION', decision, requests), from_ = p):
+        state = 'CLIENT_DECISION'
+        self.logger.write(self.name + " received ('" + state + "', " + str(requests) + ") from " + str(p) + "DECISION :" + str(decision))
+        self.numPoliciesEvaluated += 1
+        if (self.numPoliciesEvaluated >= self.numTotalPolicies):
+            self.logger.write(self.name + "sending ('CLIENT_DONE') to " + str(self.master))
+            send(('CLIENT_DONE',), to= self.master)
+
+    def receive(msg=('CLIENT_SUCCESS', requests), from_ = p):
+        state = 'CLIENT_SUCCESS'
+        self.logger.write(self.name + " received ('" + state  + "', " + str(requests) + ") from " + str(p))

@@ -1,0 +1,321 @@
+import time
+import mapper
+import random
+import Cache
+from datetime import datetime
+
+class Coordinator(process):
+
+    def setup(coordIndexToCoordProcessMapper:dict,subjectsResourcesList:tuple,workersList:list, requestIdGenerator, dbProcess, logger):
+        self.id_ = -1
+        self.subjects = []
+        self.coordIndexToCoordProcessMapper = coordIndexToCoordProcessMapper
+        self.resources = []
+        self.logger = logger
+        self.dbProcess
+        self.numWorkers = len(workersList)
+        self.requestIdGenerator = requestIdGenerator
+        self.workersList = workersList
+        self.resourceCache = Cache.ResourceCache()
+        self.subjectCache = Cache.SubjectCache()
+        self.tentativeSubjectUpdatesCache = Cache.TentativeSubjectUpdatesCache()
+        self.abortedRequestIds = []
+        self.ongoingRequestIds = []
+        self.waitQueueForRequestsWaitingOnTentativeUpdates = []
+        # find your own self id
+        for i in range(len(coordIndexToCoordProcessMapper)):
+            if coordIndexToCoordProcessMapper[i] == self:
+                self.id_ = i
+                self.name = "<Coordinator " + str(self.id_) + ">"
+                self.logger.write("<Coordinator" + str(self.id_) + "> is actually " + str(self))
+                break
+
+        # find out the subject that your are responsible for
+        for sub in subjectsResourcesList[0]:
+            if(hash(sub)%len(coordIndexToCoordProcessMapper) == self.id_):
+                self.subjects.append(sub)
+
+        # find out the resource that your are responsible for
+        for res in subjectsResourcesList[1]:
+            if(hash(res)%len(coordIndexToCoordProcessMapper) == self.id_):
+                self.resources.append(res)
+
+        # Contact the workers that will work under you
+        self.initAcksFromWorkersReceived = 0
+        for worker in workersList:
+            self.logger.write(str(self.name) + " sending ('COORDINATOR_TO_WORKER_INIT', " + str(self.id_) + ") to " + str(worker))
+            send(('COORDINATOR_TO_WORKER_INIT',self.id,), to=worker)
+
+
+    def run():
+        await(self.initAcksFromWorkersReceived == self.numWorkers)
+        self.logger.write(self.name + " is setup and functioning")
+        self.logger.write(self.name + " is responsible for subjects " + str(self.subjects))
+        self.logger.write(self.name + " is responsible for resources " + str(self.resources))
+        await(False)
+
+
+    # acknowledgement from worker
+    def receive(msg=('COORDINATOR_TO_WORKER_INIT_ACK',p,)):
+        if p in workersList:
+            self.initAcksFromWorkersReceived += 1
+            self.logger.write(str(self.name) + " received ('COORDINATOR_TO_WORKER_INIT_ACK', " + str(p) + ")")
+    
+    # This is the initial request from the client
+    # or a restarted request
+    def receive(msg=('SUBJECT_COORDINATOR_INITIAL', request), from_= p):
+        state = 'SUBJECT_COORDINATOR_INITIAL'
+        self.logger.write(self.name + " received ('" + state + "', " + str(request) + ") from " + str(p) )
+        
+        self.sleepIfRequested(state, request)
+
+        request['requestId'] = self.requestIdGenerator.getNext()
+
+        self.ongoingRequestIds.append(request['requestId'])
+        request['init_timestamp'] = datetime.now()
+        tentativeSubjectUpdates = self.tentativeSubjectUpdatesCache.get(request['subjectId'])
+        if tentativeSubjectUpdates:
+            request['tentativeSubjectUpdates'] = tentativeSubjectUpdates
+        updatesFromSubjectCache = self.subjectCache.get(request['subjectId'])
+        if updatesFromSubjectCache:
+            request['updatesFromSubjectCache'] = updatesFromSubjectCache
+
+        coord = mapper.getCoordinator(request['resourceId'], self.coordIndexToCoordProcessMapper)
+        self.logger.write(self.name + " sending ('RESOURCE_COORDINATOR_INITIAL', " + str(request) + ") to " + str(coord) )
+        send(('RESOURCE_COORDINATOR_INITIAL', request,), to= coord)
+
+    # request received from subject coordinator for initial setup
+    def receive(msg=('RESOURCE_COORDINATOR_INITIAL', request), from_= p):
+        state = 'RESOURCE_COORDINATOR_INITIAL'
+        self.logger.write(self.name + " received ('" + state + "', " + str(request) + ") from " + str(p) )
+        
+        self.sleepIfRequested(state, request)
+
+        updatesFromResourceCache = self.resourceCache.get(request['resourceId'])
+        if updatesFromResourceCache:
+            request['updatesFromResourceCache'] = updatesFromResourceCache
+
+        # randomly choose a worker
+        worker = random.choice(self.workersList)
+        self.logger.write(self.name + " sending ('WORKER_INITIAL', " + str(request) + ") to " + str(worker) )
+        send(('WORKER_INITIAL', request,), to= worker)
+
+
+    # request received from worker
+    def receive(msg=('SUBJECT_COORDINATOR_VALIDATE', request), from_= p):
+        state = 'SUBJECT_COORDINATOR_VALIDATE'
+        self.logger.write(self.name + " received ('" + state + "', " + str(request) + ") from " + str(p) )
+
+        self.sleepIfRequested(state, request)
+
+        if usedTentativeSubjectAttributes(request):
+            if request['tentativeSubjectUpdates']['requestId'] in self.ongoingRequestIds:
+                # this means that we used tentative updates from an evaluation that is still ongoing
+                # wait till that evaluation either commits or aborts
+                self.waitQueueForRequestsWaitingOnTentativeUpdates.append(request)
+                self.logger.write(self.name + ": request " + str(request['requestId']) + " added to wait queue because the tentative updates it depends on from requestId " + \
+                                    str(request['tentativeSubjectUpdates']['requestId']) + " have still not commited")
+                return
+                
+            if request['tentativeSubjectUpdates']['requestId'] in self.abortedRequestIds:
+                # this means that we used tentative updates from an evaluation that was later aborted
+                # therefore, restart
+                
+                self.ongoingRequestIds.remove(request['requestId'])
+                coord = mapper.getCoordinator(request['subjectId'], self.coordIndexToCoordProcessMapper)
+                newState = 'SUBJECT_COORDINATOR_INITIAL'
+                self.logger.write(self.name + ": Abort and restart due to dependency on tentative update that didn't succeed. Request was: " \
+                                    + str (request) + ". Depended on requestId " + str(request['tentativeSubjectUpdates']['requestId']))
+                self.resetRequestObject(request)
+                self.logger.write(self.name + " sending ('" + newState + "', " + str(request) + ") to " + str(coord) )
+                send((newState, request,), to= coord)
+                return
+
+        # this checks for subject conflict by seeing whether the attributes that were read 
+        # for this policy evaluation have been updated in the meanwhile
+        if cacheHasDifferentValues(request['subjectId'], self.subjectCache, request['readAttributes']['subject']) or \
+            cacheHasDifferentValues(request['subjectId'], self.tentativeSubjectUpdatesCache, request['readAttributes']['subject']):
+            # restart evaluation
+            self.resetRequestObject(request)
+            self.ongoingRequestIds.remove(request['requestId'])
+            coord = mapper.getCoordinator(request['subjectId'], self.coordIndexToCoordProcessMapper)
+            newState = 'SUBJECT_COORDINATOR_INITIAL'
+            self.logger.write(self.name + ": Abort and restart due to subject conflict. Request was: " + str(request))
+            self.logger.write(self.name + " sending ('" + newState + "', " + str(request) + ") to " + str(coord) )
+            send((newState, request,), to= coord)
+            return
+
+        # No conflicts if reached here
+
+        if request['result'] == False:
+            # result of policy evaluation false
+            self.ongoingRequestIds.remove(request['requestId'])
+            self.resetRequestObject(request)
+            self.logger.write(self.name + " sending ('CLIENT_FAILURE, " + str(request) + "') to " + str(request['client']) )
+            send(('CLIENT_FAILURE', request,), to= request['client'])
+        else:
+            # result of policy evaluation was True
+            # send to resource coordinator for resource conflict check
+            self.tentativeSubjectUpdatesCache.add(request)
+            coord = mapper.getCoordinator(request['resourceId'], self.coordIndexToCoordProcessMapper)
+            self.logger.write(self.name + " sending ('RESOURCE_COORDINATOR_VALIDATE', " + str(request) + ") to " + str(coord) )
+            send(('RESOURCE_COORDINATOR_VALIDATE', request,), to= coord)
+
+
+    # request received from resource coordinator
+    # signaling that there was a resource conflict
+    def receive(msg=('SUBJECT_COORDINATOR_RESOURCE_CONFLICT', request), from_= p):
+        #TODO accept according to sequence number
+        state = 'SUBJECT_COORDINATOR_RESOURCE_CONFLICT'
+        self.logger.write(self.name + " received ('" + state + "', " + str(request) + ") from " + str(p) )
+
+        self.sleepIfRequested(state, request)
+
+        self.logger.write(self.name + ": Abort and restart due to resource conflict. Request was: " + str(request))        
+        self.abortedRequestIds.append(request['requestId'])
+        self.tentativeSubjectUpdatesCache.remove(request['subjectId'])
+        self.ongoingRequestIds.remove(request['requestId'])
+
+
+        # resume evaluations that were waiting for this evaluation to finish
+        resumeRequestsList = []
+        for waitingRequest in self.waitQueueForRequestsWaitingOnTentativeUpdates:
+            if waitingRequest['tentativeSubjectUpdates']['requestId'] == request['requestId']:
+                resumeRequestsList.append(waitingRequest)
+        for waitingRequest in resumeRequestsList:
+            self.waitQueueForRequestsWaitingOnTentativeUpdates.remove(waitingRequest)
+
+        for waitingRequest in resumeRequestsList:
+            self.logger.write(self.name + ": Removed from wait queue the Request:" + str(waitingRequest) + " because the request for which it was waiting (requestId: " + request['requestId'] + ") is done")
+            # resend to subject coordinator
+            coord = mapper.getCoordinator(waitingRequest['subjectId'], self.coordIndexToCoordProcessMapper)
+            newState = 'SUBJECT_COORDINATOR_VALIDATE'
+            self.logger.write(self.name + " sending ('" + newState + "', " + str(waitingRequest) + ") to " + str(coord) )
+            send((newState, waitingRequest,), to= coord)
+
+        # restart evaluation
+        self.resetRequestObject(request)
+        coord = mapper.getCoordinator(request['subjectId'], self.coordIndexToCoordProcessMapper)
+        newState = 'SUBJECT_COORDINATOR_INITIAL'
+        self.logger.write(self.name + " sending ('" + newState + "', " + str(request) + ") to " + str(coord) )
+        send((newState, request,), to= coord)
+
+
+    # request received from resource coordinator
+    # signaling that there was no resource conflict
+    # and to therefore, go ahead with the request
+    def receive(msg=('SUBJECT_COORDINATOR_FINAL', request), from_= p):
+        # resource Coordinator said success
+        state = 'SUBJECT_COORDINATOR_FINAL'
+        self.logger.write(self.name + " received ('" + state + "', " + str(request) + ") from " + str(p) )
+
+        self.sleepIfRequested(state, request)
+
+        self.logger.write(self.name + ": Commit. Send success to client. Request was: " + str(request))
+
+        self.logger.write(self.name + " sending ('UPDATE_SUBJECT_RESOURCE', " + str(request['attributeUpdates']) +" ') to " + str(self.dbProcess))
+        send(('UPDATE_SUBJECT_RESOURCE', request['attributeUpdates'],), to= self.dbProcess)
+
+        self.tentativeSubjectUpdatesCache.remove(request['subjectId'])
+        self.subjectCache.add(request)
+        self.resetRequestObject(request)
+        self.ongoingRequestIds.remove(request['requestId'])
+
+        # resume evaluations that were waiting for this evaluation to finish
+        resumeRequestsList = []
+        for waitingRequest in self.waitQueueForRequestsWaitingOnTentativeUpdates:
+            if waitingRequest['tentativeSubjectUpdates']['requestId'] == request['requestId']:
+                resumeRequestsList.append(waitingRequest)
+        for waitingRequest in resumeRequestsList:
+            self.waitQueueForRequestsWaitingOnTentativeUpdates.remove(waitingRequest)
+
+        for waitingRequest in resumeRequestsList:
+            self.logger.write(self.name + ": Removed from wait queue the Request:" + str(waitingRequest) + " because the request for which it was waiting (requestId: " + request['requestId'] + ") is done")
+            # resend to subject coordinator
+            coord = mapper.getCoordinator(waitingRequest['subjectId'], self.coordIndexToCoordProcessMapper)
+            newState = 'SUBJECT_COORDINATOR_VALIDATE'
+            self.logger.write(self.name + " sending ('" + newState + "', " + str(waitingRequest) + ") to " + str(coord) )
+            send((newState, waitingRequest,), to= coord)
+
+
+
+        self.logger.write(self.name + " sending ('CLIENT_SUCCESS, " + str(request) + "') to " + str(request['client']) )
+        send(('CLIENT_SUCCESS', request,), to= request['client'])
+
+
+    # request received from subject coordinator asking for 
+    # resource attribute conflict verification
+    def receive(msg=('RESOURCE_COORDINATOR_VALIDATE', request), from_= p):
+        state = 'RESOURCE_COORDINATOR_VALIDATE'
+        self.logger.write(self.name + " received ('" + state + "', " + str(request) + ") from " + str(p) )
+        self.sleepIfRequested(state, request)
+
+        coord = mapper.getCoordinator(request['subjectId'], self.coordIndexToCoordProcessMapper)
+
+        # if cache has a different value than what was used to 
+        # evaluate policy, then problem
+        if cacheHasDifferentValues(request['resourceId'], self.resourceCache, request['readAttributes']['resource']):
+            self.logger.write(self.name + ": Notify subject coordinator of resource conflict. Request was: " + str(request))
+            self.logger.write(self.name + " sending ('SUBJECT_COORDINATOR_RESOURCE_CONFLICT, " + str(request) + "') to " + str(coord) )
+            send(('SUBJECT_COORDINATOR_RESOURCE_CONFLICT', request,), to= coord)
+        else:
+            # no conflicts
+            self.resourceCache.add(request)
+            self.logger.write(self.name + ": No conflict. Request is: " + str(request))
+            self.logger.write(self.name + " sending ('SUBJECT_COORDINATOR_FINAL, " + str(request) + "') to " + str(coord) )
+            send(('SUBJECT_COORDINATOR_FINAL', request,), to= coord)
+
+
+    # used to check whether the specified cache has values that
+    # are different from the ones that were employed for this 
+    # policy evaluation
+    def cacheHasDifferentValues(cacheKey, cache, readAttrs):
+        cached = cache.get(cacheKey)
+        if cached:
+            cachedAttrs = cached['attributes']
+        else:
+            return False
+        
+        # cache has it
+        # now check for conflict
+        for attr in readAttrs:
+            if attr in cachedAttrs:
+                if not cachedAttrs[attr] == readAttrs[attr]:
+                    self.logger.write("For attribute " + str(attr) + ", value used for policy evaluation was " + str(readAttrs[attr]) + \
+                                        ", but value in cache is " + str(cachedAttrs[attr]))
+                    return True
+        return False
+
+    # used before restarting a request, or before sending the request back to client with result
+    # Removes extra properties that were attached to the request object during the normal flow
+    # of it through different coordinators and workers ...
+    def resetRequestObject(request):
+        attrsToKeep = ['subjectId', 'resourceId', 'action', 'delay', 'client','requestId']
+        attrsToDelete = []
+        for key in request:
+            if key not in attrsToKeep:
+                attrsToDelete.append(key)
+        for key in attrsToDelete:
+            del request[key]
+
+
+    # used for delaying a message in a particular stage
+    # used for demoing purposes to show various scenarios of the algorithm
+    def sleepIfRequested(state, request):
+        if state in request['delay']:
+            delay = int(request['delay'][state])
+            self.logger.write(self.name + " sleeping for " + str(delay) + " second(s)")
+            time.sleep(delay)
+        if state in request['delay']:
+            self.logger.write(self.name + " resumed from sleeping")
+            
+    # checks if the policy evaluation employed subject attributes
+    # that were piggybacked on to the request as tentative subject updates
+    def usedTentativeSubjectAttributes(request):
+        readAttrs = request['readAttributes']['subject']
+        if 'tentativeSubjectUpdates' in request:
+            for readAttr in readAttrs:
+                if readAttr in request['tentativeSubjectUpdates']['attributes']:
+                    return True
+
+        return False

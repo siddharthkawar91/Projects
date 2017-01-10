@@ -1,0 +1,402 @@
+[2016-10-16 20:30:11] dbLatency : 0
+[2016-10-16 20:30:11] <Master> sending ('QUERY_TOTAL_SUBJECTS_RESOURCES') to {<DatabaseEmulator('localhost', 37560)>}
+[2016-10-16 20:30:11] database setup started
+[2016-10-16 20:30:11] database Latency : 0
+[2016-10-16 20:30:11] Database is as follows: 
+[2016-10-16 20:30:11] {'resourceRecord': [{'watched': 'false', 'name': 'The Matrix', 'resourceId': '101', 'viewCount': 49}, {'watched': 'true', 'name': 'Shawshank Redemption', 'resourceId': '102', 'viewCount': 40}], 'subjectRecord': [{'subjectId': '1', 'name': 'Siddharth', 'moviesWatched': 9}, {'subjectId': '2', 'name': 'Shikhar', 'moviesWatched': 5}, {'subjectId': '3', 'name': 'Dexter', 'moviesWatched': 10}], 'resourceList': ['101', '102'], 'subjectList': ['1', '2', '3']}
+[2016-10-16 20:30:11] <Database> received ('QUERY_TOTAL_SUBJECTS_RESOURCES', ('localhost', 31223))
+[2016-10-16 20:30:11] <Database> sending ('ANSWER_TOTAL_SUBJECTS_RESOURCES', (['1', '2', '3'], ['101', '102'])) to ('localhost', 31223)
+[2016-10-16 20:30:11] <Master> received ('ANSWER_TOTAL_SUBJECTS_RESOURCES', (['1', '2', '3'], ['101', '102']))
+[2016-10-16 20:30:11] Starting workers
+[2016-10-16 20:30:12] <Worker ('localhost', 29705)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 21574)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 39296)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 13312)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 23457)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 33012)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 36212)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 31381)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 16714)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 34027)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 18655)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 15327)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 19167)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 27639)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 14711)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 39143)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 26012)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 26304)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 37116)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 20020)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 31990)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 13241)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 37177)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 28217)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 39182)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 27492)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 22258)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 37709)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 39483)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 22149)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 20613)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 29673)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 37308)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 37853)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 35582)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 26369)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 27348)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 38584)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 26435)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 30403)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 29164)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 33489)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 39324)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 11976)> is up
+[2016-10-16 20:30:12] <Worker ('localhost', 32695)> is up
+[2016-10-16 20:30:12] <Coordinator0> is actually ('localhost', 34469)
+[2016-10-16 20:30:12] <Coordinator 0> sending ('COORDINATOR_TO_WORKER_INIT', 0) to ('localhost', 21574)
+[2016-10-16 20:30:12] <Coordinator1> is actually ('localhost', 27581)
+[2016-10-16 20:30:12] <Coordinator 1> sending ('COORDINATOR_TO_WORKER_INIT', 1) to ('localhost', 23457)
+[2016-10-16 20:30:12] <Coordinator2> is actually ('localhost', 13076)
+[2016-10-16 20:30:12] <Coordinator 2> sending ('COORDINATOR_TO_WORKER_INIT', 2) to ('localhost', 37116)
+[2016-10-16 20:30:12] <Coordinator3> is actually ('localhost', 33826)
+[2016-10-16 20:30:12] <Coordinator 3> sending ('COORDINATOR_TO_WORKER_INIT', 3) to ('localhost', 19167)
+[2016-10-16 20:30:12] <Worker ('localhost', 19167)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 33826))
+[2016-10-16 20:30:12] <Worker ('localhost', 19167)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 19167)) to ('localhost', 33826)
+[2016-10-16 20:30:12] <Worker ('localhost', 37116)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 13076))
+[2016-10-16 20:30:12] <Worker ('localhost', 37116)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 37116)) to ('localhost', 13076)
+[2016-10-16 20:30:12] <Coordinator 3> sending ('COORDINATOR_TO_WORKER_INIT', 3) to ('localhost', 27639)
+[2016-10-16 20:30:12] <Worker ('localhost', 27639)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 33826))
+[2016-10-16 20:30:12] <Worker ('localhost', 27639)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 27639)) to ('localhost', 33826)
+[2016-10-16 20:30:12] <Coordinator 3> sending ('COORDINATOR_TO_WORKER_INIT', 3) to ('localhost', 14711)
+[2016-10-16 20:30:12] <Worker ('localhost', 14711)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 33826))
+[2016-10-16 20:30:12] <Worker ('localhost', 14711)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 14711)) to ('localhost', 33826)
+[2016-10-16 20:30:12] <Coordinator 3> sending ('COORDINATOR_TO_WORKER_INIT', 3) to ('localhost', 37709)
+[2016-10-16 20:30:12] <Worker ('localhost', 37709)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 33826))
+[2016-10-16 20:30:12] <Worker ('localhost', 37709)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 37709)) to ('localhost', 33826)
+[2016-10-16 20:30:12] <Worker ('localhost', 23457)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 27581))
+[2016-10-16 20:30:12] <Worker ('localhost', 23457)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 23457)) to ('localhost', 27581)
+[2016-10-16 20:30:12] <Coordinator 1> sending ('COORDINATOR_TO_WORKER_INIT', 1) to ('localhost', 33012)
+[2016-10-16 20:30:12] <Worker ('localhost', 33012)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 27581))
+[2016-10-16 20:30:12] <Worker ('localhost', 33012)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 33012)) to ('localhost', 27581)
+[2016-10-16 20:30:13] <Coordinator 0> sending ('COORDINATOR_TO_WORKER_INIT', 0) to ('localhost', 29705)
+[2016-10-16 20:30:13] <Worker ('localhost', 29705)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 34469))
+[2016-10-16 20:30:13] <Worker ('localhost', 29705)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 29705)) to ('localhost', 34469)
+[2016-10-16 20:30:13] <Coordinator6> is actually ('localhost', 36044)
+[2016-10-16 20:30:13] <Coordinator 6> sending ('COORDINATOR_TO_WORKER_INIT', 6) to ('localhost', 22258)
+[2016-10-16 20:30:13] <Worker ('localhost', 22258)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 36044))
+[2016-10-16 20:30:13] <Worker ('localhost', 22258)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 22258)) to ('localhost', 36044)
+[2016-10-16 20:30:13] <Coordinator 3> sending ('COORDINATOR_TO_WORKER_INIT', 3) to ('localhost', 39324)
+[2016-10-16 20:30:13] <Worker ('localhost', 39324)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 33826))
+[2016-10-16 20:30:13] <Worker ('localhost', 39324)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 39324)) to ('localhost', 33826)
+[2016-10-16 20:30:13] <Coordinator 2> sending ('COORDINATOR_TO_WORKER_INIT', 2) to ('localhost', 16714)
+[2016-10-16 20:30:13] <Worker ('localhost', 16714)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 13076))
+[2016-10-16 20:30:13] <Worker ('localhost', 16714)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 16714)) to ('localhost', 13076)
+[2016-10-16 20:30:13] <Coordinator4> is actually ('localhost', 35256)
+[2016-10-16 20:30:13] <Coordinator 4> sending ('COORDINATOR_TO_WORKER_INIT', 4) to ('localhost', 26012)
+[2016-10-16 20:30:13] <Worker ('localhost', 26012)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 35256))
+[2016-10-16 20:30:13] <Worker ('localhost', 26012)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 26012)) to ('localhost', 35256)
+[2016-10-16 20:30:13] <Coordinator 2> sending ('COORDINATOR_TO_WORKER_INIT', 2) to ('localhost', 34027)
+[2016-10-16 20:30:13] <Worker ('localhost', 34027)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 13076))
+[2016-10-16 20:30:13] <Worker ('localhost', 34027)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 34027)) to ('localhost', 13076)
+[2016-10-16 20:30:13] <Coordinator 6> sending ('COORDINATOR_TO_WORKER_INIT', 6) to ('localhost', 20613)
+[2016-10-16 20:30:13] <Worker ('localhost', 20613)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 36044))
+[2016-10-16 20:30:13] <Worker ('localhost', 20613)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 20613)) to ('localhost', 36044)
+[2016-10-16 20:30:13] <Coordinator 6> sending ('COORDINATOR_TO_WORKER_INIT', 6) to ('localhost', 11976)
+[2016-10-16 20:30:13] <Worker ('localhost', 11976)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 36044))
+[2016-10-16 20:30:13] <Worker ('localhost', 11976)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 11976)) to ('localhost', 36044)
+[2016-10-16 20:30:13] <Coordinator 6> sending ('COORDINATOR_TO_WORKER_INIT', 6) to ('localhost', 22149)
+[2016-10-16 20:30:13] <Worker ('localhost', 22149)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 36044))
+[2016-10-16 20:30:13] <Worker ('localhost', 22149)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 22149)) to ('localhost', 36044)
+[2016-10-16 20:30:13] <Coordinator 1> sending ('COORDINATOR_TO_WORKER_INIT', 1) to ('localhost', 36212)
+[2016-10-16 20:30:13] <Worker ('localhost', 36212)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 27581))
+[2016-10-16 20:30:13] <Worker ('localhost', 36212)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 36212)) to ('localhost', 27581)
+[2016-10-16 20:30:13] <Coordinator 1> sending ('COORDINATOR_TO_WORKER_INIT', 1) to ('localhost', 31381)
+[2016-10-16 20:30:13] <Worker ('localhost', 31381)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 27581))
+[2016-10-16 20:30:13] <Worker ('localhost', 31381)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 31381)) to ('localhost', 27581)
+[2016-10-16 20:30:13] <Coordinator 1> sending ('COORDINATOR_TO_WORKER_INIT', 1) to ('localhost', 39483)
+[2016-10-16 20:30:13] <Worker ('localhost', 39483)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 27581))
+[2016-10-16 20:30:13] <Worker ('localhost', 39483)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 39483)) to ('localhost', 27581)
+[2016-10-16 20:30:13] <Coordinator 0> sending ('COORDINATOR_TO_WORKER_INIT', 0) to ('localhost', 39143)
+[2016-10-16 20:30:13] <Worker ('localhost', 39143)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 34469))
+[2016-10-16 20:30:13] <Worker ('localhost', 39143)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 39143)) to ('localhost', 34469)
+[2016-10-16 20:30:13] <Coordinator 2> sending ('COORDINATOR_TO_WORKER_INIT', 2) to ('localhost', 18655)
+[2016-10-16 20:30:13] <Worker ('localhost', 18655)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 13076))
+[2016-10-16 20:30:13] <Worker ('localhost', 18655)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 18655)) to ('localhost', 13076)
+[2016-10-16 20:30:13] <Coordinator7> is actually ('localhost', 22167)
+[2016-10-16 20:30:13] <Coordinator 7> sending ('COORDINATOR_TO_WORKER_INIT', 7) to ('localhost', 37308)
+[2016-10-16 20:30:13] <Coordinator 7> sending ('COORDINATOR_TO_WORKER_INIT', 7) to ('localhost', 37853)
+[2016-10-16 20:30:13] <Worker ('localhost', 37853)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 22167))
+[2016-10-16 20:30:13] <Worker ('localhost', 37853)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 37853)) to ('localhost', 22167)
+[2016-10-16 20:30:13] <Coordinator 7> sending ('COORDINATOR_TO_WORKER_INIT', 7) to ('localhost', 35582)
+[2016-10-16 20:30:13] <Worker ('localhost', 35582)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 22167))
+[2016-10-16 20:30:13] <Worker ('localhost', 35582)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 35582)) to ('localhost', 22167)
+[2016-10-16 20:30:13] <Coordinator 7> sending ('COORDINATOR_TO_WORKER_INIT', 7) to ('localhost', 26369)
+[2016-10-16 20:30:13] <Worker ('localhost', 26369)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 22167))
+[2016-10-16 20:30:13] <Worker ('localhost', 26369)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 26369)) to ('localhost', 22167)
+[2016-10-16 20:30:13] <Coordinator 7> sending ('COORDINATOR_TO_WORKER_INIT', 7) to ('localhost', 27348)
+[2016-10-16 20:30:13] <Worker ('localhost', 27348)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 22167))
+[2016-10-16 20:30:13] <Worker ('localhost', 27348)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 27348)) to ('localhost', 22167)
+[2016-10-16 20:30:13] <Worker ('localhost', 37308)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 22167))
+[2016-10-16 20:30:13] <Worker ('localhost', 37308)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 37308)) to ('localhost', 22167)
+[2016-10-16 20:30:13] <Coordinator 4> sending ('COORDINATOR_TO_WORKER_INIT', 4) to ('localhost', 26304)
+[2016-10-16 20:30:13] <Worker ('localhost', 26304)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 35256))
+[2016-10-16 20:30:13] <Worker ('localhost', 26304)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 26304)) to ('localhost', 35256)
+[2016-10-16 20:30:13] <Coordinator8> is actually ('localhost', 24081)
+[2016-10-16 20:30:13] <Coordinator 8> sending ('COORDINATOR_TO_WORKER_INIT', 8) to ('localhost', 38584)
+[2016-10-16 20:30:13] <Worker ('localhost', 38584)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 24081))
+[2016-10-16 20:30:13] <Worker ('localhost', 38584)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 38584)) to ('localhost', 24081)
+[2016-10-16 20:30:13] <Coordinator 8> sending ('COORDINATOR_TO_WORKER_INIT', 8) to ('localhost', 26435)
+[2016-10-16 20:30:13] <Worker ('localhost', 26435)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 24081))
+[2016-10-16 20:30:13] <Worker ('localhost', 26435)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 26435)) to ('localhost', 24081)
+[2016-10-16 20:30:13] <Coordinator 8> sending ('COORDINATOR_TO_WORKER_INIT', 8) to ('localhost', 30403)
+[2016-10-16 20:30:13] <Worker ('localhost', 30403)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 24081))
+[2016-10-16 20:30:13] <Worker ('localhost', 30403)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 30403)) to ('localhost', 24081)
+[2016-10-16 20:30:13] <Coordinator 8> sending ('COORDINATOR_TO_WORKER_INIT', 8) to ('localhost', 29164)
+[2016-10-16 20:30:13] <Coordinator 8> sending ('COORDINATOR_TO_WORKER_INIT', 8) to ('localhost', 32695)
+[2016-10-16 20:30:13] <Worker ('localhost', 32695)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 24081))
+[2016-10-16 20:30:13] <Worker ('localhost', 32695)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 32695)) to ('localhost', 24081)
+[2016-10-16 20:30:13] <Worker ('localhost', 29164)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 24081))
+[2016-10-16 20:30:13] <Worker ('localhost', 29164)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 29164)) to ('localhost', 24081)
+[2016-10-16 20:30:13] <Coordinator5> is actually ('localhost', 18201)
+[2016-10-16 20:30:13] <Coordinator 5> sending ('COORDINATOR_TO_WORKER_INIT', 5) to ('localhost', 37177)
+[2016-10-16 20:30:13] <Worker ('localhost', 37177)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 18201))
+[2016-10-16 20:30:13] <Worker ('localhost', 37177)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 37177)) to ('localhost', 18201)
+[2016-10-16 20:30:13] <Coordinator 4> sending ('COORDINATOR_TO_WORKER_INIT', 4) to ('localhost', 20020)
+[2016-10-16 20:30:13] <Worker ('localhost', 20020)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 35256))
+[2016-10-16 20:30:13] <Worker ('localhost', 20020)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 20020)) to ('localhost', 35256)
+[2016-10-16 20:30:13] <Coordinator 4> sending ('COORDINATOR_TO_WORKER_INIT', 4) to ('localhost', 31990)
+[2016-10-16 20:30:13] <Worker ('localhost', 31990)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 35256))
+[2016-10-16 20:30:13] <Worker ('localhost', 31990)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 31990)) to ('localhost', 35256)
+[2016-10-16 20:30:13] <Coordinator 3> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 19167))
+[2016-10-16 20:30:13] <Coordinator 3> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 27639))
+[2016-10-16 20:30:13] <Coordinator 3> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 14711))
+[2016-10-16 20:30:13] <Coordinator 3> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 39324))
+[2016-10-16 20:30:13] <Coordinator 3> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 37709))
+[2016-10-16 20:30:13] <Coordinator 3> is setup and functioning
+[2016-10-16 20:30:13] <Coordinator 3> is responsible for subjects []
+[2016-10-16 20:30:13] <Coordinator 3> is responsible for resources []
+[2016-10-16 20:30:13] <Coordinator 7> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 37853))
+[2016-10-16 20:30:13] <Coordinator 7> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 35582))
+[2016-10-16 20:30:13] <Coordinator 7> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 26369))
+[2016-10-16 20:30:13] <Coordinator 7> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 27348))
+[2016-10-16 20:30:13] <Coordinator 6> sending ('COORDINATOR_TO_WORKER_INIT', 6) to ('localhost', 29673)
+[2016-10-16 20:30:13] <Worker ('localhost', 29673)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 36044))
+[2016-10-16 20:30:13] <Worker ('localhost', 29673)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 29673)) to ('localhost', 36044)
+[2016-10-16 20:30:13] <Coordinator 6> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 22258))
+[2016-10-16 20:30:13] <Coordinator 6> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 20613))
+[2016-10-16 20:30:13] <Coordinator 6> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 11976))
+[2016-10-16 20:30:13] <Coordinator 6> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 22149))
+[2016-10-16 20:30:13] <Coordinator 6> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 29673))
+[2016-10-16 20:30:13] <Coordinator 6> is setup and functioning
+[2016-10-16 20:30:13] <Coordinator 6> is responsible for subjects []
+[2016-10-16 20:30:13] <Coordinator 6> is responsible for resources []
+[2016-10-16 20:30:13] <Coordinator 8> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 38584))
+[2016-10-16 20:30:13] <Coordinator 8> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 26435))
+[2016-10-16 20:30:13] <Coordinator 8> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 30403))
+[2016-10-16 20:30:13] <Coordinator 8> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 32695))
+[2016-10-16 20:30:13] <Coordinator 8> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 29164))
+[2016-10-16 20:30:13] <Coordinator 8> is setup and functioning
+[2016-10-16 20:30:13] <Coordinator 8> is responsible for subjects []
+[2016-10-16 20:30:13] <Coordinator 8> is responsible for resources []
+[2016-10-16 20:30:13] <Coordinator 0> sending ('COORDINATOR_TO_WORKER_INIT', 0) to ('localhost', 39296)
+[2016-10-16 20:30:13] <Worker ('localhost', 39296)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 34469))
+[2016-10-16 20:30:13] <Worker ('localhost', 39296)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 39296)) to ('localhost', 34469)
+[2016-10-16 20:30:13] <Coordinator 0> sending ('COORDINATOR_TO_WORKER_INIT', 0) to ('localhost', 13312)
+[2016-10-16 20:30:13] <Worker ('localhost', 13312)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 34469))
+[2016-10-16 20:30:13] <Worker ('localhost', 13312)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 13312)) to ('localhost', 34469)
+[2016-10-16 20:30:13] <Coordinator 0> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 29705))
+[2016-10-16 20:30:13] <Coordinator 0> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 39143))
+[2016-10-16 20:30:13] <Coordinator 0> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 39296))
+[2016-10-16 20:30:13] <Coordinator 0> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 13312))
+[2016-10-16 20:30:13] <Coordinator 4> sending ('COORDINATOR_TO_WORKER_INIT', 4) to ('localhost', 13241)
+[2016-10-16 20:30:13] <Worker ('localhost', 13241)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 35256))
+[2016-10-16 20:30:13] <Worker ('localhost', 13241)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 13241)) to ('localhost', 35256)
+[2016-10-16 20:30:13] <Coordinator 1> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 23457))
+[2016-10-16 20:30:13] <Coordinator 1> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 33012))
+[2016-10-16 20:30:13] <Coordinator 1> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 36212))
+[2016-10-16 20:30:13] <Coordinator 1> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 31381))
+[2016-10-16 20:30:13] <Coordinator 1> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 39483))
+[2016-10-16 20:30:13] <Coordinator 1> is setup and functioning
+[2016-10-16 20:30:13] <Coordinator 1> is responsible for subjects ['1']
+[2016-10-16 20:30:13] <Coordinator 1> is responsible for resources ['101']
+[2016-10-16 20:30:13] <Coordinator 7> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 37308))
+[2016-10-16 20:30:13] <Coordinator 7> is setup and functioning
+[2016-10-16 20:30:13] <Coordinator 7> is responsible for subjects []
+[2016-10-16 20:30:13] <Coordinator 7> is responsible for resources []
+[2016-10-16 20:30:13] <Coordinator 2> sending ('COORDINATOR_TO_WORKER_INIT', 2) to ('localhost', 15327)
+[2016-10-16 20:30:13] <Worker ('localhost', 15327)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 13076))
+[2016-10-16 20:30:13] <Worker ('localhost', 15327)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 15327)) to ('localhost', 13076)
+[2016-10-16 20:30:13] <Coordinator 5> sending ('COORDINATOR_TO_WORKER_INIT', 5) to ('localhost', 28217)
+[2016-10-16 20:30:13] <Worker ('localhost', 28217)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 18201))
+[2016-10-16 20:30:13] <Worker ('localhost', 28217)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 28217)) to ('localhost', 18201)
+[2016-10-16 20:30:13] <Coordinator 2> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 37116))
+[2016-10-16 20:30:13] <Coordinator 2> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 16714))
+[2016-10-16 20:30:13] <Coordinator 2> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 34027))
+[2016-10-16 20:30:13] <Coordinator 2> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 18655))
+[2016-10-16 20:30:13] <Coordinator 2> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 15327))
+[2016-10-16 20:30:13] <Coordinator 2> is setup and functioning
+[2016-10-16 20:30:13] <Coordinator 2> is responsible for subjects ['3']
+[2016-10-16 20:30:13] <Coordinator 2> is responsible for resources ['102']
+[2016-10-16 20:30:13] <Coordinator 5> sending ('COORDINATOR_TO_WORKER_INIT', 5) to ('localhost', 39182)
+[2016-10-16 20:30:13] <Worker ('localhost', 39182)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 18201))
+[2016-10-16 20:30:13] <Worker ('localhost', 39182)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 39182)) to ('localhost', 18201)
+[2016-10-16 20:30:13] <Coordinator 4> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 26012))
+[2016-10-16 20:30:13] <Coordinator 4> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 26304))
+[2016-10-16 20:30:13] <Coordinator 4> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 20020))
+[2016-10-16 20:30:13] <Coordinator 4> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 31990))
+[2016-10-16 20:30:13] <Coordinator 4> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 13241))
+[2016-10-16 20:30:13] <Coordinator 4> is setup and functioning
+[2016-10-16 20:30:13] <Coordinator 4> is responsible for subjects []
+[2016-10-16 20:30:13] <Coordinator 4> is responsible for resources []
+[2016-10-16 20:30:13] <Worker ('localhost', 21574)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 34469))
+[2016-10-16 20:30:13] <Worker ('localhost', 21574)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 21574)) to ('localhost', 34469)
+[2016-10-16 20:30:13] <Coordinator 5> sending ('COORDINATOR_TO_WORKER_INIT', 5) to ('localhost', 33489)
+[2016-10-16 20:30:13] <Coordinator 5> sending ('COORDINATOR_TO_WORKER_INIT', 5) to ('localhost', 27492)
+[2016-10-16 20:30:13] <Worker ('localhost', 33489)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 18201))
+[2016-10-16 20:30:13] <Worker ('localhost', 33489)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 33489)) to ('localhost', 18201)
+[2016-10-16 20:30:13] <Worker ('localhost', 27492)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 18201))
+[2016-10-16 20:30:13] <Worker ('localhost', 27492)> sending ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 27492)) to ('localhost', 18201)
+[2016-10-16 20:30:13] <Coordinator 5> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 37177))
+[2016-10-16 20:30:13] <Coordinator 5> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 28217))
+[2016-10-16 20:30:13] <Coordinator 5> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 39182))
+[2016-10-16 20:30:13] <Coordinator 5> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 33489))
+[2016-10-16 20:30:13] <Coordinator 5> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 27492))
+[2016-10-16 20:30:13] <Coordinator 5> is setup and functioning
+[2016-10-16 20:30:13] <Coordinator 5> is responsible for subjects ['2']
+[2016-10-16 20:30:13] <Coordinator 5> is responsible for resources []
+[2016-10-16 20:30:13] <Coordinator 0> received ('COORDINATOR_TO_WORKER_INIT_ACK', ('localhost', 21574))
+[2016-10-16 20:30:13] <Coordinator 0> is setup and functioning
+[2016-10-16 20:30:13] <Coordinator 0> is responsible for subjects []
+[2016-10-16 20:30:13] <Coordinator 0> is responsible for resources []
+[2016-10-16 20:30:13] Client is up
+[2016-10-16 20:30:13] Client sending ('SUBJECT_COORDINATOR_INITIAL', {'action': 'view', 'subjectId': '1', 'delay': {'WORKER_INITIAL': '2'}, 'client': <Client('localhost', 32537)>, 'resourceId': '101'}) to ('localhost', 27581)
+[2016-10-16 20:30:13] <Coordinator 1> received ('SUBJECT_COORDINATOR_INITIAL', {'action': 'view', 'subjectId': '1', 'delay': {'WORKER_INITIAL': '2'}, 'client': <Client('localhost', 32537)>, 'resourceId': '101'}) from ('localhost', 32537)
+[2016-10-16 20:30:13] <Client ('localhost', 32537)> sleeping for 1 second(s)
+[2016-10-16 20:30:13] <Coordinator 1> sending ('RESOURCE_COORDINATOR_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'QbKwdOKUOb', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 13, 567472), 'subjectId': '1', 'delay': {'WORKER_INITIAL': '2'}, 'resourceId': '101'}) to ('localhost', 27581)
+[2016-10-16 20:30:13] <Coordinator 1> received ('RESOURCE_COORDINATOR_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'QbKwdOKUOb', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 13, 567472), 'subjectId': '1', 'delay': {'WORKER_INITIAL': '2'}, 'resourceId': '101'}) from ('localhost', 27581)
+[2016-10-16 20:30:13] <Coordinator 1> sending ('WORKER_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'QbKwdOKUOb', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 13, 567472), 'subjectId': '1', 'delay': {'WORKER_INITIAL': '2'}, 'resourceId': '101'}) to ('localhost', 33012)
+[2016-10-16 20:30:13] <Worker ('localhost', 33012)> received ('WORKER_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'QbKwdOKUOb', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 13, 567472), 'subjectId': '1', 'delay': {'WORKER_INITIAL': '2'}, 'resourceId': '101'}) from ('localhost', 27581)
+[2016-10-16 20:30:13] <Worker ('localhost', 33012)> sleeping for 2 second(s)
+[2016-10-16 20:30:14] <Client ('localhost', 32537)> resumed from sleeping
+[2016-10-16 20:30:14] Client sending ('SUBJECT_COORDINATOR_INITIAL', {'action': 'view', 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'client': <Client('localhost', 32537)>, 'resourceId': '101'}) to ('localhost', 18201)
+[2016-10-16 20:30:14] <Client ('localhost', 32537)> sleeping for 3 second(s)
+[2016-10-16 20:30:14] <Coordinator 5> received ('SUBJECT_COORDINATOR_INITIAL', {'action': 'view', 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'client': <Client('localhost', 32537)>, 'resourceId': '101'}) from ('localhost', 32537)
+[2016-10-16 20:30:14] <Coordinator 5> sending ('RESOURCE_COORDINATOR_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'cDYDzyNvDE', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 14, 583695), 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'resourceId': '101'}) to ('localhost', 27581)
+[2016-10-16 20:30:14] <Coordinator 1> received ('RESOURCE_COORDINATOR_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'cDYDzyNvDE', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 14, 583695), 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'resourceId': '101'}) from ('localhost', 18201)
+[2016-10-16 20:30:14] <Coordinator 1> sending ('WORKER_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'cDYDzyNvDE', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 14, 583695), 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'resourceId': '101'}) to ('localhost', 33012)
+[2016-10-16 20:30:15] <Worker ('localhost', 33012)> resumed from sleeping
+[2016-10-16 20:30:15] <Worker ('localhost', 33012)> sending ('QUERY_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'QbKwdOKUOb', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 13, 567472), 'subjectId': '1', 'delay': {'WORKER_INITIAL': '2'}, 'resourceId': '101'}) to {<DatabaseEmulator('localhost', 37560)>}
+[2016-10-16 20:30:15] <Worker ('localhost', 33012)> received ('WORKER_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'cDYDzyNvDE', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 14, 583695), 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'resourceId': '101'}) from ('localhost', 27581)
+[2016-10-16 20:30:15] <Worker ('localhost', 33012)> sending ('QUERY_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'cDYDzyNvDE', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 14, 583695), 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'resourceId': '101'}) to {<DatabaseEmulator('localhost', 37560)>}
+[2016-10-16 20:30:15] <Database> received ('QUERY_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'QbKwdOKUOb', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 13, 567472), 'subjectId': '1', 'delay': {'WORKER_INITIAL': '2'}, 'resourceId': '101'}) from ('localhost', 33012)
+[2016-10-16 20:30:15] <Database> sending ('ANSWER_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'QbKwdOKUOb', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 13, 567472), 'subjectId': '1', 'delay': {'WORKER_INITIAL': '2'}, 'resourceId': '101'}, {'resource': {'watched': 'false', 'name': 'The Matrix', 'resourceId': '101', 'viewCount': 49}, 'subject': {'subjectId': '1', 'name': 'Siddharth', 'moviesWatched': 9}}) to ('localhost', 33012)
+[2016-10-16 20:30:15] <Worker ('localhost', 33012)> received ('ANSWER_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'QbKwdOKUOb', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 13, 567472), 'subjectId': '1', 'delay': {'WORKER_INITIAL': '2'}, 'resourceId': '101'}, {'resource': {'watched': 'false', 'name': 'The Matrix', 'resourceId': '101', 'viewCount': 49}, 'subject': {'subjectId': '1', 'name': 'Siddharth', 'moviesWatched': 9}}) from ('localhost', 37560)
+[2016-10-16 20:30:15] <Worker ('localhost', 33012)> sending ('SUBJECT_COORDINATOR_VALIDATE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'QbKwdOKUOb', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 13, 567472), 'readAttributes': {'resource': {'viewCount': 49}, 'subject': {'moviesWatched': 9}}, 'result': True, 'subjectId': '1', 'delay': {'WORKER_INITIAL': '2'}, 'attributeUpdates': {'resource': {'viewCount': 50, 'resourceId': '101'}, 'subject': {'subjectId': '1', 'moviesWatched': 10}}, 'resourceId': '101'}) to ('localhost', 27581)
+[2016-10-16 20:30:15] <Coordinator 1> received ('SUBJECT_COORDINATOR_VALIDATE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'QbKwdOKUOb', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 13, 567472), 'result': True, 'readAttributes': {'resource': {'viewCount': 49}, 'subject': {'moviesWatched': 9}}, 'subjectId': '1', 'delay': {'WORKER_INITIAL': '2'}, 'attributeUpdates': {'resource': {'viewCount': 50, 'resourceId': '101'}, 'subject': {'subjectId': '1', 'moviesWatched': 10}}, 'resourceId': '101'}) from ('localhost', 33012)
+[2016-10-16 20:30:15] <Coordinator 1> sending ('RESOURCE_COORDINATOR_VALIDATE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'QbKwdOKUOb', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 13, 567472), 'result': True, 'readAttributes': {'resource': {'viewCount': 49}, 'subject': {'moviesWatched': 9}}, 'subjectId': '1', 'delay': {'WORKER_INITIAL': '2'}, 'attributeUpdates': {'resource': {'viewCount': 50, 'resourceId': '101'}, 'subject': {'subjectId': '1', 'moviesWatched': 10}}, 'resourceId': '101'}) to ('localhost', 27581)
+[2016-10-16 20:30:15] <Coordinator 1> received ('RESOURCE_COORDINATOR_VALIDATE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'QbKwdOKUOb', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 13, 567472), 'result': True, 'readAttributes': {'resource': {'viewCount': 49}, 'subject': {'moviesWatched': 9}}, 'subjectId': '1', 'delay': {'WORKER_INITIAL': '2'}, 'attributeUpdates': {'resource': {'viewCount': 50, 'resourceId': '101'}, 'subject': {'subjectId': '1', 'moviesWatched': 10}}, 'resourceId': '101'}) from ('localhost', 27581)
+[2016-10-16 20:30:15] <Coordinator 1>: No conflict. Request is: {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'QbKwdOKUOb', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 13, 567472), 'result': True, 'readAttributes': {'resource': {'viewCount': 49}, 'subject': {'moviesWatched': 9}}, 'subjectId': '1', 'delay': {'WORKER_INITIAL': '2'}, 'attributeUpdates': {'resource': {'viewCount': 50, 'resourceId': '101'}, 'subject': {'subjectId': '1', 'moviesWatched': 10}}, 'resourceId': '101'}
+[2016-10-16 20:30:15] <Coordinator 1> sending ('SUBJECT_COORDINATOR_FINAL, {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'QbKwdOKUOb', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 13, 567472), 'result': True, 'readAttributes': {'resource': {'viewCount': 49}, 'subject': {'moviesWatched': 9}}, 'subjectId': '1', 'delay': {'WORKER_INITIAL': '2'}, 'attributeUpdates': {'resource': {'viewCount': 50, 'resourceId': '101'}, 'subject': {'subjectId': '1', 'moviesWatched': 10}}, 'resourceId': '101'}') to ('localhost', 27581)
+[2016-10-16 20:30:15] <Coordinator 1> received ('SUBJECT_COORDINATOR_FINAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'QbKwdOKUOb', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 13, 567472), 'result': True, 'readAttributes': {'resource': {'viewCount': 49}, 'subject': {'moviesWatched': 9}}, 'subjectId': '1', 'delay': {'WORKER_INITIAL': '2'}, 'attributeUpdates': {'resource': {'viewCount': 50, 'resourceId': '101'}, 'subject': {'subjectId': '1', 'moviesWatched': 10}}, 'resourceId': '101'}) from ('localhost', 27581)
+[2016-10-16 20:30:15] <Coordinator 1>: Commit. Send success to client. Request was: {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'QbKwdOKUOb', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 13, 567472), 'result': True, 'readAttributes': {'resource': {'viewCount': 49}, 'subject': {'moviesWatched': 9}}, 'subjectId': '1', 'delay': {'WORKER_INITIAL': '2'}, 'attributeUpdates': {'resource': {'viewCount': 50, 'resourceId': '101'}, 'subject': {'subjectId': '1', 'moviesWatched': 10}}, 'resourceId': '101'}
+[2016-10-16 20:30:15] <Coordinator 1> sending ('UPDATE_SUBJECT_RESOURCE', {'resource': {'viewCount': 50, 'resourceId': '101'}, 'subject': {'subjectId': '1', 'moviesWatched': 10}} ') to {<DatabaseEmulator('localhost', 37560)>}
+[2016-10-16 20:30:15] <Database> received ('QUERY_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'cDYDzyNvDE', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 14, 583695), 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'resourceId': '101'}) from ('localhost', 33012)
+[2016-10-16 20:30:15] <Database> sending ('ANSWER_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'cDYDzyNvDE', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 14, 583695), 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'resourceId': '101'}, {'resource': {'watched': 'false', 'name': 'The Matrix', 'resourceId': '101', 'viewCount': 49}, 'subject': {'subjectId': '2', 'name': 'Shikhar', 'moviesWatched': 5}}) to ('localhost', 33012)
+[2016-10-16 20:30:15] <Worker ('localhost', 33012)> received ('ANSWER_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'cDYDzyNvDE', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 14, 583695), 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'resourceId': '101'}, {'resource': {'watched': 'false', 'name': 'The Matrix', 'resourceId': '101', 'viewCount': 49}, 'subject': {'subjectId': '2', 'name': 'Shikhar', 'moviesWatched': 5}}) from ('localhost', 37560)
+[2016-10-16 20:30:15] <Worker ('localhost', 33012)> sleeping for 2 second(s)
+[2016-10-16 20:30:15] <Coordinator 1> sending ('CLIENT_SUCCESS, {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'QbKwdOKUOb', 'subjectId': '1', 'delay': {'WORKER_INITIAL': '2'}, 'resourceId': '101'}') to ('localhost', 32537)
+[2016-10-16 20:30:15] <Database> received ('UPDATE_SUBJECT_RESOURCE', {'resource': {'viewCount': 50, 'resourceId': '101'}, 'subject': {'subjectId': '1', 'moviesWatched': 10}}) from ('localhost', 27581)
+[2016-10-16 20:30:15] <Database> sending ('UPDATE_SUBJECT_RESOURCE_SUCCESS', {'resource': {'viewCount': 50, 'resourceId': '101'}, 'subject': {'subjectId': '1', 'moviesWatched': 10}}) to ('localhost', 27581)
+[2016-10-16 20:30:17] <Client ('localhost', 32537)> resumed from sleeping
+[2016-10-16 20:30:17] Client sending ('SUBJECT_COORDINATOR_INITIAL', {'action': 'view', 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'client': <Client('localhost', 32537)>, 'resourceId': '102'}) to ('localhost', 18201)
+[2016-10-16 20:30:17] <Coordinator 5> received ('SUBJECT_COORDINATOR_INITIAL', {'action': 'view', 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'client': <Client('localhost', 32537)>, 'resourceId': '102'}) from ('localhost', 32537)
+[2016-10-16 20:30:17] <Client ('localhost', 32537)> received ('CLIENT_SUCCESS', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'QbKwdOKUOb', 'subjectId': '1', 'delay': {'WORKER_INITIAL': '2'}, 'resourceId': '101'}) from ('localhost', 27581)
+[2016-10-16 20:30:17] <Coordinator 5> sending ('RESOURCE_COORDINATOR_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'GuhpwZOqFj', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 584983), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}) to ('localhost', 13076)
+[2016-10-16 20:30:17] <Coordinator 2> received ('RESOURCE_COORDINATOR_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'GuhpwZOqFj', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 584983), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}) from ('localhost', 18201)
+[2016-10-16 20:30:17] <Coordinator 2> sending ('WORKER_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'GuhpwZOqFj', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 584983), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}) to ('localhost', 37116)
+[2016-10-16 20:30:17] <Worker ('localhost', 37116)> received ('WORKER_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'GuhpwZOqFj', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 584983), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}) from ('localhost', 13076)
+[2016-10-16 20:30:17] <Worker ('localhost', 37116)> sleeping for 2 second(s)
+[2016-10-16 20:30:17] <Worker ('localhost', 33012)> resumed from sleeping
+[2016-10-16 20:30:17] <Worker ('localhost', 33012)> sending ('SUBJECT_COORDINATOR_VALIDATE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'cDYDzyNvDE', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 14, 583695), 'readAttributes': {'resource': {'viewCount': 49}, 'subject': {'moviesWatched': 5}}, 'result': True, 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'attributeUpdates': {'resource': {'viewCount': 50, 'resourceId': '101'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '101'}) to ('localhost', 18201)
+[2016-10-16 20:30:17] <Coordinator 5> received ('SUBJECT_COORDINATOR_VALIDATE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'cDYDzyNvDE', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 14, 583695), 'result': True, 'readAttributes': {'resource': {'viewCount': 49}, 'subject': {'moviesWatched': 5}}, 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'attributeUpdates': {'resource': {'viewCount': 50, 'resourceId': '101'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '101'}) from ('localhost', 33012)
+[2016-10-16 20:30:17] <Coordinator 5> sending ('RESOURCE_COORDINATOR_VALIDATE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'cDYDzyNvDE', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 14, 583695), 'result': True, 'readAttributes': {'resource': {'viewCount': 49}, 'subject': {'moviesWatched': 5}}, 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'attributeUpdates': {'resource': {'viewCount': 50, 'resourceId': '101'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '101'}) to ('localhost', 27581)
+[2016-10-16 20:30:17] <Coordinator 1> received ('RESOURCE_COORDINATOR_VALIDATE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'cDYDzyNvDE', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 14, 583695), 'result': True, 'readAttributes': {'resource': {'viewCount': 49}, 'subject': {'moviesWatched': 5}}, 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'attributeUpdates': {'resource': {'viewCount': 50, 'resourceId': '101'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '101'}) from ('localhost', 18201)
+[2016-10-16 20:30:17] <Coordinator 1> sleeping for 3 second(s)
+[2016-10-16 20:30:19] <Worker ('localhost', 37116)> resumed from sleeping
+[2016-10-16 20:30:19] <Worker ('localhost', 37116)> sending ('QUERY_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'GuhpwZOqFj', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 584983), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}) to {<DatabaseEmulator('localhost', 37560)>}
+[2016-10-16 20:30:19] <Database> received ('QUERY_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'GuhpwZOqFj', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 584983), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}) from ('localhost', 37116)
+[2016-10-16 20:30:19] <Database> sending ('ANSWER_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'GuhpwZOqFj', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 584983), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}, {'resource': {'watched': 'true', 'name': 'Shawshank Redemption', 'resourceId': '102', 'viewCount': 40}, 'subject': {'subjectId': '2', 'name': 'Shikhar', 'moviesWatched': 5}}) to ('localhost', 37116)
+[2016-10-16 20:30:19] <Worker ('localhost', 37116)> received ('ANSWER_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'GuhpwZOqFj', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 584983), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}, {'resource': {'watched': 'true', 'name': 'Shawshank Redemption', 'resourceId': '102', 'viewCount': 40}, 'subject': {'subjectId': '2', 'name': 'Shikhar', 'moviesWatched': 5}}) from ('localhost', 37560)
+[2016-10-16 20:30:19] <Worker ('localhost', 37116)> sending ('SUBJECT_COORDINATOR_VALIDATE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'GuhpwZOqFj', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 584983), 'readAttributes': {'resource': {'viewCount': 40}, 'subject': {'moviesWatched': 5}}, 'result': True, 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'attributeUpdates': {'resource': {'viewCount': 41, 'resourceId': '102'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}) to ('localhost', 18201)
+[2016-10-16 20:30:19] <Coordinator 5> received ('SUBJECT_COORDINATOR_VALIDATE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'GuhpwZOqFj', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 584983), 'result': True, 'readAttributes': {'resource': {'viewCount': 40}, 'subject': {'moviesWatched': 5}}, 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'attributeUpdates': {'resource': {'viewCount': 41, 'resourceId': '102'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}) from ('localhost', 37116)
+[2016-10-16 20:30:19] For attribute moviesWatched, value used for policy evaluation was 5, but value in cache is 6
+[2016-10-16 20:30:19] <Coordinator 5>: Abort and restart due to subject conflict. Request was: {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'GuhpwZOqFj', 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}
+[2016-10-16 20:30:19] <Coordinator 5> sending ('SUBJECT_COORDINATOR_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'GuhpwZOqFj', 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}) to ('localhost', 18201)
+[2016-10-16 20:30:19] <Coordinator 5> received ('SUBJECT_COORDINATOR_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'GuhpwZOqFj', 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}) from ('localhost', 18201)
+[2016-10-16 20:30:19] <Coordinator 5> sending ('RESOURCE_COORDINATOR_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'ucKqIakeZL', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 19, 667947), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'tentativeSubjectUpdates': {'timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 781498), 'requestId': 'cDYDzyNvDE', 'attributes': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}) to ('localhost', 13076)
+[2016-10-16 20:30:19] <Coordinator 2> received ('RESOURCE_COORDINATOR_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'ucKqIakeZL', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 19, 667947), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'tentativeSubjectUpdates': {'timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 781498), 'requestId': 'cDYDzyNvDE', 'attributes': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}) from ('localhost', 18201)
+[2016-10-16 20:30:19] <Coordinator 2> sending ('WORKER_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'ucKqIakeZL', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 19, 667947), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'tentativeSubjectUpdates': {'timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 781498), 'requestId': 'cDYDzyNvDE', 'attributes': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}) to ('localhost', 15327)
+[2016-10-16 20:30:19] <Worker ('localhost', 15327)> received ('WORKER_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'ucKqIakeZL', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 19, 667947), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'tentativeSubjectUpdates': {'timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 781498), 'requestId': 'cDYDzyNvDE', 'attributes': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}) from ('localhost', 13076)
+[2016-10-16 20:30:19] <Worker ('localhost', 15327)> sleeping for 2 second(s)
+[2016-10-16 20:30:20] <Coordinator 1> resumed from sleeping
+[2016-10-16 20:30:20] For attribute viewCount, value used for policy evaluation was 49, but value in cache is 50
+[2016-10-16 20:30:20] <Coordinator 1>: Notify subject coordinator of resource conflict. Request was: {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'cDYDzyNvDE', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 14, 583695), 'result': True, 'readAttributes': {'resource': {'viewCount': 49}, 'subject': {'moviesWatched': 5}}, 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'attributeUpdates': {'resource': {'viewCount': 50, 'resourceId': '101'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '101'}
+[2016-10-16 20:30:20] <Coordinator 1> sending ('SUBJECT_COORDINATOR_RESOURCE_CONFLICT, {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'cDYDzyNvDE', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 14, 583695), 'result': True, 'readAttributes': {'resource': {'viewCount': 49}, 'subject': {'moviesWatched': 5}}, 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'attributeUpdates': {'resource': {'viewCount': 50, 'resourceId': '101'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '101'}') to ('localhost', 18201)
+[2016-10-16 20:30:20] <Coordinator 5> received ('SUBJECT_COORDINATOR_RESOURCE_CONFLICT', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'cDYDzyNvDE', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 14, 583695), 'result': True, 'readAttributes': {'resource': {'viewCount': 49}, 'subject': {'moviesWatched': 5}}, 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'attributeUpdates': {'resource': {'viewCount': 50, 'resourceId': '101'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '101'}) from ('localhost', 27581)
+[2016-10-16 20:30:20] <Coordinator 5>: Abort and restart due to resource conflict. Request was: {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'cDYDzyNvDE', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 14, 583695), 'result': True, 'readAttributes': {'resource': {'viewCount': 49}, 'subject': {'moviesWatched': 5}}, 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'attributeUpdates': {'resource': {'viewCount': 50, 'resourceId': '101'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '101'}
+[2016-10-16 20:30:20] <Coordinator 5> sending ('SUBJECT_COORDINATOR_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'cDYDzyNvDE', 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'resourceId': '101'}) to ('localhost', 18201)
+[2016-10-16 20:30:20] <Coordinator 5> received ('SUBJECT_COORDINATOR_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'cDYDzyNvDE', 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'resourceId': '101'}) from ('localhost', 18201)
+[2016-10-16 20:30:20] <Coordinator 5> sending ('RESOURCE_COORDINATOR_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'JDpLQYTSzr', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 20, 785551), 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'resourceId': '101'}) to ('localhost', 27581)
+[2016-10-16 20:30:20] <Coordinator 1> received ('RESOURCE_COORDINATOR_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'JDpLQYTSzr', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 20, 785551), 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'resourceId': '101'}) from ('localhost', 18201)
+[2016-10-16 20:30:20] <Coordinator 1> sending ('WORKER_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'JDpLQYTSzr', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 20, 785551), 'updatesFromResourceCache': {'timestamp': datetime.datetime(2016, 10, 16, 20, 30, 15, 769240), 'attributes': {'viewCount': 50, 'resourceId': '101'}}, 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'resourceId': '101'}) to ('localhost', 36212)
+[2016-10-16 20:30:20] <Worker ('localhost', 36212)> received ('WORKER_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'JDpLQYTSzr', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 20, 785551), 'updatesFromResourceCache': {'timestamp': datetime.datetime(2016, 10, 16, 20, 30, 15, 769240), 'attributes': {'viewCount': 50, 'resourceId': '101'}}, 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'resourceId': '101'}) from ('localhost', 27581)
+[2016-10-16 20:30:20] <Worker ('localhost', 36212)> sending ('QUERY_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'JDpLQYTSzr', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 20, 785551), 'updatesFromResourceCache': {'timestamp': datetime.datetime(2016, 10, 16, 20, 30, 15, 769240), 'attributes': {'viewCount': 50, 'resourceId': '101'}}, 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'resourceId': '101'}) to {<DatabaseEmulator('localhost', 37560)>}
+[2016-10-16 20:30:20] <Database> received ('QUERY_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'JDpLQYTSzr', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 20, 785551), 'updatesFromResourceCache': {'timestamp': datetime.datetime(2016, 10, 16, 20, 30, 15, 769240), 'attributes': {'viewCount': 50, 'resourceId': '101'}}, 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'resourceId': '101'}) from ('localhost', 36212)
+[2016-10-16 20:30:20] <Database> sending ('ANSWER_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'JDpLQYTSzr', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 20, 785551), 'updatesFromResourceCache': {'timestamp': datetime.datetime(2016, 10, 16, 20, 30, 15, 769240), 'attributes': {'viewCount': 50, 'resourceId': '101'}}, 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'resourceId': '101'}, {'resource': {'watched': 'false', 'name': 'The Matrix', 'resourceId': '101', 'viewCount': 50}, 'subject': {'subjectId': '2', 'name': 'Shikhar', 'moviesWatched': 5}}) to ('localhost', 36212)
+[2016-10-16 20:30:20] <Worker ('localhost', 36212)> received ('ANSWER_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'JDpLQYTSzr', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 20, 785551), 'updatesFromResourceCache': {'timestamp': datetime.datetime(2016, 10, 16, 20, 30, 15, 769240), 'attributes': {'viewCount': 50, 'resourceId': '101'}}, 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'resourceId': '101'}, {'resource': {'watched': 'false', 'name': 'The Matrix', 'resourceId': '101', 'viewCount': 50}, 'subject': {'subjectId': '2', 'name': 'Shikhar', 'moviesWatched': 5}}) from ('localhost', 37560)
+[2016-10-16 20:30:20] <Worker ('localhost', 36212)> sleeping for 2 second(s)
+[2016-10-16 20:30:21] <Worker ('localhost', 15327)> resumed from sleeping
+[2016-10-16 20:30:21] <Worker ('localhost', 15327)> sending ('QUERY_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'ucKqIakeZL', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 19, 667947), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'tentativeSubjectUpdates': {'timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 781498), 'requestId': 'cDYDzyNvDE', 'attributes': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}) to {<DatabaseEmulator('localhost', 37560)>}
+[2016-10-16 20:30:21] <Database> received ('QUERY_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'ucKqIakeZL', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 19, 667947), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'tentativeSubjectUpdates': {'timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 781498), 'requestId': 'cDYDzyNvDE', 'attributes': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}) from ('localhost', 15327)
+[2016-10-16 20:30:21] <Database> sending ('ANSWER_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'ucKqIakeZL', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 19, 667947), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'tentativeSubjectUpdates': {'timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 781498), 'requestId': 'cDYDzyNvDE', 'attributes': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}, {'resource': {'watched': 'true', 'name': 'Shawshank Redemption', 'resourceId': '102', 'viewCount': 40}, 'subject': {'subjectId': '2', 'name': 'Shikhar', 'moviesWatched': 5}}) to ('localhost', 15327)
+[2016-10-16 20:30:21] <Worker ('localhost', 15327)> received ('ANSWER_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'ucKqIakeZL', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 19, 667947), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'tentativeSubjectUpdates': {'timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 781498), 'requestId': 'cDYDzyNvDE', 'attributes': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}, {'resource': {'watched': 'true', 'name': 'Shawshank Redemption', 'resourceId': '102', 'viewCount': 40}, 'subject': {'subjectId': '2', 'name': 'Shikhar', 'moviesWatched': 5}}) from ('localhost', 37560)
+[2016-10-16 20:30:21] <Worker ('localhost', 15327)> sending ('SUBJECT_COORDINATOR_VALIDATE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'ucKqIakeZL', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 19, 667947), 'readAttributes': {'resource': {'viewCount': 40}, 'subject': {'moviesWatched': 6}}, 'result': True, 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'attributeUpdates': {'resource': {'viewCount': 41, 'resourceId': '102'}, 'subject': {'subjectId': '2', 'moviesWatched': 7}}, 'tentativeSubjectUpdates': {'timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 781498), 'requestId': 'cDYDzyNvDE', 'attributes': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}) to ('localhost', 18201)
+[2016-10-16 20:30:21] <Coordinator 5> received ('SUBJECT_COORDINATOR_VALIDATE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'ucKqIakeZL', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 19, 667947), 'result': True, 'readAttributes': {'resource': {'viewCount': 40}, 'subject': {'moviesWatched': 6}}, 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'attributeUpdates': {'resource': {'viewCount': 41, 'resourceId': '102'}, 'subject': {'subjectId': '2', 'moviesWatched': 7}}, 'tentativeSubjectUpdates': {'timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 781498), 'requestId': 'cDYDzyNvDE', 'attributes': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}) from ('localhost', 15327)
+[2016-10-16 20:30:21] <Coordinator 5>: Abort and restart due to dependency on tentative update that didn't succeed. Request was: {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'ucKqIakeZL', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 19, 667947), 'result': True, 'readAttributes': {'resource': {'viewCount': 40}, 'subject': {'moviesWatched': 6}}, 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'attributeUpdates': {'resource': {'viewCount': 41, 'resourceId': '102'}, 'subject': {'subjectId': '2', 'moviesWatched': 7}}, 'tentativeSubjectUpdates': {'timestamp': datetime.datetime(2016, 10, 16, 20, 30, 17, 781498), 'requestId': 'cDYDzyNvDE', 'attributes': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}. Depended on requestId cDYDzyNvDE
+[2016-10-16 20:30:21] <Coordinator 5> sending ('SUBJECT_COORDINATOR_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'ucKqIakeZL', 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}) to ('localhost', 18201)
+[2016-10-16 20:30:21] <Coordinator 5> received ('SUBJECT_COORDINATOR_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'ucKqIakeZL', 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}) from ('localhost', 18201)
+[2016-10-16 20:30:21] <Coordinator 5> sending ('RESOURCE_COORDINATOR_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'UQrgUkzJRz', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 21, 686614), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}) to ('localhost', 13076)
+[2016-10-16 20:30:21] <Coordinator 2> received ('RESOURCE_COORDINATOR_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'UQrgUkzJRz', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 21, 686614), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}) from ('localhost', 18201)
+[2016-10-16 20:30:21] <Coordinator 2> sending ('WORKER_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'UQrgUkzJRz', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 21, 686614), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}) to ('localhost', 34027)
+[2016-10-16 20:30:21] <Worker ('localhost', 34027)> received ('WORKER_INITIAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'UQrgUkzJRz', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 21, 686614), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}) from ('localhost', 13076)
+[2016-10-16 20:30:21] <Worker ('localhost', 34027)> sleeping for 2 second(s)
+[2016-10-16 20:30:22] <Worker ('localhost', 36212)> resumed from sleeping
+[2016-10-16 20:30:22] <Worker ('localhost', 36212)> sending ('SUBJECT_COORDINATOR_VALIDATE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'JDpLQYTSzr', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 20, 785551), 'readAttributes': {'resource': {'viewCount': 50}, 'subject': {'moviesWatched': 5}}, 'result': False, 'updatesFromResourceCache': {'timestamp': datetime.datetime(2016, 10, 16, 20, 30, 15, 769240), 'attributes': {'viewCount': 50, 'resourceId': '101'}}, 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'attributeUpdates': {'resource': {'resourceId': '101'}, 'subject': {'subjectId': '2'}}, 'resourceId': '101'}) to ('localhost', 18201)
+[2016-10-16 20:30:22] <Coordinator 5> received ('SUBJECT_COORDINATOR_VALIDATE', {'action': 'view', 'updatesFromResourceCache': {'timestamp': datetime.datetime(2016, 10, 16, 20, 30, 15, 769240), 'attributes': {'viewCount': 50, 'resourceId': '101'}}, 'client': <Client('localhost', 32537)>, 'requestId': 'JDpLQYTSzr', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 20, 785551), 'result': False, 'readAttributes': {'resource': {'viewCount': 50}, 'subject': {'moviesWatched': 5}}, 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'attributeUpdates': {'resource': {'resourceId': '101'}, 'subject': {'subjectId': '2'}}, 'resourceId': '101'}) from ('localhost', 36212)
+[2016-10-16 20:30:22] <Coordinator 5> sending ('CLIENT_FAILURE, {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'JDpLQYTSzr', 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'resourceId': '101'}') to ('localhost', 32537)
+[2016-10-16 20:30:22] <Client ('localhost', 32537)> received ('CLIENT_FAILURE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'JDpLQYTSzr', 'subjectId': '2', 'delay': {'ANSWER_SUBJECT_RESOURCE': '2', 'RESOURCE_COORDINATOR_VALIDATE': '3', 'CLIENT': '1'}, 'resourceId': '101'}) from ('localhost', 18201)
+[2016-10-16 20:30:23] <Worker ('localhost', 34027)> resumed from sleeping
+[2016-10-16 20:30:23] <Worker ('localhost', 34027)> sending ('QUERY_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'UQrgUkzJRz', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 21, 686614), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}) to {<DatabaseEmulator('localhost', 37560)>}
+[2016-10-16 20:30:23] <Database> received ('QUERY_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'UQrgUkzJRz', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 21, 686614), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}) from ('localhost', 34027)
+[2016-10-16 20:30:23] <Database> sending ('ANSWER_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'UQrgUkzJRz', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 21, 686614), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}, {'resource': {'watched': 'true', 'name': 'Shawshank Redemption', 'resourceId': '102', 'viewCount': 40}, 'subject': {'subjectId': '2', 'name': 'Shikhar', 'moviesWatched': 5}}) to ('localhost', 34027)
+[2016-10-16 20:30:23] <Worker ('localhost', 34027)> received ('ANSWER_SUBJECT_RESOURCE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'UQrgUkzJRz', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 21, 686614), 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}, {'resource': {'watched': 'true', 'name': 'Shawshank Redemption', 'resourceId': '102', 'viewCount': 40}, 'subject': {'subjectId': '2', 'name': 'Shikhar', 'moviesWatched': 5}}) from ('localhost', 37560)
+[2016-10-16 20:30:23] <Worker ('localhost', 34027)> sending ('SUBJECT_COORDINATOR_VALIDATE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'UQrgUkzJRz', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 21, 686614), 'readAttributes': {'resource': {'viewCount': 40}, 'subject': {'moviesWatched': 5}}, 'result': True, 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'attributeUpdates': {'resource': {'viewCount': 41, 'resourceId': '102'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}) to ('localhost', 18201)
+[2016-10-16 20:30:23] <Coordinator 5> received ('SUBJECT_COORDINATOR_VALIDATE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'UQrgUkzJRz', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 21, 686614), 'result': True, 'readAttributes': {'resource': {'viewCount': 40}, 'subject': {'moviesWatched': 5}}, 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'attributeUpdates': {'resource': {'viewCount': 41, 'resourceId': '102'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}) from ('localhost', 34027)
+[2016-10-16 20:30:23] <Coordinator 5> sending ('RESOURCE_COORDINATOR_VALIDATE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'UQrgUkzJRz', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 21, 686614), 'result': True, 'readAttributes': {'resource': {'viewCount': 40}, 'subject': {'moviesWatched': 5}}, 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'attributeUpdates': {'resource': {'viewCount': 41, 'resourceId': '102'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}) to ('localhost', 13076)
+[2016-10-16 20:30:23] <Coordinator 2> received ('RESOURCE_COORDINATOR_VALIDATE', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'UQrgUkzJRz', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 21, 686614), 'result': True, 'readAttributes': {'resource': {'viewCount': 40}, 'subject': {'moviesWatched': 5}}, 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'attributeUpdates': {'resource': {'viewCount': 41, 'resourceId': '102'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}) from ('localhost', 18201)
+[2016-10-16 20:30:23] <Coordinator 2>: No conflict. Request is: {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'UQrgUkzJRz', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 21, 686614), 'result': True, 'readAttributes': {'resource': {'viewCount': 40}, 'subject': {'moviesWatched': 5}}, 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'attributeUpdates': {'resource': {'viewCount': 41, 'resourceId': '102'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}
+[2016-10-16 20:30:23] <Coordinator 2> sending ('SUBJECT_COORDINATOR_FINAL, {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'UQrgUkzJRz', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 21, 686614), 'result': True, 'readAttributes': {'resource': {'viewCount': 40}, 'subject': {'moviesWatched': 5}}, 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'attributeUpdates': {'resource': {'viewCount': 41, 'resourceId': '102'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}') to ('localhost', 18201)
+[2016-10-16 20:30:23] <Coordinator 5> received ('SUBJECT_COORDINATOR_FINAL', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'UQrgUkzJRz', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 21, 686614), 'result': True, 'readAttributes': {'resource': {'viewCount': 40}, 'subject': {'moviesWatched': 5}}, 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'attributeUpdates': {'resource': {'viewCount': 41, 'resourceId': '102'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}) from ('localhost', 13076)
+[2016-10-16 20:30:23] <Coordinator 5>: Commit. Send success to client. Request was: {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'UQrgUkzJRz', 'init_timestamp': datetime.datetime(2016, 10, 16, 20, 30, 21, 686614), 'result': True, 'readAttributes': {'resource': {'viewCount': 40}, 'subject': {'moviesWatched': 5}}, 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'attributeUpdates': {'resource': {'viewCount': 41, 'resourceId': '102'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}}, 'resourceId': '102'}
+[2016-10-16 20:30:23] <Coordinator 5> sending ('UPDATE_SUBJECT_RESOURCE', {'resource': {'viewCount': 41, 'resourceId': '102'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}} ') to {<DatabaseEmulator('localhost', 37560)>}
+[2016-10-16 20:30:23] <Database> received ('UPDATE_SUBJECT_RESOURCE', {'resource': {'viewCount': 41, 'resourceId': '102'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}}) from ('localhost', 18201)
+[2016-10-16 20:30:23] <Database> sending ('UPDATE_SUBJECT_RESOURCE_SUCCESS', {'resource': {'viewCount': 41, 'resourceId': '102'}, 'subject': {'subjectId': '2', 'moviesWatched': 6}}) to ('localhost', 18201)
+[2016-10-16 20:30:23] <Coordinator 5> sending ('CLIENT_SUCCESS, {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'UQrgUkzJRz', 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}') to ('localhost', 32537)
+[2016-10-16 20:30:23] <Client ('localhost', 32537)> received ('CLIENT_SUCCESS', {'action': 'view', 'client': <Client('localhost', 32537)>, 'requestId': 'UQrgUkzJRz', 'subjectId': '2', 'delay': {'WORKER_INITIAL': '2', 'CLIENT': '3'}, 'resourceId': '102'}) from ('localhost', 18201)
+[2016-10-16 20:30:23] <Client ('localhost', 32537)>sending ('CLIENT_DONE') to ('localhost', 31223)
+[2016-10-16 20:30:23] <Master> received ('CLIENT_DONE') from ('localhost', 32537)
+[2016-10-16 20:30:23] All clients done
+[2016-10-16 20:30:24] <Database> received ('DUMP_DATABASE', 'test4/database.txt') from ('localhost', 31223)
+[2016-10-16 20:30:24] <Database> sending ('DUMP_DATABASE_SUCCESS) to ('localhost', 31223)
+[2016-10-16 20:30:24] <Master> received ('DUMP_DATABASE_SUCCESS') from ('localhost', 37560)

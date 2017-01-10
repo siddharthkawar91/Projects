@@ -1,0 +1,96 @@
+import sys
+import time
+import mapper
+
+class Worker(process):
+
+    def setup(dbProcess, policyEvaluator, coordIndexToCoordProcessMapper, logger):
+        self.parent = None
+        self.logger = logger
+        self.dbProcess = dbProcess
+        self.coordIndexToCoordProcessMapper = coordIndexToCoordProcessMapper
+        self.policyEvaluator = policyEvaluator
+        self.name = "<Worker " + str(self.id) + ">"
+
+    # This message will respond that to the coordinator message
+    # and will send the acknowledgment to the coordinator
+    def receive(msg=('COORDINATOR_TO_WORKER_INIT',p,)):
+        self.logger.write(self.name + " received ('COORDINATOR_TO_WORKER_INIT', " + str(p) + ')')
+        self.parent = p
+        self.logger.write(self.name + " sending ('COORDINATOR_TO_WORKER_INIT_ACK', " + str(self.id) + ") to " + str(p))
+        send(('COORDINATOR_TO_WORKER_INIT_ACK',self.id,), to= p)
+
+
+
+    # request received from resource coordinator
+    # asking for policy evaluation
+    def receive(msg=('WORKER_INITIAL', request,), from_= p):
+        state = 'WORKER_INITIAL'
+        self.logger.write(self.name + " received ('" + state + "', " + str(request) + ") from " + str(p) )
+        self.sleepIfRequested(state, request)
+
+        # contact DB for this subject and resource
+        self.logger.write(self.name + " sending ('QUERY_SUBJECT_RESOURCE', " + str(request) + ") to " + str(self.dbProcess) )
+        send(('QUERY_SUBJECT_RESOURCE', request,), to= self.dbProcess)
+
+
+    # response received from database with the result of the query
+    def receive(msg=('ANSWER_SUBJECT_RESOURCE', request, result), from_= p):
+        state = 'ANSWER_SUBJECT_RESOURCE'
+        self.logger.write(self.name + " received ('" + state + "', " + str(request) + ", " + str(result) + ") from " + str(p) )
+        self.sleepIfRequested(state, request)
+
+        # use attrs from caches to shadow the ones from DB
+        # because they are (possibly) more recent
+        shadowAttrsFromDBWithThoseFromCaches(result, request)
+
+        #############################################################################################################
+        # This is where the magic happens!
+        # send these records to policy evaluator so that they can be tested against policies
+        # to see whether they satisfy any one of them
+        request['readAttributes'] = {} # these references will be passed to the policy evaluator so that
+        request['attributeUpdates'] = {} # it can update them with the right data as the name suggests
+        request['result'] = self.policyEvaluator.isAnyPolicySatisfied(result['subject'], result['resource'], request['action'], \
+                                                                    request['readAttributes'], request['attributeUpdates'])
+        ##############################################################################################################
+
+        # send the updated request object back to subject coordinator 
+        coord = mapper.getCoordinator(request['subjectId'], self.coordIndexToCoordProcessMapper)
+        self.logger.write(self.name + " sending ('SUBJECT_COORDINATOR_VALIDATE', " + str(request) + ") to " + str(coord) )
+        send(('SUBJECT_COORDINATOR_VALIDATE', request,), to= coord)
+
+
+    # Use the piggybacked attrs from caches (normal, as well as tentative)
+    # to shadow the ones received from the database
+    # because they might be more recent
+    def shadowAttrsFromDBWithThoseFromCaches(resultFromDb, request):
+        updatesFromResourceCache = request['updatesFromResourceCache'] if 'updatesFromResourceCache' in request else None
+        updatesFromSubjectCache = request['updatesFromSubjectCache'] if 'updatesFromSubjectCache' in request else None
+        tentativeSubjectUpdates = request['tentativeSubjectUpdates'] if 'tentativeSubjectUpdates' in request else None
+
+        if updatesFromResourceCache:
+            self.shadowAttrs(resultFromDb['resource'], updatesFromResourceCache['attributes'])
+        if updatesFromSubjectCache:
+            self.shadowAttrs(resultFromDb['subject'], updatesFromSubjectCache['attributes'])
+        if tentativeSubjectUpdates:
+            self.shadowAttrs(resultFromDb['subject'], tentativeSubjectUpdates['attributes'])
+
+    def shadowAttrs(resultFromDb, cache):
+        for attr, value in resultFromDb.items():
+            if attr in cache:
+                resultFromDb[attr] = cache[attr]
+
+
+    # used for delaying a message in a particular stage
+    # used for demoing purposes to show various scenarios of the algorithm
+    def sleepIfRequested(state, request):
+        if state in request['delay']:
+            delay = int(request['delay'][state])
+            self.logger.write(self.name + " sleeping for " + str(delay) + " second(s)")
+            time.sleep(delay)
+        if state in request['delay']:
+            self.logger.write(self.name + " resumed from sleeping")
+
+    def run():
+        logger.write(self.name + ' is up')    
+        await(False)

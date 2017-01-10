@@ -1,0 +1,147 @@
+import sys
+import time
+import mapper
+
+class Worker(process):
+
+    def setup(dbProcess, policyEvaluator, coordIndexToCoordProcessMapper, logger):
+        self.parent = None
+        self.logger = logger
+        self.dbProcess = dbProcess
+        self.coordIndexToCoordProcessMapper = coordIndexToCoordProcessMapper
+        self.policyEvaluator = policyEvaluator
+        self.name = "<Worker " + str(self.id) + ">"
+
+    # This message will respond that to the coordinator message
+    # and will send the acknowledgement to the coordinator
+    def receive(msg=('COORDINATOR_TO_WORKER_INIT',p,)):
+        self.logger.write(self.name + " received ('COORDINATOR_TO_WORKER_INIT', " + str(p) + ')')
+        self.parent = p
+        self.logger.write(self.name + " sending ('COORDINATOR_TO_WORKER_INT_ACK', " + str(self.id) + ") to " + str(p))
+        
+        send(('COORDINATOR_TO_WORKER_INIT_ACK', self.id,), to= p)
+
+    def receive(msg=('WORKER_INITIAL',request,), from_= p):
+        state = 'WORKER_INITIAL'
+        self.logger.write(self.name + " received ('WORKER_INITIAL', " + str(self.id) + ") from" + str(p))
+        
+        self.sleepIfRequested(state, request)
+
+        if (int(request['mightWriteObj']) > 0):
+            self.logger.write(self.name + " received read-write request " + str(request['requestId']))
+        else:
+            self.logger.write(self.name + "received read-read request " + str(request['requestId']))
+
+        self.logger.write(self.name + " sending ('QUERY_READ_WRITE_OBJECT', " + str(request) + ") to " + str(self.dbProcess))
+        send(('QUERY_READ_WRITE_OBJECT',request,), to= self.dbProcess)
+
+
+    def receive(msg=('ANSWER_READ_WRITE_OBJECT', request, result,), from_= p):
+        state = 'ANSWER_READ_WRITE_OBJECT'
+        self.logger.write(self.name + "received ('" + state + "', " + str(request) + ", " \
+                                                + str(request['requestId']) + ", " + str(result) + ") from" + str(p))
+        self.sleepIfRequested(state, request)
+        
+        shadowAttrFromDBWithThoseFromCaches(result, request)
+        
+        request['readAttr'] = {}
+        request['updates'] = {}
+        request['result'] = self.policyEvaluator.isAnyPolicySatisfied(result['readObject'], result['writeObject'], \
+                                                                        request['action'], request['readAttr'], request['updates'])
+        
+        updateReadWriteIds(request)
+        #print(request)
+        if(request['updatedObj']  == -1):
+            self.logger.write("request " + str(request['requestId']) + " is read only request ")
+            # send two READ_ATTR messages, and decision to client
+            coord1 = mapper.getCoordinator(request['readObjectId'], self.coordIndexToCoordProcessMapper)
+            coord2 = mapper.getCoordinator(request['writeObjectId'], self.coordIndexToCoordProcessMapper)
+
+            self.logger.write("sending decision to client for request " + str(request['requestId']))
+            send(('CLIENT_DECISION',request['result'], request), to= request['client'])
+
+            self.logger.write("sending request ('READ_ATTR', " + str(request) + ", 1) to " + str(coord1))
+            send(('READ_ATTR',request, 1), to=coord1)
+
+            self.logger.write("sending request ('READ_ATTR', " + str(request) + ", 2) to " + str(coord2))
+            send(('READ_ATTR',request, 2), to=coord2)
+
+        else:
+            self.logger.write("request " + str(request['requestId']) + " is read write request ")
+            coord = mapper.getCoordinator(request['updatedObj'], self.coordIndexToCoordProcessMapper)
+
+            self.logger.write("sending request " + str(request['requestId']) +" to " + str(coord))
+            send(('RESULT', request,), to=coord)
+
+    def shadowAttrFromDBWithThoseFromCaches(resultDb, request):
+        for attr in request['cachedUpdate']['writeObject']:
+            val = request['cachedUpdate']['writeObject'][attr]
+            if val != None and attr in resultDb['writeObject']:
+                resultDb['writeObject'][attr] = val
+        for attr in request['cachedUpdate']['readObject']:
+            val = request['cachedUpdate']['readObject'][attr]
+            if val != None and attr in resultDb['readObject']:
+                resultDb['readObject'][attr] = val
+        
+    def updateReadWriteIds(request):
+        updates = request['updates']
+
+        countR = 0
+        countW = 0
+
+        for key in updates['readObject']:
+            countR = countR + 1
+        
+        for key in updates['writeObject']:
+            countW = countW + 1
+
+        if (countR == 1 and countW == 1):
+            request['updatedObj']  = request['readObj']  = -1
+
+        elif(countR == 1): #countW > 1
+            request['updatedObj'] = updates['writeObject']['id']
+            request['readObj'] = updates['readObject']['id']
+
+        else: # countW ==1 and countR > 1
+            request['readObj'] = updates['writeObject']['id']
+            request['updatedObj'] = updates['readObject']['id']
+            # defReadAttr
+            # mightReadAttr
+            # mightWriteAttr
+            swap_failed_prediction(request)
+
+    def swap_failed_prediction(request):
+        self.logger.write("Client failed to predict the writeObject and readObject for " + request['requestId'] )
+        temp = request['readObjectId']
+        request['readObjectId'] = request['writeObjectId']
+        request['writeObjectId'] = temp
+
+        temp = request['defReadAttr']['readObjectAttr']
+        request['defReadAttr']['readObjectAttr'] = request['defReadAttr']['writeObjectAttr']
+        request['defReadAttr']['writeObjectAttr'] = temp
+
+        temp = request['mightReadAttr']['readObjectAttr']
+        request['mightReadAttr']['readObjectAttr'] = request['mightReadAttr']['writeObjectAttr']
+        request['mightReadAttr']['writeObjectAttr'] = temp
+
+        temp = request['mightWriteAttr']['readObjectAttr']
+        request['mightWriteAttr']['readObjectAttr'] = request['mightWriteAttr']['writeObjectAttr']
+        request['mightWriteAttr']['writeObjectAttr'] = temp
+
+        temp = request['updates']['readObject']
+        request['updates']['readObject'] = request['updates']['writeObject']
+        request['updates']['writeObject'] = temp
+    
+    # used for delaying a message in a particular stage
+    # used for demoing purposes to show various scenarios of the algorithm
+    def sleepIfRequested(state, request):
+        if state in request['delay']:
+            delay = int(request['delay'][state])
+            self.logger.write(self.name + " sleeping for " + str(delay) + " second(s)")
+            time.sleep(delay)
+        if state in request['delay']:
+            self.logger.write(self.name + " resumed from sleeping")
+
+    def run():
+        self.logger.write(self.name + ' is up')
+        await(False)

@@ -1,0 +1,17 @@
+import json
+from sys import argv
+Master = import_da('Master')
+
+def main():
+    config()
+    
+    if len(argv) == 3:
+        tmp1, tmp2, configNumber = argv
+        configFile = open("../config/config" + str(configNumber) + ".json")
+        configFile = json.load(configFile)['config']
+
+        master = new(Master.Master, num=1)
+        setup(master, (configFile,))
+        start(master)
+    else:
+        print("Usage: python3 -m da main.da <testNum>")

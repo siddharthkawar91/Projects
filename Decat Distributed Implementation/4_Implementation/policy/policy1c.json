@@ -1,0 +1,49 @@
+[
+  {
+    "id"                           : "1",
+    "name": "users can view each movie free collectively at most 50 times.",
+
+    "action"                       : "view",
+    "readObjectConditions"         : {
+
+    },
+    "writeObjectConditions"        : {
+        "viewCount" : "<50"
+    },
+    "readObjectUpdates" : {
+    },
+    "writeObjectUpdates" : {
+      "viewCount" : "++"
+    }
+  },
+  {
+    "id"                           : "2",
+    "name": "In case if they have exhausted free movie count, and they have made payment then they can view movie",
+    "action" : "view and pay",
+    "readObjectConditions"        : {
+        "paymentDone" : "true"
+    },
+   "writeObjectConditions"        : {
+        "viewCount" : ">50"
+    },
+    "readObjectUpdates" : {
+    },
+    "writeObjectUpdates" : {
+      "payViewCount" : "++"
+    }
+  },
+  {
+    "id"                           : "3",
+    "name": "Null policy",
+    "action" : "stat2",
+    "readObjectConditions"        : {
+    },
+   "writeObjectConditions"        : {
+    },
+    "readObjectUpdates" : {
+    },
+    "writeObjectUpdates" : {
+      
+    }
+  }
+]

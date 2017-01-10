@@ -1,0 +1,15 @@
+{
+        "config":{
+            "numCoordinators"         : "5",
+            "numClients"              : "1",
+            "workersPerCoordinator"   : "3",
+            "policyFile"              : "../policy/policy5.json",
+            "databaseFile"            : "../db/database5.xml",
+            "requestsFile1"           : "../requests/requests5.json",
+            "writeLogToFile"          : "../logs/program5.log",
+            "minDbLatency"            : "1",
+            "maxDbLatency"            : "2",
+            "clientDelay"             : "1",
+            "generateRandRequest"     : "False"
+        }
+}

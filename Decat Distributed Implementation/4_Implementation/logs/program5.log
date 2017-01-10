@@ -1,0 +1,149 @@
+[2016-12-05 19:50:31] dbLatency : 2
+[2016-12-05 19:50:31] <Master> sending ('QUERY_TOTAL_RECORDS') to {<DatabaseEmulator('localhost', 23008)>}
+[2016-12-05 19:50:31] database setup started
+[2016-12-05 19:50:31] database Latency : 2
+[2016-12-05 19:50:31] Database Content: 
+[2016-12-05 19:50:31] Database Record : [{'objectId': '1', 'name': 'Siddharth', 'paymentDone': True, 'moviesWatched': 9}, {'objectId': '2', 'name': 'Shikhar', 'paymentDone': True, 'moviesWatched': 5}, {'objectId': '3', 'name': 'Dexter', 'paymentDone': True, 'moviesWatched': 10}, {'objectId': '101', 'name': 'The Matrix', 'payViewCount': 0, 'watched': 'false', 'viewCount': 49}, {'objectId': '102', 'name': 'Shawshank Redemption', 'payViewCount': 0, 'watched': 'true', 'viewCount': 40}]
+[2016-12-05 19:50:31] Database List : ['1', '2', '3', '101', '102']
+[2016-12-05 19:50:31] version Info : {('2', 'paymentDone'): [<Version.DBVersion object at 0x7ff369da4ef0>], ('102', 'payViewCount'): [<Version.DBVersion object at 0x7ff369da8208>], ('3', 'name'): [<Version.DBVersion object at 0x7ff369da4f98>], ('101', 'objectId'): [<Version.DBVersion object at 0x7ff369da8080>], ('102', 'name'): [<Version.DBVersion object at 0x7ff369da81d0>], ('2', 'name'): [<Version.DBVersion object at 0x7ff369da4eb8>], ('101', 'viewCount'): [<Version.DBVersion object at 0x7ff369da8160>], ('1', 'name'): [<Version.DBVersion object at 0x7ff369da4dd8>], ('1', 'paymentDone'): [<Version.DBVersion object at 0x7ff369da4e10>], ('101', 'watched'): [<Version.DBVersion object at 0x7ff369da8128>], ('2', 'moviesWatched'): [<Version.DBVersion object at 0x7ff369da4f28>], ('3', 'objectId'): [<Version.DBVersion object at 0x7ff369da4f60>], ('101', 'name'): [<Version.DBVersion object at 0x7ff369da80b8>], ('102', 'viewCount'): [<Version.DBVersion object at 0x7ff369da8278>], ('102', 'objectId'): [<Version.DBVersion object at 0x7ff369da8198>], ('3', 'paymentDone'): [<Version.DBVersion object at 0x7ff369da4fd0>], ('2', 'objectId'): [<Version.DBVersion object at 0x7ff369da4e80>], ('1', 'moviesWatched'): [<Version.DBVersion object at 0x7ff369da4e48>], ('1', 'objectId'): [<Version.DBVersion object at 0x7ff369da4da0>], ('102', 'watched'): [<Version.DBVersion object at 0x7ff369da8240>], ('3', 'moviesWatched'): [<Version.DBVersion object at 0x7ff369da8048>], ('101', 'payViewCount'): [<Version.DBVersion object at 0x7ff369da80f0>]}
+[2016-12-05 19:50:31] <Database> received ('QUERY_TOTAL_RECORDS', ('localhost', 17779))
+[2016-12-05 19:50:31] <Database> sending ('ANSWER_TOTAL_OBJECTS', ['1', '2', '3', '101', '102']) to ('localhost', 17779)
+[2016-12-05 19:50:31] <Master> received('ANSWER_TOTAL_OBJECTS', ['1', '2', '3', '101', '102'])
+[2016-12-05 19:50:31] Starting Workers
+[2016-12-05 19:50:31] <Worker ('localhost', 26922)> is up
+[2016-12-05 19:50:31] <Worker ('localhost', 20657)> is up
+[2016-12-05 19:50:31] <Worker ('localhost', 33604)> is up
+[2016-12-05 19:50:31] <Worker ('localhost', 38116)> is up
+[2016-12-05 19:50:31] <Worker ('localhost', 17937)> is up
+[2016-12-05 19:50:31] <Worker ('localhost', 12234)> is up
+[2016-12-05 19:50:31] <Worker ('localhost', 31208)> is up
+[2016-12-05 19:50:31] <Worker ('localhost', 22399)> is up
+[2016-12-05 19:50:31] <Worker ('localhost', 13149)> is up
+[2016-12-05 19:50:31] <Worker ('localhost', 28522)> is up
+[2016-12-05 19:50:31] <Worker ('localhost', 39040)> is up
+[2016-12-05 19:50:31] <Worker ('localhost', 37184)> is up
+[2016-12-05 19:50:31] <Worker ('localhost', 36600)> is up
+[2016-12-05 19:50:31] <Worker ('localhost', 29423)> is up
+[2016-12-05 19:50:31] <Worker ('localhost', 18841)> is up
+[2016-12-05 19:50:31] <Coordinator0> is actually('localhost', 33320)
+[2016-12-05 19:50:31] <Coordinator0>: responsible object list['3']
+[2016-12-05 19:50:31] <Coordinator0>sending ('COORDINATOR_TO_WORKER_INIT', 0) to ('localhost', 26922)
+[2016-12-05 19:50:31] <Worker ('localhost', 26922)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 33320))
+[2016-12-05 19:50:31] <Worker ('localhost', 26922)> sending ('COORDINATOR_TO_WORKER_INT_ACK', ('localhost', 26922)) to ('localhost', 33320)
+[2016-12-05 19:50:31] <Coordinator0>sending ('COORDINATOR_TO_WORKER_INIT', 0) to ('localhost', 20657)
+[2016-12-05 19:50:31] <Worker ('localhost', 20657)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 33320))
+[2016-12-05 19:50:31] <Worker ('localhost', 20657)> sending ('COORDINATOR_TO_WORKER_INT_ACK', ('localhost', 20657)) to ('localhost', 33320)
+[2016-12-05 19:50:31] <Coordinator0>sending ('COORDINATOR_TO_WORKER_INIT', 0) to ('localhost', 33604)
+[2016-12-05 19:50:31] <Worker ('localhost', 33604)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 33320))
+[2016-12-05 19:50:31] <Worker ('localhost', 33604)> sending ('COORDINATOR_TO_WORKER_INT_ACK', ('localhost', 33604)) to ('localhost', 33320)
+[2016-12-05 19:50:31] <Coordinator1> is actually('localhost', 11746)
+[2016-12-05 19:50:31] <Coordinator1>: responsible object list['2', '101']
+[2016-12-05 19:50:31] <Coordinator1>sending ('COORDINATOR_TO_WORKER_INIT', 1) to ('localhost', 38116)
+[2016-12-05 19:50:31] <Coordinator1>sending ('COORDINATOR_TO_WORKER_INIT', 1) to ('localhost', 17937)
+[2016-12-05 19:50:31] <Worker ('localhost', 17937)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 11746))
+[2016-12-05 19:50:31] <Worker ('localhost', 17937)> sending ('COORDINATOR_TO_WORKER_INT_ACK', ('localhost', 17937)) to ('localhost', 11746)
+[2016-12-05 19:50:31] <Worker ('localhost', 38116)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 11746))
+[2016-12-05 19:50:31] <Worker ('localhost', 38116)> sending ('COORDINATOR_TO_WORKER_INT_ACK', ('localhost', 38116)) to ('localhost', 11746)
+[2016-12-05 19:50:31] <Coordinator1>sending ('COORDINATOR_TO_WORKER_INIT', 1) to ('localhost', 12234)
+[2016-12-05 19:50:31] <Worker ('localhost', 12234)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 11746))
+[2016-12-05 19:50:31] <Worker ('localhost', 12234)> sending ('COORDINATOR_TO_WORKER_INT_ACK', ('localhost', 12234)) to ('localhost', 11746)
+[2016-12-05 19:50:31] <Coordinator2> is actually('localhost', 28409)
+[2016-12-05 19:50:31] <Coordinator2>: responsible object list['1']
+[2016-12-05 19:50:31] <Coordinator2>sending ('COORDINATOR_TO_WORKER_INIT', 2) to ('localhost', 31208)
+[2016-12-05 19:50:31] <Coordinator2>sending ('COORDINATOR_TO_WORKER_INIT', 2) to ('localhost', 22399)
+[2016-12-05 19:50:31] <Worker ('localhost', 22399)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 28409))
+[2016-12-05 19:50:31] <Worker ('localhost', 22399)> sending ('COORDINATOR_TO_WORKER_INT_ACK', ('localhost', 22399)) to ('localhost', 28409)
+[2016-12-05 19:50:31] <Worker ('localhost', 31208)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 28409))
+[2016-12-05 19:50:31] <Worker ('localhost', 31208)> sending ('COORDINATOR_TO_WORKER_INT_ACK', ('localhost', 31208)) to ('localhost', 28409)
+[2016-12-05 19:50:31] <Coordinator2>sending ('COORDINATOR_TO_WORKER_INIT', 2) to ('localhost', 28522)
+[2016-12-05 19:50:31] <Worker ('localhost', 28522)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 28409))
+[2016-12-05 19:50:31] <Worker ('localhost', 28522)> sending ('COORDINATOR_TO_WORKER_INT_ACK', ('localhost', 28522)) to ('localhost', 28409)
+[2016-12-05 19:50:31] <Coordinator3> is actually('localhost', 15580)
+[2016-12-05 19:50:31] <Coordinator3>: responsible object list['102']
+[2016-12-05 19:50:31] <Coordinator3>sending ('COORDINATOR_TO_WORKER_INIT', 3) to ('localhost', 13149)
+[2016-12-05 19:50:31] <Worker ('localhost', 13149)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 15580))
+[2016-12-05 19:50:31] <Worker ('localhost', 13149)> sending ('COORDINATOR_TO_WORKER_INT_ACK', ('localhost', 13149)) to ('localhost', 15580)
+[2016-12-05 19:50:31] <Coordinator3>sending ('COORDINATOR_TO_WORKER_INIT', 3) to ('localhost', 39040)
+[2016-12-05 19:50:31] <Worker ('localhost', 39040)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 15580))
+[2016-12-05 19:50:31] <Worker ('localhost', 39040)> sending ('COORDINATOR_TO_WORKER_INT_ACK', ('localhost', 39040)) to ('localhost', 15580)
+[2016-12-05 19:50:31] <Coordinator3>sending ('COORDINATOR_TO_WORKER_INIT', 3) to ('localhost', 37184)
+[2016-12-05 19:50:31] <Worker ('localhost', 37184)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 15580))
+[2016-12-05 19:50:31] <Worker ('localhost', 37184)> sending ('COORDINATOR_TO_WORKER_INT_ACK', ('localhost', 37184)) to ('localhost', 15580)
+[2016-12-05 19:50:31] <Coordinator4> is actually('localhost', 28955)
+[2016-12-05 19:50:31] <Coordinator4>: responsible object list[]
+[2016-12-05 19:50:31] <Coordinator4>sending ('COORDINATOR_TO_WORKER_INIT', 4) to ('localhost', 36600)
+[2016-12-05 19:50:31] <Coordinator4>sending ('COORDINATOR_TO_WORKER_INIT', 4) to ('localhost', 29423)
+[2016-12-05 19:50:31] <Worker ('localhost', 36600)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 28955))
+[2016-12-05 19:50:31] <Worker ('localhost', 36600)> sending ('COORDINATOR_TO_WORKER_INT_ACK', ('localhost', 36600)) to ('localhost', 28955)
+[2016-12-05 19:50:31] <Worker ('localhost', 29423)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 28955))
+[2016-12-05 19:50:31] <Worker ('localhost', 29423)> sending ('COORDINATOR_TO_WORKER_INT_ACK', ('localhost', 29423)) to ('localhost', 28955)
+[2016-12-05 19:50:31] <Coordinator4>sending ('COORDINATOR_TO_WORKER_INIT', 4) to ('localhost', 18841)
+[2016-12-05 19:50:31] <Worker ('localhost', 18841)> received ('COORDINATOR_TO_WORKER_INIT', ('localhost', 28955))
+[2016-12-05 19:50:31] <Worker ('localhost', 18841)> sending ('COORDINATOR_TO_WORKER_INT_ACK', ('localhost', 18841)) to ('localhost', 28955)
+[2016-12-05 19:50:31] Client is up
+[2016-12-05 19:50:31] contents of requests : [{'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': ''}, 'action': 'stat', 'mightReadAttr': {'writeObjectAttr': 'viewCount', 'readObjectAttr': ''}, 'mightWriteObj': '0', 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'moviesWatched'}, 'writeObjectId': '102', 'delay': {'WORKER_INITIAL': '3'}, 'readObjectId': '2'}, {'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': 'payViewCount'}, 'action': 'view', 'mightReadAttr': {'writeObjectAttr': 'paymentDone', 'readObjectAttr': ''}, 'mightWriteObj': '2', 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'viewCount'}, 'writeObjectId': '2', 'delay': {'CLIENT': '1'}, 'readObjectId': '102'}]
+[2016-12-05 19:50:31] Client sending ('READ_COORDINATOR_INITIAL',{'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': ''}, 'action': 'stat', 'mightReadAttr': {'writeObjectAttr': 'viewCount', 'readObjectAttr': ''}, 'mightWriteObj': '0', 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'moviesWatched'}, 'writeObjectId': '102', 'delay': {'WORKER_INITIAL': '3'}, 'readObjectId': '2', 'client': <Client('localhost', 12297)>}) to ('localhost', 11746)
+[2016-12-05 19:50:31] <Coordinator1>received ('READ_COORDINATOR_INITIAL', {'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': ''}, 'action': 'stat', 'mightReadAttr': {'writeObjectAttr': 'viewCount', 'readObjectAttr': ''}, 'mightWriteObj': '0', 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'moviesWatched'}, 'writeObjectId': '102', 'delay': {'WORKER_INITIAL': '3'}, 'readObjectId': '2', 'client': <Client('localhost', 12297)>}) from ('localhost', 12297)
+[2016-12-05 19:50:31] request assigned Id EIQWinhbcd
+[2016-12-05 19:50:31] get cached updates at timeStamp
+[2016-12-05 19:50:31] request EIQWinhbcd is read-read request
+[2016-12-05 19:50:31] request EIQWinhbcdis being to sent to writeObject Coord('localhost', 15580)
+[2016-12-05 19:50:31] <Coordinator3>received ('WRITE_COORDINATOR_INITIAL',{'requestId': 'EIQWinhbcd', 'client': <Client('localhost', 12297)>, 'mightReadAttr': {'writeObjectAttr': 'viewCount', 'readObjectAttr': ''}, 'writeObjectId': '102', 'mightWriteObj': '0', 'timeStamp': 1480985431.2807543, 'cachedUpdate': {'readObject': {}}, 'readObjectId': '2', 'delay': {'WORKER_INITIAL': '3'}, 'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': ''}, 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'moviesWatched'}, 'action': 'stat'}) from ('localhost', 11746)
+[2016-12-05 19:50:31] get cached updates at timeStamp
+[2016-12-05 19:50:31] request EIQWinhbcd is read-read request
+[2016-12-05 19:50:31] request EIQWinhbcdis being sent to worker('localhost', 37184)
+[2016-12-05 19:50:31] <Worker ('localhost', 37184)> received ('WORKER_INITIAL', ('localhost', 37184)) from('localhost', 15580)
+[2016-12-05 19:50:31] <Worker ('localhost', 37184)> sleeping for 3 second(s)
+[2016-12-05 19:50:31] <Client ('localhost', 12297)> sleeping for 1 second(s)
+[2016-12-05 19:50:32] <Client ('localhost', 12297)> resumed from sleeping
+[2016-12-05 19:50:32] Client sending ('READ_COORDINATOR_INITIAL',{'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': 'payViewCount'}, 'action': 'view', 'mightReadAttr': {'writeObjectAttr': 'paymentDone', 'readObjectAttr': ''}, 'mightWriteObj': '2', 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'viewCount'}, 'writeObjectId': '2', 'delay': {'CLIENT': '1'}, 'readObjectId': '102', 'client': <Client('localhost', 12297)>}) to ('localhost', 15580)
+[2016-12-05 19:50:32] <Coordinator3>received ('READ_COORDINATOR_INITIAL', {'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': 'payViewCount'}, 'action': 'view', 'mightReadAttr': {'writeObjectAttr': 'paymentDone', 'readObjectAttr': ''}, 'mightWriteObj': '2', 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'viewCount'}, 'writeObjectId': '2', 'delay': {'CLIENT': '1'}, 'readObjectId': '102', 'client': <Client('localhost', 12297)>}) from ('localhost', 12297)
+[2016-12-05 19:50:32] request assigned Id ijvTJGHTlh
+[2016-12-05 19:50:32] get cached updates at timeStamp
+[2016-12-05 19:50:32] request ijvTJGHTlh is read-write request
+[2016-12-05 19:50:32] request ijvTJGHTlhis being to sent to writeObject Coord('localhost', 11746)
+[2016-12-05 19:50:32] <Coordinator1>received ('WRITE_COORDINATOR_INITIAL',{'requestId': 'ijvTJGHTlh', 'client': <Client('localhost', 12297)>, 'mightReadAttr': {'writeObjectAttr': 'paymentDone', 'readObjectAttr': ''}, 'writeObjectId': '2', 'mightWriteObj': '2', 'timeStamp': 1480985432.2940655, 'cachedUpdate': {'readObject': {}}, 'readObjectId': '102', 'delay': {'CLIENT': '1'}, 'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': 'payViewCount'}, 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'viewCount'}, 'action': 'view'}) from ('localhost', 15580)
+[2016-12-05 19:50:32] get cached updates at timeStamp
+[2016-12-05 19:50:32] request ijvTJGHTlh is read-write request
+[2016-12-05 19:50:32] request ijvTJGHTlhis being sent to worker('localhost', 17937)
+[2016-12-05 19:50:32] <Worker ('localhost', 17937)> received ('WORKER_INITIAL', ('localhost', 17937)) from('localhost', 11746)
+[2016-12-05 19:50:32] <Worker ('localhost', 17937)> received read-write request ijvTJGHTlh
+[2016-12-05 19:50:32] <Worker ('localhost', 17937)> sending ('QUERY_READ_WRITE_OBJECT', {'requestId': 'ijvTJGHTlh', 'delay': {'CLIENT': '1'}, 'mightReadAttr': {'writeObjectAttr': 'paymentDone', 'readObjectAttr': ''}, 'timeStamp': 1480985432.2940655, 'mightWriteObj': '2', 'writeObjectId': '2', 'cachedUpdate': {'readObject': {}, 'writeObject': {}}, 'readObjectId': '102', 'client': <Client('localhost', 12297)>, 'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': 'payViewCount'}, 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'viewCount'}, 'action': 'view'}) to {<DatabaseEmulator('localhost', 23008)>}
+[2016-12-05 19:50:32] <Database> received ('QUERY_READ_WRITE_OBJECT', {'requestId': 'ijvTJGHTlh', 'client': <Client('localhost', 12297)>, 'mightReadAttr': {'writeObjectAttr': 'paymentDone', 'readObjectAttr': ''}, 'writeObjectId': '2', 'mightWriteObj': '2', 'timeStamp': 1480985432.2940655, 'cachedUpdate': {'readObject': {}, 'writeObject': {}}, 'readObjectId': '102', 'delay': {'CLIENT': '1'}, 'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': 'payViewCount'}, 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'viewCount'}, 'action': 'view'}) from ('localhost', 17937)
+[2016-12-05 19:50:32] <Database> sending ('ANSWER_READ_WRITE_OBJECT', {'requestId': 'ijvTJGHTlh', 'client': <Client('localhost', 12297)>, 'mightReadAttr': {'writeObjectAttr': 'paymentDone', 'readObjectAttr': ''}, 'writeObjectId': '2', 'mightWriteObj': '2', 'timeStamp': 1480985432.2940655, 'cachedUpdate': {'readObject': {}, 'writeObject': {}}, 'readObjectId': '102', 'delay': {'CLIENT': '1'}, 'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': 'payViewCount'}, 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'viewCount'}, 'action': 'view'}, {'readObject': {'objectId': '102', 'name': 'Shawshank Redemption', 'payViewCount': 0, 'watched': 'true', 'viewCount': 40}, 'writeObject': {'objectId': '2', 'name': 'Shikhar', 'paymentDone': True, 'moviesWatched': 5}}) to ('localhost', 17937)
+[2016-12-05 19:50:32] <Worker ('localhost', 17937)>received ('ANSWER_READ_WRITE_OBJECT', {'requestId': 'ijvTJGHTlh', 'delay': {'CLIENT': '1'}, 'mightReadAttr': {'writeObjectAttr': 'paymentDone', 'readObjectAttr': ''}, 'timeStamp': 1480985432.2940655, 'mightWriteObj': '2', 'writeObjectId': '2', 'cachedUpdate': {'readObject': {}, 'writeObject': {}}, 'readObjectId': '102', 'client': <Client('localhost', 12297)>, 'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': 'payViewCount'}, 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'viewCount'}, 'action': 'view'}, ijvTJGHTlh, {'readObject': {'objectId': '102', 'name': 'Shawshank Redemption', 'payViewCount': 0, 'watched': 'true', 'viewCount': 40}, 'writeObject': {'objectId': '2', 'name': 'Shikhar', 'paymentDone': True, 'moviesWatched': 5}}) from('localhost', 23008)
+[2016-12-05 19:50:32] Client failed to predict the writeObject and readObject for ijvTJGHTlh
+[2016-12-05 19:50:32] request ijvTJGHTlh is read write request 
+[2016-12-05 19:50:32] sending request ijvTJGHTlh to ('localhost', 15580)
+[2016-12-05 19:50:32] <Coordinator3>received ('RESULT',{'requestId': 'ijvTJGHTlh', 'readAttr': {'readObject': {}, 'writeObject': {}}, 'updatedObj': '102', 'mightReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'paymentDone'}, 'writeObjectId': '102', 'mightWriteObj': '2', 'cachedUpdate': {'readObject': {}, 'writeObject': {}}, 'delay': {'CLIENT': '1'}, 'readObjectId': '2', 'client': <Client('localhost', 12297)>, 'mightWriteAttr': {'writeObjectAttr': 'payViewCount', 'readObjectAttr': ''}, 'timeStamp': 1480985432.2940655, 'updates': {'readObject': {'id': '2'}, 'writeObject': {'viewCount': 41, 'id': '102'}}, 'result': True, 'defReadAttr': {'writeObjectAttr': 'viewCount', 'readObjectAttr': ''}, 'readObj': '2', 'action': 'view'}) from ('localhost', 17937)
+[2016-12-05 19:50:32] pendingMightRead non empty; adding request ijvTJGHTlh to write request queue
+[2016-12-05 19:50:34] <Worker ('localhost', 37184)> resumed from sleeping
+[2016-12-05 19:50:34] <Worker ('localhost', 37184)>received read-read requestEIQWinhbcd
+[2016-12-05 19:50:34] <Worker ('localhost', 37184)> sending ('QUERY_READ_WRITE_OBJECT', {'requestId': 'EIQWinhbcd', 'delay': {'WORKER_INITIAL': '3'}, 'mightReadAttr': {'writeObjectAttr': 'viewCount', 'readObjectAttr': ''}, 'timeStamp': 1480985431.2807543, 'mightWriteObj': '0', 'writeObjectId': '102', 'cachedUpdate': {'readObject': {}, 'writeObject': {}}, 'readObjectId': '2', 'client': <Client('localhost', 12297)>, 'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': ''}, 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'moviesWatched'}, 'action': 'stat'}) to {<DatabaseEmulator('localhost', 23008)>}
+[2016-12-05 19:50:34] <Database> received ('QUERY_READ_WRITE_OBJECT', {'requestId': 'EIQWinhbcd', 'client': <Client('localhost', 12297)>, 'mightReadAttr': {'writeObjectAttr': 'viewCount', 'readObjectAttr': ''}, 'writeObjectId': '102', 'mightWriteObj': '0', 'timeStamp': 1480985431.2807543, 'cachedUpdate': {'readObject': {}, 'writeObject': {}}, 'readObjectId': '2', 'delay': {'WORKER_INITIAL': '3'}, 'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': ''}, 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'moviesWatched'}, 'action': 'stat'}) from ('localhost', 37184)
+[2016-12-05 19:50:34] <Database> sending ('ANSWER_READ_WRITE_OBJECT', {'requestId': 'EIQWinhbcd', 'client': <Client('localhost', 12297)>, 'mightReadAttr': {'writeObjectAttr': 'viewCount', 'readObjectAttr': ''}, 'writeObjectId': '102', 'mightWriteObj': '0', 'timeStamp': 1480985431.2807543, 'cachedUpdate': {'readObject': {}, 'writeObject': {}}, 'readObjectId': '2', 'delay': {'WORKER_INITIAL': '3'}, 'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': ''}, 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'moviesWatched'}, 'action': 'stat'}, {'readObject': {'objectId': '2', 'name': 'Shikhar', 'paymentDone': True, 'moviesWatched': 5}, 'writeObject': {'objectId': '102', 'name': 'Shawshank Redemption', 'payViewCount': 0, 'watched': 'true', 'viewCount': 40}}) to ('localhost', 37184)
+[2016-12-05 19:50:34] <Worker ('localhost', 37184)>received ('ANSWER_READ_WRITE_OBJECT', {'requestId': 'EIQWinhbcd', 'delay': {'WORKER_INITIAL': '3'}, 'mightReadAttr': {'writeObjectAttr': 'viewCount', 'readObjectAttr': ''}, 'timeStamp': 1480985431.2807543, 'mightWriteObj': '0', 'writeObjectId': '102', 'cachedUpdate': {'readObject': {}, 'writeObject': {}}, 'readObjectId': '2', 'client': <Client('localhost', 12297)>, 'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': ''}, 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'moviesWatched'}, 'action': 'stat'}, EIQWinhbcd, {'readObject': {'objectId': '2', 'name': 'Shikhar', 'paymentDone': True, 'moviesWatched': 5}, 'writeObject': {'objectId': '102', 'name': 'Shawshank Redemption', 'payViewCount': 0, 'watched': 'true', 'viewCount': 40}}) from('localhost', 23008)
+[2016-12-05 19:50:34] request EIQWinhbcd is read only request 
+[2016-12-05 19:50:34] sending decision to client for request EIQWinhbcd
+[2016-12-05 19:50:34] <Client ('localhost', 12297)> received ('CLIENT_DECISION', {'requestId': 'EIQWinhbcd', 'readAttr': {'readObject': {'moviesWatched': 5}, 'writeObject': {'viewCount': 40}}, 'updatedObj': -1, 'mightReadAttr': {'writeObjectAttr': 'viewCount', 'readObjectAttr': ''}, 'writeObjectId': '102', 'mightWriteObj': '0', 'cachedUpdate': {'readObject': {}, 'writeObject': {}}, 'delay': {'WORKER_INITIAL': '3'}, 'readObjectId': '2', 'client': <Client('localhost', 12297)>, 'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': ''}, 'timeStamp': 1480985431.2807543, 'updates': {'readObject': {'id': '2'}, 'writeObject': {'id': '102'}}, 'result': True, 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'moviesWatched'}, 'readObj': -1, 'action': 'stat'}) from ('localhost', 37184)DECISION :True
+[2016-12-05 19:50:34] sending request ('READ_ATTR', {'requestId': 'EIQWinhbcd', 'readAttr': {'readObject': {'moviesWatched': 5}, 'writeObject': {'viewCount': 40}}, 'updatedObj': -1, 'delay': {'WORKER_INITIAL': '3'}, 'mightReadAttr': {'writeObjectAttr': 'viewCount', 'readObjectAttr': ''}, 'timeStamp': 1480985431.2807543, 'mightWriteObj': '0', 'writeObjectId': '102', 'cachedUpdate': {'readObject': {}, 'writeObject': {}}, 'readObjectId': '2', 'client': <Client('localhost', 12297)>, 'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': ''}, 'updates': {'readObject': {'id': '2'}, 'writeObject': {'id': '102'}}, 'result': True, 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'moviesWatched'}, 'readObj': -1, 'action': 'stat'}, 1) to ('localhost', 11746)
+[2016-12-05 19:50:34] <Coordinator1>received ('READ_ATTR',{'requestId': 'EIQWinhbcd', 'readAttr': {'readObject': {'moviesWatched': 5}, 'writeObject': {'viewCount': 40}}, 'updatedObj': -1, 'mightReadAttr': {'writeObjectAttr': 'viewCount', 'readObjectAttr': ''}, 'writeObjectId': '102', 'mightWriteObj': '0', 'cachedUpdate': {'readObject': {}, 'writeObject': {}}, 'delay': {'WORKER_INITIAL': '3'}, 'readObjectId': '2', 'client': <Client('localhost', 12297)>, 'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': ''}, 'timeStamp': 1480985431.2807543, 'updates': {'readObject': {'id': '2'}, 'writeObject': {'id': '102'}}, 'result': True, 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'moviesWatched'}, 'readObj': -1, 'action': 'stat'}, 1) from ('localhost', 37184)
+[2016-12-05 19:50:34] sending request ('READ_ATTR', {'requestId': 'EIQWinhbcd', 'readAttr': {'readObject': {'moviesWatched': 5}, 'writeObject': {'viewCount': 40}}, 'updatedObj': -1, 'delay': {'WORKER_INITIAL': '3'}, 'mightReadAttr': {'writeObjectAttr': 'viewCount', 'readObjectAttr': ''}, 'timeStamp': 1480985431.2807543, 'mightWriteObj': '0', 'writeObjectId': '102', 'cachedUpdate': {'readObject': {}, 'writeObject': {}}, 'readObjectId': '2', 'client': <Client('localhost', 12297)>, 'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': ''}, 'updates': {'readObject': {'id': '2'}, 'writeObject': {'id': '102'}}, 'result': True, 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'moviesWatched'}, 'readObj': -1, 'action': 'stat'}, 2) to ('localhost', 15580)
+[2016-12-05 19:50:34] <Coordinator3>received ('READ_ATTR',{'requestId': 'EIQWinhbcd', 'readAttr': {'readObject': {'moviesWatched': 5}, 'writeObject': {'viewCount': 40}}, 'updatedObj': -1, 'mightReadAttr': {'writeObjectAttr': 'viewCount', 'readObjectAttr': ''}, 'writeObjectId': '102', 'mightWriteObj': '0', 'cachedUpdate': {'readObject': {}, 'writeObject': {}}, 'delay': {'WORKER_INITIAL': '3'}, 'readObjectId': '2', 'client': <Client('localhost', 12297)>, 'mightWriteAttr': {'writeObjectAttr': '', 'readObjectAttr': ''}, 'timeStamp': 1480985431.2807543, 'updates': {'readObject': {'id': '2'}, 'writeObject': {'id': '102'}}, 'result': True, 'defReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'moviesWatched'}, 'readObj': -1, 'action': 'stat'}, 2) from ('localhost', 37184)
+[2016-12-05 19:50:34] Resending waiting request ijvTJGHTlh to ('localhost', 15580)
+[2016-12-05 19:50:34] <Coordinator3>received ('RESULT',{'requestId': 'ijvTJGHTlh', 'readAttr': {'readObject': {}, 'writeObject': {}}, 'updatedObj': '102', 'mightReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'paymentDone'}, 'writeObjectId': '102', 'mightWriteObj': '2', 'cachedUpdate': {'readObject': {}, 'writeObject': {}}, 'delay': {'CLIENT': '1'}, 'readObjectId': '2', 'client': <Client('localhost', 12297)>, 'mightWriteAttr': {'writeObjectAttr': 'payViewCount', 'readObjectAttr': ''}, 'timeStamp': 1480985432.2940655, 'updates': {'readObject': {'id': '2'}, 'writeObject': {'viewCount': 41, 'id': '102'}}, 'result': True, 'defReadAttr': {'writeObjectAttr': 'viewCount', 'readObjectAttr': ''}, 'readObj': '2', 'action': 'view'}) from ('localhost', 15580)
+[2016-12-05 19:50:34] <Coordinator3>sending updates to database
+[2016-12-05 19:50:34] <Database> received ('UPDATE_OBJECT', {'viewCount': 41, 'id': '102'}, 1480985432.2940655) from ('localhost', 15580)
+[2016-12-05 19:50:34] <Database> sending ('UPDATE_OBJECT_SUCCESS', {'viewCount': 41, 'id': '102'}) to ('localhost', 15580)
+[2016-12-05 19:50:34] caching updates......
+[2016-12-05 19:50:34] caching updates.....completed
+[2016-12-05 19:50:34] sending decision to client for request ijvTJGHTlh
+[2016-12-05 19:50:34] <Client ('localhost', 12297)> received ('CLIENT_DECISION', {'requestId': 'ijvTJGHTlh', 'readAttr': {'readObject': {}, 'writeObject': {}}, 'updatedObj': '102', 'mightReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'paymentDone'}, 'writeObjectId': '102', 'mightWriteObj': '2', 'cachedUpdate': {'readObject': {}, 'writeObject': {}}, 'delay': {'CLIENT': '1'}, 'readObjectId': '2', 'client': <Client('localhost', 12297)>, 'mightWriteAttr': {'writeObjectAttr': 'payViewCount', 'readObjectAttr': ''}, 'timeStamp': 1480985432.2940655, 'updates': {'readObject': {'id': '2'}, 'writeObject': {'viewCount': 41, 'id': '102'}}, 'result': True, 'defReadAttr': {'writeObjectAttr': 'viewCount', 'readObjectAttr': ''}, 'readObj': '2', 'action': 'view'}) from ('localhost', 15580)DECISION :True
+[2016-12-05 19:50:34] <Client ('localhost', 12297)>sending ('CLIENT_DONE') to ('localhost', 17779)
+[2016-12-05 19:50:34] <Master> received ('CLIENT_DONE') from ('localhost', 12297)
+[2016-12-05 19:50:34] All clients done
+[2016-12-05 19:50:34] sending message READ_ATTR to ('localhost', 11746)for request : ijvTJGHTlh
+[2016-12-05 19:50:34] <Coordinator1>received ('READ_ATTR',{'requestId': 'ijvTJGHTlh', 'readAttr': {'readObject': {}, 'writeObject': {}}, 'updatedObj': '102', 'mightReadAttr': {'writeObjectAttr': '', 'readObjectAttr': 'paymentDone'}, 'writeObjectId': '102', 'mightWriteObj': '2', 'cachedUpdate': {'readObject': {}, 'writeObject': {}}, 'delay': {'CLIENT': '1'}, 'readObjectId': '2', 'client': <Client('localhost', 12297)>, 'mightWriteAttr': {'writeObjectAttr': 'payViewCount', 'readObjectAttr': ''}, 'timeStamp': 1480985432.2940655, 'updates': {'readObject': {'id': '2'}, 'writeObject': {'viewCount': 41, 'id': '102'}}, 'result': True, 'defReadAttr': {'writeObjectAttr': 'viewCount', 'readObjectAttr': ''}, 'readObj': '2', 'action': 'view'}, 1) from ('localhost', 15580)
+[2016-12-05 19:50:37] <Database> received ('DUMP_DATABASE', '../db/database5.txt') from ('localhost', 17779)
+[2016-12-05 19:50:37] <Database> sending ('DUMP_DATABASE_SUCCESS) to ('localhost', 17779)
+[2016-12-05 19:50:37] <Master> received ('DUMP_DATABASE_SUCCESS') from ('localhost', 23008)

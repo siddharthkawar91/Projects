@@ -1,0 +1,111 @@
+from Logger import Logger
+from RandomStringGenerator import RandomStringGenerator
+from PolicyEvaluator import PolicyEvaluator
+import xml.etree.ElementTree as ET
+import random
+import time
+DE = import_da('DatabaseEmulator')
+coordinator = import_da('Coordinator')
+Worker = import_da('Worker')
+Client =import_da('Client')
+
+class Master(process):
+
+    def setup(config):
+        self.config = config
+        self.logger = Logger(config['writeLogToFile'])
+        minLatency = int(config['minDbLatency'])
+        maxLatency = int(config['maxDbLatency'])
+
+        dbLatency = random.randint(minLatency, maxLatency)
+        self.logger.write("dbLatency : " + str(dbLatency))
+
+        self.dbProcess = new(DE.DatabaseEmulator, num=1)
+        setup(dbProcess, (config['databaseFile'], logger, dbLatency,))
+        start(dbProcess)
+        self.coordIndexToCoordProcessMapper = None
+        self.name = "<Master>"
+        self.requestIdGenerator = RandomStringGenerator()
+        self.numClientsDone = 0
+
+        self.policyEvaluator = PolicyEvaluator(config['policyFile'])
+
+    """
+        This is handler which will receive message from database emulator
+        the data will contain the list of total subject and resources
+    """
+    def receive(msg=('ANSWER_TOTAL_SUBJECTS_RESOURCES', subjectsResourcesList,)):
+        self.logger.write(self.name + " received ('ANSWER_TOTAL_SUBJECTS_RESOURCES', " + str(subjectsResourcesList) + ")")
+        perform_setup(subjectsResourcesList)
+
+    """
+        This method performs setup and starts the system
+        var numCoordinators : number of total coordinators
+        var numWorkers : number of total workers
+        
+    """
+    def perform_setup(subjectsResourcesList):
+        numCoordinators = int(self.config['numCoordinators'])
+        numWorkers = int(self.config['workersPerCoordinator'])
+
+        coordSet = new(coordinator.Coordinator, num= numCoordinators)
+        coordMap = get_map(coordSet)
+        self.coordIndexToCoordProcessMapper = coordMap
+
+        self.logger.write("Starting workers")
+        workers = new(Worker.Worker, num= numCoordinators*numWorkers)
+        setup(workers, (self.dbProcess, self.policyEvaluator, coordMap, self.logger,))
+        start(workers)
+        workers = list(workers)
+
+
+        for coord in coordSet:
+            worker_list = []
+            for worker in workers:
+                if len(worker_list) < numWorkers:
+                    worker_list.append(worker)
+                else:
+                    break
+            workers = workers[numWorkers:]
+            setup(coord, (coordMap, subjectsResourcesList, worker_list, self.requestIdGenerator, self.dbProcess, self.logger,))
+
+        start(coordSet)
+        numClients = int(self.config['numClients'])
+        clientSet = new(Client.Client, num= numClients)
+        setup(clientSet, (coordMap, config, self.logger, self.id))
+        start(clientSet)
+
+    def get_map(coordSet):
+        map = {}
+        index = 0
+        for coord in coordSet:
+            map[index] = coord
+            index = index + 1
+        return map
+
+    def receive(msg=('CLIENT_DONE',), from_= p):
+        self.logger.write(self.name + " received ('CLIENT_DONE') from " + str(p))
+        self.numClientsDone += 1
+        if self.numClientsDone == int(self.config['numClients']):
+            self.logger.write("All clients done")
+            time.sleep(int(self.config['maxDbLatency']) + 1)
+            send(('DUMP_DATABASE', self.removeExtension(self.config['databaseFile']) + '.txt',), to= self.dbProcess)
+            print('tests done')
+
+    def receive(msg=('DUMP_DATABASE_SUCCESS',), from_= p):
+        self.logger.write(self.name + " received ('DUMP_DATABASE_SUCCESS') from " + str(p))
+        print("database dumped")
+
+    def removeExtension(filename):
+        dotIndex = filename.find(".")
+        if dotIndex == -1:
+            return filename
+        else:
+            return filename[:dotIndex]
+
+
+    def run():
+
+        self.logger.write(self.name + " sending ('QUERY_TOTAL_SUBJECTS_RESOURCES') to " + str(self.dbProcess))
+        send(('QUERY_TOTAL_SUBJECTS_RESOURCES',), to= self.dbProcess)
+        await(False)

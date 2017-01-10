@@ -1,0 +1,33 @@
+{
+      "config":{
+        "numCoordinators"         : "9",
+        "numClients"              : "1",
+        "workersPerCoordinator"   : "5",
+        "policyFile"              : "test7/policy.json",
+        "databaseFile"            : "test7/database.xml",
+        "requestsFile"            : "test7/requests.json",
+        
+        "writeLogToFile"          : "test7/program.log",
+        
+        "minDbLatency"            : "0",
+        "maxDbLatency"            : "0",
+
+        "clientDelay"             : "1",
+	      "generateRandRequest" 	  : "False",
+        "numRequest"              : "10",
+        "randomSeed"              : "2",
+    	"randomRequestSet"        : {
+                                       "actionList"      : ["view"],
+                                       "subjectIdList"   : ["1","2"],
+                                       "resourceIdList"  : ["101"],
+                                       "delayStateList1" : ["WORKER_INITIAL",
+                                                            "CLIENT",
+                                                            "RESOURCE_COORDINATOR_INITIAL"],
+                                       "delayStateList2" : ["SUBJECT_COORDINATOR_FINAL",
+                                                            "RESOURCE_COORDINATOR_VALIDATE",
+                                                            "WORKER_INITIAL"],
+                                       "delayLimit"	     : "2"
+                                     }
+     }
+  }
+

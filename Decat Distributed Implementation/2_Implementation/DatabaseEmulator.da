@@ -1,0 +1,245 @@
+import sys
+import xml.etree.ElementTree as ET
+import json
+import hashlib
+import time
+master = import_da('Master')
+
+class DatabaseEmulator(process):
+
+    def setup(filename:str, logger, dbLatency:int):
+        self.name = "<Database>"
+        self.logger = logger
+        self.logger.write('database setup started')
+        self.logger.write('database Latency : ' + str(dbLatency))
+
+        self.database = dict()
+        tree = ET.parse(filename)
+        root = tree.getroot() 
+        """
+            subject_setup(root) method will fill database with all the subject records and
+            total subjects in the database
+            self.database['subjectList'] This list contains all the subjects in the subject records
+            e.g. ['pra1', 'ant2', 'mar3', 'jul4', 'cae5', 'tom6']
+            self.database['subjectRecord'] This will contains all the subject records from the database
+        """
+        subject_setup(root)
+        """
+            resource_setup(root) method will fill database with all the resource records and
+            total resource in the database
+            self.database['resourceList'] This list contains all the resource in the resource records
+            self.database['resourceRecord'] This will contains all the resource records from the database
+        """
+
+        resource_setup(root)
+        self.logger.write('Database is as follows: ')
+        self.logger.write(str(self.database))
+        
+
+
+
+    def receive(msg=('UPDATE_SUBJECT_RESOURCE', update,), from_= p):
+
+        time.sleep(dbLatency)
+        state = 'UPDATE_SUBJECT_RESOURCE'
+        self.logger.write(self.name + " received ('" + state + "', " + str(update) + ") from " + str(p) )
+        
+        subjectId = update['subject']['subjectId']
+        resourceId = update['resource']['resourceId']        
+
+        attrNotFound = False
+
+        for record in self.database['subjectRecord']:
+            if record['subjectId'] == subjectId:
+                for attr in update['subject']:
+                    if attr not in record:
+                        attrNotFound = True
+        for record in self.database['resourceRecord']:
+            if record['resourceId'] == resourceId:
+                for attr in update['resource']:
+                    if attr not in record:
+                        attrNotFound = True
+
+
+        if attrNotFound:
+            self.logger.write(self.name + " sending ('UPDATE_SUBJECT_RESOURCE_ERROR', " + str(update) + ") to " + str(p) )
+            send(('UPDATE_SUBJECT_RESOURCE_ERROR', update,), to= p)
+        else:
+            # apply update
+            for record in self.database['subjectRecord']:
+                if record['subjectId'] == subjectId:
+                    for attr, value in update['subject'].items():
+                        record[attr] = value
+
+            for record in self.database['resourceRecord']:
+                if record['resourceId'] == resourceId:
+                    for attr, value in update['resource'].items():
+                        record[attr] = value
+
+            self.logger.write(self.name + " sending ('UPDATE_SUBJECT_RESOURCE_SUCCESS', " + str(update) + ") to " + str(p) )
+            send(('UPDATE_SUBJECT_RESOURCE_SUCCESS', update,), to= p)
+
+
+    def receive(msg=('DUMP_DATABASE', filename,), from_= p):
+        self.logger.write(self.name + " received ('DUMP_DATABASE', '" + filename + "') from " + str(p) )
+        file = open(filename, 'w')
+        file.write("Final Database State \n")
+
+        for key in self.database:
+            file.write(str(key) + ":" + str(self.database[key]))
+            file.write('\n')
+        file.close()
+        self.logger.write(self.name + " sending ('DUMP_DATABASE_SUCCESS) to " + str(p) )
+        send(('DUMP_DATABASE_SUCCESS',), to= p)
+
+
+    def receive(msg=('QUERY_SUBJECT_RESOURCE', request,), from_= p):
+        state = 'QUERY_SUBJECT_RESOURCE'
+        self.logger.write(self.name + " received ('" + state + "', " + str(request) + ") from " + str(p) )
+        subjectId = request['subjectId']
+        resourceId = request['resourceId']
+
+        subjectRecord = None
+        resourceRecord = None
+
+        for record in self.database['subjectRecord']:
+            if record['subjectId'] == subjectId:
+                subjectRecord = record
+        for record in self.database['resourceRecord']:
+            if record['resourceId'] == resourceId:
+                resourceRecord = record
+
+        result = {
+            'subject' : subjectRecord,
+            'resource' : resourceRecord
+        }
+
+        # send message back to Worker
+        self.logger.write(self.name + " sending ('ANSWER_SUBJECT_RESOURCE', " + str(request) + ", " + str(result) + ") to " + str(p) )
+        send(('ANSWER_SUBJECT_RESOURCE', request, result,), to= p)
+
+
+    def receive(msg=('QUERY_SUBJECT_RECORD', subjectId, p,)):
+        """
+            This method will respond to the query for subject record.
+            It will send the record for subjectId in database otherwise
+            will respond with None in place of record
+        """
+        self.logger.write(self.name + " received ('QUERY-SUBJECT-RECORD', " + str(subjectId) + ", " + str(p) + ")")
+        for record in self.database['subjectRecord']:
+            if record['subjectId'] == subjectId:
+                send(('SUBJECT-RESULT',(record),), to=p)
+                return
+        send(('SUBJECT-RESULT',None,), to=p)
+
+    def receive(msg=('QUERY_RESOURCE_RECORD', resourceId, p,)):
+        """
+            This method will respond to the query for resource record.
+            It will send the record for resourceId in database otherwise
+            will respond with None in place of record
+        """
+        self.logger.write(self.name + " received ('QUERY_RESOURCE_RECORD', " + str(resourceId) + ", " + str(p) + ")")
+        for record in self.database['resourceRecord']:
+            if record['resourceId'] == resourceId:
+                send(('SUBJECT_RESULT',(record),), to=p)
+                return
+        send(('RESOURCE_RESULT',None,), to=p)
+
+    """
+        This message will respond to the query done by master process and will send
+        the list of total resources and total subjects to the master process
+    """
+
+    def receive(msg=('QUERY_TOTAL_SUBJECTS_RESOURCES',), from_= p):
+        self.logger.write(self.name + " received ('QUERY_TOTAL_SUBJECTS_RESOURCES', " + str(p) + ")")
+        self.logger.write(self.name + " sending ('ANSWER_TOTAL_SUBJECTS_RESOURCES', " + str((self.database['subjectList'],self.database['resourceList'])) + ") to " + str(p))
+        send(('ANSWER_TOTAL_SUBJECTS_RESOURCES',(self.database['subjectList'],self.database['resourceList']),), to=p)
+
+    """
+        This is helper function which converts given record to dictionary
+        for example this will be converted to
+        <subjectRecord type="record" value="subjectRecord">
+            <subjectId type="string" value="pra1" />
+            <userName type="string" value="Prasad"/>
+            <viewCount type="int" value="2"/>
+            <viewed type="record" value="viewed">
+                <movieId type="string" value="dil1"/>
+                <movieCount type="int" value="1"/>
+            </viewed>
+            <viewed type="record" value="viewed">
+                <movieId type="string" value="jum5"/>
+                <movieCount type="int" value="1"/>
+            </viewed>
+        </subjectRecord>
+
+        after conversion
+        It will look like this
+        rec = {
+               subjectId : pra1,
+               userName : Prasad,
+               viewCount : 2,
+               Viewed : [
+                    {
+                        movieId : dil1,
+                        movieCount : 1,
+                    },
+                    {
+                        movieId : jum5,
+                        movieCount : 1,
+                    }
+               ]
+        }
+
+    """
+    def convert_record_dict(record):
+        retval = dict()
+        for subrecord in list(record):
+            if subrecord.attrib['type'] == "record":
+                rec = convert_record_dict(subrecord)
+                if subrecord.tag in retval:
+                    retval[subrecord.tag].append(rec)
+                else:
+                    retval[subrecord.tag] = []
+                    retval[subrecord.tag].append(rec)
+
+            elif subrecord.attrib['type'] == "string":
+                retval[subrecord.tag] = subrecord.attrib['value']
+            elif subrecord.attrib['type'] == "int":
+                retval[subrecord.tag] = int(subrecord.attrib['value'])
+            elif subrecord.attrib['type'] == "float":
+                retval[subrecord.tag] = float(subrecord.attrib['value'])
+        return retval
+
+    """
+        This iterates over all the subjectRecords elements and converts them to dictionary
+        Also it populates the subjectList and add all the unique subject Ids.
+        We will use subjectList in coordinators. same logic is for resource_setup
+    """
+    def subject_setup(root):
+        self.database['subjectRecord'] = list()
+        self.database['subjectList'] = list()
+        for record in root.iter('subjectRecord'):
+            subjectId = record.find('subjectId')
+
+            if subjectId.attrib['value'] not in self.database['subjectList']:
+                self.database['subjectList'].append(subjectId.attrib['value'])
+
+            rec = convert_record_dict(record)
+            self.database['subjectRecord'].append(rec)
+
+    def resource_setup(root):
+        self.database['resourceRecord'] = list()
+        self.database['resourceList'] = list()
+        for record in root.iter('resourceRecord'):
+            resourceId = record.find('resourceId')
+
+            if resourceId.attrib['value'] not in self.database['resourceList']:
+                self.database['resourceList'].append(resourceId.attrib['value'])
+
+            rec = convert_record_dict(record)
+            self.database['resourceRecord'].append(rec)
+
+    def run():
+        await(False)
+
+

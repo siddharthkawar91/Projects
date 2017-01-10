@@ -1,0 +1,11 @@
+import json
+Master = import_da('Master')
+
+def main():
+    configFile = open('test1/config.json')
+    configFile = json.load(configFile)['config']
+    config()
+
+    master = new(Master.Master, num=1)
+    setup(master, (configFile,))
+    start(master)

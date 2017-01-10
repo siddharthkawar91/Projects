@@ -1,0 +1,21 @@
+{
+      "config":{
+        "numCoordinators"         : "9",
+        "numClients"              : "1",
+        "workersPerCoordinator"   : "5",
+        "policyFile"              : "test3/policy.json",
+        "databaseFile"            : "test3/database.xml",
+        "requestsFile"            : "test3/requests.json",
+        
+        "writeLogToFile"          : "test3/program.log",
+        
+        "minDbLatency"            : "0",
+        "maxDbLatency"            : "0",
+
+        "clientDelay"             : "1",
+        "generateRandRequest" 	  : "False",
+        "numRequest"              : "10",
+        "randomSeed"              : "2"
+      }
+  }
+

@@ -1,0 +1,45 @@
+<!--
+    This is the file format in which every entry will have
+    type and its value just like database
+    a record entry will be evaluated into python dict()
+    type string will be converted to python string
+    type int will be converted to python int
+    type float will be converted to python float
+
+-->
+<database>
+
+	<subjectRecord type="record" value="subjectRecord">
+        <subjectId type="string" value="1" />
+		<name type="string" value="Siddharth"/>
+		<moviesWatched type="int" value="9"/>
+	</subjectRecord>
+
+	<subjectRecord type="record" value="subjectRecord">
+        <subjectId type="string" value="2"/>
+		<name type="string" value="Shikhar"/>
+		<moviesWatched type="int" value="5"/>
+	</subjectRecord>
+
+	<subjectRecord type="record" value="subjectRecord">
+        <subjectId type="string" value="3"/>
+		<name type="string" value="Dexter"/>
+		<moviesWatched type="int" value="10"/>
+	</subjectRecord>
+
+    <resourceRecord type="record" value="resourceRecord">
+        <resourceId type="string" value="101"/>
+        <name type="string" value="The Matrix"/>
+        <watched type="string" value="false"/>
+        <viewCount type="int" value="49"/>        
+    </resourceRecord>
+
+    <resourceRecord type="record" value="resourceRecord">
+        <resourceId type="string" value="102"/>
+        <name type="string" value="Shawshank Redemption"/>
+        <watched type="string" value="true"/>
+        <viewCount type="int" value="40"/>
+    </resourceRecord>
+
+</database>
+

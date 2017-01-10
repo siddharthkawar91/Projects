@@ -1,0 +1,289 @@
+// Different structures used in the program
+structure SubjectAttribute {
+id,
+updated_timestamp
+}
+structure ResourceAttribute {
+id,
+updated_timestamp
+}
+structure Request {
+	Integer id,
+	Integer oldId,
+	ApplicationId id,
+	Subject subject,
+	Resource resource,
+	State state,
+	Timestamp read_timestamp,
+	Timestamp finished_timestamp
+}
+
+structure TentativeUpdate {
+	Update update,
+	Timestamp timestamp,
+	// this will help us identify to which request this TentativeUpdate
+	// belongs to, in case this request was aborted due to resource conflict
+	Integer requestId
+}
+
+structure State {
+	any one of {SUBJECT_COORDINATOR_INITIAL, SUBJECT_COORDINATOR_VALIDATE, SUBJECT_COORDINATOR_RESOURCE_CONFLICT, SUBJECT_COORDINATOR_FINAL,
+	RESOURCE_COORDINATOR_INITIAL, RESOURCE_COORDINATOR_VALIDATE,
+	WORKER}
+}
+
+// Success flow states
+// SUBJECT_COORDINATOR_INITIAL => RESOURCE_COORDINATOR_INITIAL => WORKER =>
+// SUBJECT_COORDINATOR_VALIDATE => RESOURCE_COORDINATOR_VALIDATE => SUBJECT_COORDINATOR_FINAL
+// Subject conflict flow states
+// SUBJECT_COORDINATOR_INITIAL => RESOURCE_COORDINATOR_INITIAL => WORKER =>
+// SUBJECT_COORDINATOR_VALIDATE => conflict found; __restart__
+// Resource conflict flow states
+// SUBJECT_COORDINATOR_INITIAL => RESOURCE_COORDINATOR_INITIAL => WORKER =>
+// SUBJECT_COORDINATOR_VALIDATE => RESOURCE_COORDINATOR_VALIDATE =>
+// SUBJECT_COORDINATOR_RESOURCE_CONFLICT => __restart__
+// These are used to map subjects and resources to
+// their respective coordinators
+
+map SubjectIdToCoordinatorMapper = initialize
+map ResourceIdToCoordinatorMapper = initialize
+
+// these are the different data structures used to maintain
+// information about different policy evaluations going on
+SubjectCoordinator.updatedAttributesCache = set()
+SubjectCoordinator.tentativelyUpdatedAttributes = set()
+SubjectCoordinator.ongoingEvaluations = set()
+ResourceCoordinator.updatedAttributesCache = set()
+ResourceCoordinator.ongoingEvaluations = set()
+
+/* This is the starting point
+* Whenever the application has to evaluate any policy,
+* it calls this function with the request
+*/
+function authorizationDecision(Request request) {
+	request.state = SUBJECT_COORDINATOR_INITIAL
+	// send to the responsible subject coordinator
+	SubjectCoordinator c = SubjectIdToCoordinatorMapper[request.subject.id]
+	c.sendMessage(request)
+}
+
+/*
+* This is where a message sent to SubjectCoordinator is received
+*/
+
+function SubjectCoordinator.receiveMessage(Request request) {
+
+	if request.state == SUBJECT_COORDINATOR_INITIAL:
+		// request received from the application
+		// this is the initial request
+
+		request.id = assignUniqueId()
+		request.state = RESOURCE_COORDINATOR_INITIAL
+
+		SubjectCoordinator.ongoingEvaluations.add(request)
+
+		// add tentatively updated attributes to request if available
+        if SubjectCoordinator.tentativeAttributes.find(request.subject):
+		    request.subject.tentativeAttributes = SubjectCoordinator.tentativeAttributes.find(request.subject)
+		
+		// add updated attributes from cache to request if available
+        if SubjectCoordinator.cachedSubjectAttributes.find(request.subject):
+		    request.subject.cachedSubjectAttributes = SubjectCoordinator.cachedSubjectAttributes.find(request.subject)
+
+		// send to the responsible resource coordinator
+		ResourceCoordinator c = ResourceIdToCoordinatorMapper[request.resource.id]
+		c.sendMessage(request)	
+		return
+
+	if request.state == SUBJECT_COORDINATOR_VALIDATE:
+
+		// request received from a worker
+            if usedTentativeSubjectAttributes(request):
+                if request in SubjectCoordinator.ongoingRequestIds:
+                    // this means that we used tentative updates from a request that is still ongoing
+                    // wait till that evaluation either commits or aborts
+                    wait until request not in SubjectCoordinator.ongoingRequestIds
+                    // here, the wait is over
+                if request in SubjectCoordinator.abortedRequests:
+                // this means that we used tentative updates from an evaluation 
+                // that was later aborted
+                // therefore, restart
+                SubjectCoordinator.ongoingEvaluations.remove(request)
+                // request.oldId can be used to identify that this request
+                // has been restarted
+                request.oldId = request.id
+                request.id = assignUniqueId()
+                request.state = RESOURCE_COORDINATOR_INITIAL
+
+                SubjectCoordinator.ongoingEvaluations.add(request)
+
+                // send to the responsible resource coordinator
+                ResourceCoordinator c = ResourceIdToCoordinatorMapper[request.resource.id]
+                c.sendMessage(request)
+                return
+		if subject cache has different values than were used for policy evaluation
+           or tentativeSubjectCache has different values than were used for policy evaluation:
+			// this evaluation employed subject attributes that were updated
+			// after these attributes were read
+			// therefore, we need to restart this request
+			SubjectCoordinator.ongoingEvaluations.remove(request)
+
+			// request.oldId can be used to identify that this request
+			// has been restarted
+			request.oldId = request.id
+			request.id = assignUniqueId()
+			request.state = RESOURCE_COORDINATOR_INITIAL
+
+			SubjectCoordinator.ongoingEvaluations.add(request)
+
+			// send to the responsible resource coordinator
+			ResourceCoordinator c = ResourceIdToCoordinatorMapper[request.resource.id]
+			c.sendMessage(request)
+			return
+
+		else:
+			// no conflict; send to ResourceCoordinator
+			request.state = RESOURCE_COORDINATOR_VALIDATE
+			SubjectCoordinator.tentativelyUpdatedAttributes.add(request.result.subjectAttribute)
+
+			// add arrivalNumber to request before sending it ResourceCoordinator
+			// and process them in the same order in SUBJECT_COORDINATOR_FINAL state
+			request.arrivalNumber = getNextArrivalNumber();
+
+			// send to the responsible resource coordinator
+			ResourceCoordinator c = ResourceIdToCoordinatorMapper[request.resource.id]
+			c.sendMessage(request)
+			return
+
+	if request.state == SUBJECT_COORDINATOR_RESOURCE_CONFLICT:
+		// request received from ResourceCoordinator
+		// signaling that there was a resource conflict
+
+		// add this request to a list of aborted request list
+		// that can be used to identify those requests that used these
+		// aborted tentativeAttributes, so that those requests can
+		// be restarted
+		SubjectCoordinator.abortedRequests.add(request)
+		SubjectCoordinator.tentativelyUpdatedAttributes.remove(request.subject)
+		subjectCoordinator.ongoingEvaluations.remove(request)
+		// request.oldId can be used to identify that this request
+		// has been restarted
+		request.oldId = request.id
+		request.id = assignUniqueId()
+		request.state = RESOURCE_COORDINATOR_INITIAL
+		// send to the responsible resource coordinator
+		ResourceCoordinator c = ResourceIdToCoordinatorMapper[request.resource.id]
+		c.sendMessage(request)
+		return
+		
+	if request.state == SUBJECT_COORDINATOR_FINAL:
+		// request received from ResourceCoordinator
+		// signaling that everything is okay
+		// and to go ahead with the request
+		// In this state, we want to process the requests in the order
+		// in which they were sent to ResourceCoordinator for resource conflict
+		// validation, i.e., RESOURCE_COORDINATOR_VALIDATE state
+		
+		// Have a MinHeap of requests for requestBuffer where
+		// the key is the requests' arrivalNumber
+		MinHeap<Request, key=Request.arrivalNumber> requestBuffer
+		
+		// getNextExpectationNumber() returns an integer representing the
+		// arrivalNumber that we are expecting
+		while (requestBuffer.peekMin().arrivalNumber == getNextExpectationNumber()):
+			Request requestFromBuffer = requestBuffer.extractMin()
+			finalizeRequest(requestFromBuffer)
+			incrementNextExpectationNumber()
+			
+		if request.arrivalNumber == getNextArrivalNumber():
+			// we were expecting this request
+			finalizeRequest(request)
+		else:
+			// this request came out of order
+			// we have to wait for some other request to come back from ResourceCoordinator
+			// therefore, put this request in requestBuffer
+			requestBuffer.insert(request)
+		return
+}
+
+/*
+* This is where a request is finalized and its subject attribute updates are made permanent
+*/
+
+function finalizeRequest(Request request) {
+	// move attribute update from tentatively updated set to permanently updated column
+	SubjectCoordinator.updatedAttributesCache.add(SubjectCoordinator.tentativelyUpdatedAttributes.remove(request))
+	Commit to the attribute database these tentativelyUpdatedAttributes
+    Add these attribute updates to subjectCache
+	SubjectCoordinator.ongoingEvaluations.remove(request)
+	// request has an ApplicationId that can be used to identify
+	// the application from which this request originated from
+	sendMessageToApplication(request.result, request.ApplicationId)
+}
+
+/*
+* This is where a message sent to ResourceCoordinator is received
+*/
+
+function ResourceCoordinator.receiveMessage(Request request) {
+	if request.state == RESOURCE_COORDINATOR_INITIAL:
+		// request received from SubjectCoordinator
+		// this is either a new request or an old restarted request
+		// as we'll see further
+		if request.oldId in ResourceCoordinator.ongoingEvaluations:
+			// this means that this request was restarted by SubjectCoordinator due to subject attribute conflicts
+			// reset the data structures
+			// and restart the request
+			ResourceCoordinator.ongoingEvaluations.remove(request)
+			request.oldId = NULL
+			ResourceCoordinator.ongoingEvaluations.add(request)
+		
+		// this is common code for both cases
+		// either a new request or a restarted request
+		ResourceCoordinator.ongoingEvaluations.add(request)
+		request.state = WORKER
+		Worker w = find a worker
+		w.run(request)
+		
+	if request.state == RESOURCE_COORDINATOR_VALIDATE:
+		// request received from SubjectCoordinator asking for
+		// resource attribute conflict verification
+		if resource cache has different values than were used for policy evaluation:
+			// the attributes that this request read are stale
+			// they were updated in the meanwhile
+			// therefore, conflict
+			// send back to SubjectCoordinator acknowledging conflict
+			request.state = SUBJECT_COORDINATOR_RESOURCE_CONFLICT
+			// send to the responsible subject coordinator
+			SubjectCoordinator c = SubjectIdToCoordinatorMapper[request.subject.id]
+			c.sendMessage(request)
+		else:
+			// no conflict
+			// apply updates, and send back to SubjectCoordinator
+			// signaling okay, and to ago ahead, and persist its updates
+			ResourceCoordinator.updatedAttributesCache.add(request.result.resourceAttribute)
+			Commit to the attribute database these resource attribute updates
+			ResourceCoordinator.ongoingEvaluations.remove(request)
+			request.state = SUBJECT_COORDINATOR_FINAL
+			// send to the responsible subject coordinator
+			SubjectCoordinator c = SubjectIdToCoordinatorMapper[request.subject.id]
+			c.sendMessage(request)
+}
+
+/*
+* This is where a message sent to a Worker is received
+*/
+function Worker.run(request) {
+	Read attributes from database
+    
+    Shadow them by attribute updates from subject and resource cache, 
+    and tentativeSubjectCache
+	
+    Evaluate policy based on rules defined by ABAC
+	//add result to request, and send it back to SubjectCoordinator
+	request.result = results from policy evaluation containing subject attribute and resource attribute to be updated
+	request.state = SUBJECT_COORDINATOR_VALIDATE
+	// send to the responsible subject coordinator
+	SubjectCoordinator c = SubjectIdToCoordinatorMapper[request.subject.id]
+	c.sendMessage(request)
+}

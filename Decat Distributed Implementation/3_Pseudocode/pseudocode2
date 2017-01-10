@@ -1,0 +1,485 @@
+struct request {
+
+	int Id
+	# This is the Id of this request
+	
+	object rdonlydObj
+	# This is the reference of rdonlyObj
+	
+	object updatedObj
+	# This is the reference of writeonlyobj
+	
+	string state
+	# This is the current state of the request
+	
+	time ts
+	# Timestamp assigned by the coordinator at the first processing
+	
+	bool decision
+	# Decision will be updated when the request reaches the worker
+	
+	Worker worker
+	# Worker who is going to evaluate this request
+	
+	Client client
+	# Client that generated this request
+	
+	list[] cachedUpdates
+	# List of updates: this will be added by the respective coordinator 
+	
+	list[] readAttr
+	# the attributes read by the request during its evaluation from respective coordinators
+	
+	list update
+	# This is the request updated by the request 
+    
+	# The last two fields will be updated after the coordinator evaluates the request
+}
+
+struct version {
+
+	timestamp rts
+	# This is the read timestamp of this version
+	
+	timestamp wts
+	# This is the write timestamp of this version
+	
+	list pendingMightRead
+	# This is the list of request that might read this attribute
+}
+
+state can be set of the following {"readAttr", "restart", "result"} 
+
+function choose(S):
+    return the unique element of singleton set S
+
+function obj (Request req, int index) {
+    if |mightWriteObj(req)| == 1:
+        # only one object to be written
+        # choose the coordinator responsible for writing as the second coordinator
+        # so that we don't have to use an extra non-local message
+        if index == 2:
+            # return to the second coordinator the object to be written
+            return choose(mightWriteObj(req))
+        else:
+            # return to the first coordinator the object that will not be written
+            return choose(set({req.sub, req.res}) - set({mightWriteObj(req)})
+    else:
+        # 0 or 2 objects to be written
+        # choose any arbitrary order, and stick to it
+        if (index == 1)
+            return req.sub
+        else	
+            return req.res
+}
+
+function Client.sendMessage() {
+
+    # Client will predict which object it is going to read and which object it is going to write
+    # After that client will send the request to the coordinator from whom it is going to read but
+    # not write.
+    # This prediction is actually done inside obj() function which you can see above
+	
+    req.client = self
+    send req to coord(obj(req,1))
+}
+
+function Client.receiveMessage(request) {
+    # record result and/or send to application
+    # if all policy evaluations done, send DONE message to Master
+}
+
+function Coordinator.receiveMessage(Request request) {
+    list respObject
+    # This is the list of object that this coordinator is reponsible for
+
+    dict respCachedUpdates;
+    # This is the dictionary whose key is the object that this coordinator
+    # is responsible for and whose value is the list
+    # of tuple of all the attributes of the objects along with the timestamp
+    # at which they were committed e.g. [<attr1, ts1>, <attr2, ts2>,...]
+						
+    # The updates in this cache are mutable updates since this coordinator is
+    # responsible for this coordinator
+						
+    dict otherCachedUpdates
+    # This is the dictionary for those objects other than the objects which
+    # this coordinator is responsible for
+    # the updates in this cache are immutable updates 
+    # structure of this is same as respCachedUpdates
+							 
+	
+    list pendingWriteRequest
+    # This is the list of the pending write request which are waiting for the read 
+    # to get complete
+							 
+    list pendingReadRequest
+    # This is the list of the pending read request 
+    # It contains the pair of read request and the list of ids of write
+    # request it is waiting for to complete
+
+    dict versionInfo
+    # This is the dictionary whose key is the tuple of <object, attr>
+    # where object belongs to the set of all the objects that this coordinator 
+    # is responsible for and attr belongs to the set of all the attributes of this object
+    # So we have basically keys as all the distinct pair of object and its attributes and
+    # the value is the list of version which is again a tuple of (readTs, writeTs)
+
+
+    # We perform a check here to see that if our request will read or will only write
+    # If below condition is true then it is read only request
+    if (mightWriteObj(req) == {}) :			
+
+        # This means that this is request which will only read		
+        if (respObject contains obj(req, 1)):
+
+            x = obj(req, 1)
+            req.ts = now()
+
+            # If there are pending write request which will update the attributes
+            # that are going to be read by this request and the timestamp of those 
+            # write request is less than this read request time stamp.
+            # then put this request on pendingReadRequest.
+            # This request will be removed from the queue when the write request
+            # gets completed
+
+
+            for all writeReq in pendingWriteRequest:
+                if writeReq.update contains defReadAttr(x, req) union mightReadAttr(x, req)
+                    and writeReq.ts < req.ts:
+                    pendingReadRequest.add(<request, writeReq.Id>)
+	
+            for attr in defReadAttr(x, req):
+                latestVersionBefore(x, attr, req.ts).rts = req.ts
+
+            for attr in mightReadAttr(x,req):
+                latestVersionBefore(x, attr, req.ts).pendingMightRead.add(req.id).
+			  
+            # This means that both read object and write object will be handled at this
+            # coordinator there, therefore no need to do extra communication
+            # using label to jump
+
+            req.cachedUpdates[1] = cachedUpdates(x, req, self)
+            if respObject contains obj(req,2):
+                goto sameCoordLabel1
+            else :
+                send req to coord(obj(req,2)) 
+
+        else if (respObject contains obj(req ,2)):
+        sameCoordLabel1:
+            # As stated in assignment in order to avoid unnecessary communication if
+            # both obj(req,1) == obj (req,2)
+            # then no need to send the message jump here
+            x = obj(req, 2)
+
+            # If there are pending write request which will update the attributes that
+            # are going to be read by this request then put this request on waiting
+            # queue. This request will be removed from the queue when the write request
+            # gets completed
+
+
+            for all writeReq in pendingWriteRequest:
+                if writeReq.update contains defReadAttr(x, req) union mightReadAttr(x, req):
+                    pendingReadRequest.add(request, writeReqId)
+
+            for attr in defReadAttr(x,req):
+                latestVersionBefore(x, attr, req.ts).rts = req.ts
+
+            for attr in mightReadAttr(x,req):
+                latestVersionBefore(x, attr, req.ts).pendingMightRead.add(req.id).
+				
+            choose worker w to evaluate this request
+            req.worker = w
+            req.cachedUpdates[2] = cachedUpdates(x, req, self)
+            send req to w
+
+        return
+	
+    if (mightWriteObj(req) != {}) :
+	
+        # This means this is the request which will read and write
+
+        if (respObject contains obj(req, 1)):
+			
+            # This means you are first to process this request
+            # check here for the requests already present in the
+            # pendingReadRequest queue
+
+            x = obj(req,1)
+            req.ts = datetime.now()
+
+            # if incoming write request conflicts with the pending readrequest
+            # then put it on the pending write request 
+            # this will be removed by this readRequest when it will be evaluated
+
+            for all readReq in pendingReadRequest:
+                if readReq.ts < req.ts and mightWriteAttr(x, req) intersection
+                        (defReadAttr(x, readReq) union mightReadAttr(x, readReq)) != {} :
+                    pendingWriteRequest.add(req, )
+
+            for attr in defReadAttr(x,req) union mightReadAttr(x,req)
+                v = latestVersionBefore(x, attr, req.ts)
+                v.pendingMightRead.add(req.id).
+                req.cachedUpdates[1] = cachedUpdates(x, req, self)
+
+            # This means that both read object and write object will be handled at this
+            # coordinator there. Therefore no need to do extra communication
+
+            if respObject contains coord(obj(req,2)):
+                goto sameCoordLabel2
+            else :
+                send req to coord(obj(req,2)) 	
+
+        else if (respObject contains obj(req, 2)):
+        sameCoordLabel2:
+
+            # if incoming write request conflicts with the pending readrequest
+            # then put it on the pending write request 
+            # this will be removed by this readRequest when it will be evaluated
+
+            for all readReq in pendingReadRequest:
+                if readReq.ts < req.ts and mightWriteAttr(x, req) intersection
+                        (defReadAttr(x, readReq) union mightReadAttr(x, readReq)) != {} :
+                    pendingWriteRequest.add(req)
+
+            for attr in defReadAttr(x,req) union mightReadAttr(x,req)
+                v = latestVersionBefore(x, attr, req.ts)
+                v.pendingMightRead.add(req.id).
+
+            choose worker w to evaluate this request
+            req.worker = w
+            req.cachedUpdates[2] = cachedUpdates(x, req, self)
+            send req to w
+		
+        return
+
+    if req.state == "<readAttr, i>":
+
+        x = obj(req,i)
+        # wake up those write requests who are waiting on this
+        # read to get complete
+
+        for all <writeReq, Id> in pendingWriteRequest:
+            if req.Id == Id :
+                wake_up(writeReq)
+
+        for attr in mightReadAttr(x,req):
+            v = latestVersionBefore(x,attr,req.ts)
+            v.pendingMightRead.remove(req.id)
+            if attr in req.readAttr[i]:
+                v.rts = req.ts 
+        return
+
+    if req.state == "result":
+
+        # req updates the object that this coordinator is responsible for.
+        # check for conflicts.
+
+        x = obj(req,req.updatedObj)
+
+        # check whether there are already known conflicts
+        conflict = checkForConflicts(req)
+
+        if not conflict:
+
+            # wait for relevant pending reads to complete
+            pendingWriteRequest.add(req)
+
+            await (forall <attr, val> in req.updates:
+                latestVersionBefore(x, attr, req.ts).pendingMightRead is empty
+                    or contains only an entry for req)
+
+            # Now wake request that are waiting for this write request
+            # to get complete 
+
+            # wake up all the read request which are waiting for this write to get
+            # complete
+
+            for all <readReq, Id> in pendingReadRequest :
+                if (Id == req.Id) : 
+                    wake_up(readReq)
+
+            pendingWriteRequest.del(req)
+	
+            # check again for conflicts
+            conflict = checkForConflicts(req)
+            if not conflict:
+                # commit the updates
+                # send updates to the attribute database with timestamp req.ts
+
+                # adding the update to the cache
+                if respObject contains x:
+                    for all attr in req.readAttr[i]:
+                        respCachedUpdates[x].add(<attr,req.ts>)
+                else :
+                    for all attr in req.readAttr[i]:
+                        otherCachedUpdates[x].add(<attr, req.ts>)
+
+                # update data structure used by latestVersionBefore
+                UpdateLatestVersion(req)
+
+                for attr in defReadAttr(x,req) union mightReadAttr(x,req)
+                    v = latestVersionBefore(x,attr,req.ts)
+                    v.pendingMightRead.remove(req.id)
+                    if attr in req.readAttr[req.updatedObj]:
+                        v.rts = req.ts
+
+                send <req.id, req.decision> to req.client
+                # notify coordinator of read-only object that req committed, so it can
+                # update read timestamps.
+                send <"readAttr", req, req.rdonlyObj> to coord(obj(req, req.rdonlyObj))
+            else:
+                restart(req)
+        else:  
+            restart(req)
+
+        return
+
+
+    if req.state == "restart":
+        # Remove requests from pendingMightRead list of the attribute
+        for attr in mightReadAttr(x,req) union defReadAttr(x,req):
+            if req.id in latestVersionBefore(x, attr, req.ts).pendingMightRead:
+                latestVersionBefore(x, attr, req.ts).pendingMightRead.del(req.id)
+
+        # we know we are the first coordinator since the restart message is first sent to 
+        # the coordinator that will not write the object
+        x = obj(req,1)
+        req.ts = datetime.now()
+
+        # if incoming write request conflicts with the pending readrequest
+        # then put it on the pending write request 
+        # this will be removed by this readRequest when it will be evaluated
+        for all readReq in pendingReadRequest:
+            if readReq.ts < req.ts and mightWriteAttr(x, req) intersection
+                        (defReadAttr(x, readReq) union mightReadAttr(x, readReq)) != {} :
+                pendingWriteRequest.add(req)
+
+        for attr in defReadAttr(x,req) union mightReadAttr(x,req)
+            v = latestVersionBefore(x, attr, req.ts)
+            v.pendingMightRead.add(req.id).
+        req.cachedUpdates[1] = cachedUpdates(x,req)
+        
+        # This means that both read object and write object will be handled at this
+        # coordinator. Therefore no need to do extra communication
+        if respObject contains coord(obj(req,2)):
+            goto sameCoordLabel2
+        else :
+            send req to coord(obj(req,2)) 
+
+    return
+}
+
+
+function Worker.receiveMessage(Request req) {
+
+    if (mightWriteObj(req)) :
+        evaluate req using the latest versions before req.ts by sending req.ts
+        as part of the query to attribute database
+        
+        req.decision = permit or deny, as appropriate
+        req.updatedObj = the index (1 or 2) of the updated object, if any, otherwise -1
+        req.rdonlydObj = if updatedObj > 0, this is the index (1 or 2) of the other
+                object, otherwise -1
+        req.updates = set of updates to the updated object, if any, 
+                represented as <attribute, value> pairs.
+        for i in [1..2]:  
+            req.readAttr[i] = attributes of obj(req,i) read during evaluation
+            # this will be populated by the policy evaluator
+
+        if req.updatedObj = -1
+            # req is read-only.
+            send <req.id, req.decision> to req.client
+            for i=1..2
+                send <"readAttr", req, i> to coord(obj(req,i))
+        else:
+            # req updated an object.
+            send <"result", req> to coord(obj(req, req.updatedObj))
+    else :
+        evaluate req using the latest versions before req.ts by sending req.ts
+        as part of the query to attribute database
+        req.decision = permit or deny, as appropriate
+        req.updates = emptyset
+        for i in [1..2]:
+            req.readAttr[i] = attributes of obj(req,i) read during evaluation
+
+        send <req.id, req.decision> to req.client
+        for i in [1..2]:
+            send <"readAttr", req, i> to coord(obj(req,i))
+}
+
+function restart(Request req) {
+    send <"restart", req> to coord(obj(req, req.rdonlyObj))
+}
+
+
+function checkForConflicts(req) {
+
+  for <attr, val> in req.updates:
+    x = obj(req, req.updatedObj)
+    # note: if x.attr has not been read or written in this session, then
+    # v is the special version with v.rts=0 and v.wts=0.
+    # TODO: write latestVersionBefore incorporating the feature mentioned above
+    v = latestVersionBefore(x,attr,req.ts)
+    if v.rts > req.ts:
+      return true
+  return false
+  
+}
+
+function latestVersionBefore (object x, attribute attr, timestamp ts) {
+
+    # Our version list will be in reverse sorted order based on write timestamp
+    # we return the latestVersion based from our list of the version of the attributes
+	
+    if <x, attr> in versionInfo:
+        versionList = versionInfo[<x, attr>]
+        for version in versionList :
+            if version.wts <= ts :
+                return version
+    else 
+        # This version has not been read in this session
+        # create new version
+        # add this version
+        version = new Version()
+        version.wts = 0
+        version.rts = 0
+        version.pendingMightRead = []
+        versionInfo.add(version)
+        return version
+}
+
+function updateLatestVersion (Request req) {
+
+    # Updating the write time stamp of all the attributes updated by this request
+
+    x = req.writeObj
+    for attr in req.updates:
+        v = latestVersionBefore(x, attr, req.ts)
+        v.wts = req.ts
+
+}
+
+function cachedUpdates (object x, Request req, int coordId) {
+
+    # Return the list of all the recent updates from cache 
+    # which are less than the timestamp of the
+    # this request
+
+    list retVal = [] # this is the list of tuples <attr, ts> which will be returned
+    dict checkInCache;
+
+    if x in coord(coordId).respCachedUpdates :
+        checkInCache = respCachedUpdates
+    else
+        checkInCache = otherCachedUpdates
+	
+    for attr1 in defReadAttr(x, req) union mightReadAttr(x, req):
+        for <attr, ts> in checkInCache[x]:
+            if ts < req.ts and attr1 equals attr:
+                retVal.add(<attr, ts>)
+                continue
+
+    return retVal
+	
+}

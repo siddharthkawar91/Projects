@@ -1,0 +1,103 @@
+import mapper
+import json
+import time
+import random
+
+class Client(process):
+
+    def setup(coordIndexToCoordProcessMapper, config, logger, master):
+        self.coordIndexToCoordProcessMapper = coordIndexToCoordProcessMapper
+        self.logger = logger
+        self.requestFilename = config['requestsFile']
+        self.name ="<Client " + str(self.id) + ">"
+        self.numPoliciesEvaluated = 0
+        self.numTotalPolicies = 0
+        self.master = master
+        
+        if config['generateRandRequest'] == "True":
+            randomSeed = int(config['randomSeed'])
+            random.seed(randomSeed)
+            self.logger.write("Randome seed value : " + str(randomSeed))
+
+            self.randomRequestDict = list()
+            requestLimit = int(config['numRequest'])
+            for i in range(requestLimit):
+                requestDict = createRandomRequest(config['randomRequestSet'], random)
+                self.randomRequestDict.append(requestDict)
+                
+
+    def receive(msg=('CLIENT_FAILURE', request), from_= p):
+        state = 'CLIENT_FAILURE'
+        self.logger.write(self.name + " received ('" + state + "', " + str(request) + ") from " + str(p) )
+        self.numPoliciesEvaluated += 1
+        if (self.numPoliciesEvaluated >= self.numTotalPolicies):
+            self.logger.write(self.name + "sending ('CLIENT_DONE') to " + str(self.master))
+            send(('CLIENT_DONE',), to= self.master)
+
+    def receive(msg=('CLIENT_SUCCESS', request), from_= p):
+        state = 'CLIENT_SUCCESS'
+        self.logger.write(self.name + " received ('" + state + "', " + str(request) + ") from " + str(p) )
+        self.numPoliciesEvaluated += 1
+        if (self.numPoliciesEvaluated >= self.numTotalPolicies):
+            self.logger.write(self.name + "sending ('CLIENT_DONE') to " + str(self.master))
+            send(('CLIENT_DONE',), to= self.master)
+
+    def run():
+        self.logger.write("Client is up")
+        requests = None
+        if config['generateRandRequest'] == "True":
+            requests = self.randomRequestDict
+            self.numTotalPolicies = len(self.randomRequestDict)
+        else:
+            requests = json.load(open(self.requestFilename, 'r'))
+            self.numTotalPolicies = len(requests)
+        state = "CLIENT"
+        for request in requests:
+            # delay for client
+            if state in request['delay']:
+                delay = int(request['delay'][state])
+                self.logger.write(self.name + " sleeping for " + str(delay) + " second(s)")
+                time.sleep(delay)
+            if state in request['delay']:
+                self.logger.write(self.name + " resumed from sleeping")
+
+            # add field client which can be later used to send a response back
+            # to the correct coodinator, i.e., this one
+            request['client'] = self.id
+
+            # find the correct coordinator for this subject
+            coord = mapper.getCoordinator(request['subjectId'], self.coordIndexToCoordProcessMapper)
+            
+            self.logger.write("Client sending ('SUBJECT_COORDINATOR_INITIAL', " + str(request) + ") to " + str(coord))
+            # send the request to that coordinator
+            send(('SUBJECT_COORDINATOR_INITIAL', request,), to= coord)
+
+            
+        await(False)
+
+    """
+        This is helper function to generate the random requests
+    """
+    def createRandomRequest(randomRequestDict, random):
+        retval = dict()
+
+        retval['action']     = random.choice(randomRequestDict['actionList'])
+        retval['subjectId']  = random.choice(randomRequestDict['subjectIdList'])
+        retval['resourceId'] = random.choice(randomRequestDict['resourceIdList'])
+
+        subdict = dict()
+        delayLimit = int(randomRequestDict['delayLimit'])
+
+        numOfDelays = random.randrange(len(randomRequestDict['delayStateList']) - 2)
+        self.logger.write("num of Delays introduced : " + str(numOfDelays))
+
+        state = random.choice(randomRequestDict['delayStateList'])
+
+        for i in range(numOfDelays):
+            while state in subdict:
+                state = random.choice(randomRequestDict['delayStateList'])
+            subdict[state] = random.randrange(delayLimit)
+
+        retval['delay'] = subdict
+    
+        return retval

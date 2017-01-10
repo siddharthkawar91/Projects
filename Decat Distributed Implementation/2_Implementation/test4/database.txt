@@ -1,0 +1,5 @@
+Final Database State 
+resourceRecord:[{'watched': 'false', 'name': 'The Matrix', 'resourceId': '101', 'viewCount': 50}, {'watched': 'true', 'name': 'Shawshank Redemption', 'resourceId': '102', 'viewCount': 41}]
+subjectRecord:[{'subjectId': '1', 'name': 'Siddharth', 'moviesWatched': 10}, {'subjectId': '2', 'name': 'Shikhar', 'moviesWatched': 6}, {'subjectId': '3', 'name': 'Dexter', 'moviesWatched': 10}]
+resourceList:['101', '102']
+subjectList:['1', '2', '3']

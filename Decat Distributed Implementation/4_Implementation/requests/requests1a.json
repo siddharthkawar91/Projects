@@ -1,0 +1,21 @@
+[
+  {
+      "action"            : "stat",
+      "readObjectId"      : "2",
+      "writeObjectId"     : "102",
+      "defReadAttr"       : {
+        "readObjectAttr"  : "moviesWatched",
+        "writeObjectAttr" : "viewCount"
+      },
+      "mightReadAttr"     : {
+        "readObjectAttr"  : "",
+        "writeObjectAttr" : ""
+      },
+      "mightWriteAttr"     : {
+        "writeObjectAttr" :  "",
+        "readObjectAttr"  : ""
+      },
+      "mightWriteObj" : "0",
+      "delay" : {}
+  }
+]

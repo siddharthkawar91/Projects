@@ -1,0 +1,274 @@
+from Version import DBVersion
+
+import sys
+import xml.etree.ElementTree as ET
+import json
+import hashlib
+import time
+
+master = import_da('Master')
+
+class DatabaseEmulator(process):
+
+    def setup(filename:str, logger, dbLatency:int):
+        self.name = "<Database>"
+        self.logger = logger
+        self.logger.write('database setup started')
+        self.logger.write('database Latency : ' + str(dbLatency))
+
+        self.database = dict()
+        tree = ET.parse(filename)
+        root = tree.getroot()
+        """
+            subject_setup(root) method will fill database with all the subject records and
+            total subjects in the database
+            self.database['subjectList'] This list contains all the subjects in the subject records
+            e.g. ['pra1', 'ant2', 'mar3', 'jul4', 'cae5', 'tom6']
+            self.database['subjectRecord'] This will contains all the subject records from the database
+        """
+        object_setup(root)
+        """
+            resource_setup(root) method will fill database with all the resource records and
+            total resource in the database
+            self.database['resourceList'] This list contains all the resource in the resource records
+            self.database['resourceRecord'] This will contains all the resource records from the database
+        """
+
+        # resource_setup(root)
+        self.logger.write('Database Content: ')
+        self.logger.write('Database Record : ' + str(self.database['objectRecord']))
+        self.logger.write('Database List : ' + str(self.database['objectList']))
+        self.logger.write('version Info : ' + str(self.database['version']))
+
+        # self.logger.write('Database Version Content: ')
+        # self.logger.write(str(self.database))
+
+    def receive(msg=('UPDATE_OBJECT', updates, timeStamp), from_= p):
+
+        #time.sleep(dbLatency)
+        state = 'UPDATE_OBJECT'
+        self.logger.write(self.name + " received ('" + state + "', " + str(updates) + ", " + str(timeStamp) + ") from " + str(p) )
+
+        objectId = updates['id']
+
+        attrNotFound = False
+
+        for record in self.database['objectRecord']:
+            if record['objectId'] == objectId:
+                for attr in updates:
+                    if not attr == "id" and attr not in record:
+                        attrNotFound = True
+
+        if (attrNotFound):
+            self.logger.write(self.name + " sending ('UPDATE_OBJECT_ERROR', " + str(updates) + ") to " + str(p) )
+            send(('UPDATE_OBJECT_ERROR', updates,), to= p)
+        else:
+            # apply update
+            # create a new version
+            for attr in updates:
+                if not attr == "id":
+                    key = (objectId, attr)
+                    versionList = self.database['version'][key]
+                    versionList.append(DBVersion(timeStamp, updates[attr]))
+
+            self.logger.write(self.name + " sending ('UPDATE_OBJECT_SUCCESS', " + str(updates) + ") to " + str(p) )
+            send(('UPDATE_OBJECT_SUCCESS', updates,), to= p)
+
+
+    def receive(msg=('DUMP_DATABASE', filename,), from_= p):
+        self.logger.write(self.name + " received ('DUMP_DATABASE', '" + filename + "') from " + str(p) )
+        file = open(filename, 'w')
+        file.write("Final Database State \n")
+        #print(self.database['version'])
+        for key in self.database['version']:
+            file.write(str(key) + ":" )
+            versionList = self.database['version'][key]
+            #print(versionList)
+            for version in versionList:
+                #print(version)
+                file.write("{ ts: " + str(version.ts) + ", value: " + str(version.val) + "} ")
+            file.write('\n')
+        file.close()
+        self.logger.write(self.name + " sending ('DUMP_DATABASE_SUCCESS) to " + str(p) )
+        send(('DUMP_DATABASE_SUCCESS',), to= p)
+
+
+    def receive(msg=('QUERY_READ_WRITE_OBJECT', request,), from_= p):
+        state = 'QUERY_READ_WRITE_OBJECT'
+        self.logger.write(self.name + " received ('" + state + "', " + str(request) + ") from " + str(p) )
+        readObjectId = request['readObjectId']
+        writeObjectId = request['writeObjectId']
+        readObjectRecord = dict()
+        writeObjectRecord = dict()
+        
+        for key in self.database['version']:
+            if(request['readObjectId'] == key[0] and key[1] not in readObjectRecord):
+                versionList = self.database['version'][key]
+                for version in list(reversed(versionList)):
+                    if version.ts <= request['timeStamp']:
+                        readObjectRecord[key[1]] = version.val
+
+        for key in self.database['version']:
+            if(request['writeObjectId'] == key[0] and key[1] not in writeObjectRecord):
+                versionList = self.database['version'][key]
+                for version in list(reversed(versionList)):
+                    if version.ts <= request['timeStamp']:
+                        writeObjectRecord[key[1]] = version.val
+
+
+        result = {
+            'readObject' : readObjectRecord,
+            'writeObject' : writeObjectRecord
+        }
+
+        # send message back to Worker
+        #print(result)
+        self.logger.write(self.name + " sending ('ANSWER_READ_WRITE_OBJECT', " + str(request) + ", " + str(result) + ") to " + str(p) )
+        send(('ANSWER_READ_WRITE_OBJECT', request, result,), to= p)
+
+
+    def receive(msg=('QUERY_OBJECT_ATTR', objectId, attr ,timeStamp, p,)):
+        """
+            This method will respond to the query for subject record.
+            It will send the record for subjectId in database otherwise
+            will respond with None in place of record
+        """
+        self.logger.write(self.name + " received ('QUERY-OBJECT', " + str(objectId) + ", " + str(p) + ")")
+        for key in self.database['version']:
+            if key[0] == objectId and key[1] == attr:
+                versionList = self.database['version'][key]
+                for version in reversed(versionList):
+                    if (version.ts <= timeStamp):
+                        send(('OBJECT-RESULT',(version),), to=p)
+                        return
+        send(('OBJECT-RESULT',None,), to=p)
+
+    # def receive(msg=('QUERY_RESOURCE_RECORD', resourceId, p,)):
+    #     """
+    #         This method will respond to the query for resource record.
+    #         It will send the record for resourceId in database otherwise
+    #         will respond with None in place of record
+    #     """
+    #     self.logger.write(self.name + " received ('QUERY_RESOURCE_RECORD', " + str(resourceId) + ", " + str(p) + ")")
+    #     for record in self.database['resourceRecord']:
+    #         if record['resourceId'] == resourceId:
+    #             send(('SUBJECT_RESULT',(record),), to=p)
+    #             return
+    #     send(('RESOURCE_RESULT',None,), to=p)
+
+    """
+        This message will respond to the query done by master process and will send
+        the list of total resources and total subjects to the master process
+    """
+
+    def receive(msg=('QUERY_TOTAL_RECORDS',), from_= p):
+        self.logger.write(self.name + " received ('QUERY_TOTAL_RECORDS', " + str(p) + ")")
+        self.logger.write(self.name + " sending ('ANSWER_TOTAL_OBJECTS', " + str((self.database['objectList'])) + ") to " + str(p))
+        send(('ANSWER_TOTAL_OBJECTS',(self.database['objectList']),), to=p)
+
+    """
+        This is helper function which converts given record to dictionary
+        for example this will be converted to
+        <subjectRecord type="record" value="subjectRecord">
+            <subjectId type="string" value="pra1" />
+            <userName type="string" value="Prasad"/>
+            <viewCount type="int" value="2"/>
+            <viewed type="record" value="viewed">
+                <movieId type="string" value="dil1"/>
+                <movieCount type="int" value="1"/>
+            </viewed>
+            <viewed type="record" value="viewed">
+                <movieId type="string" value="jum5"/>
+                <movieCount type="int" value="1"/>
+            </viewed>
+        </subjectRecord>
+
+        after conversion
+        It will look like this
+        rec = {
+               subjectId : pra1,
+               userName : Prasad,
+               viewCount : 2,
+               Viewed : [
+                    {
+                        movieId : dil1,
+                        movieCount : 1,
+                    },
+                    {
+                        movieId : jum5,
+                        movieCount : 1,
+                    }
+               ]
+        }
+
+    """
+    def convert_record_dict(record):
+        retval = dict()
+        for subrecord in list(record):
+            if subrecord.attrib['type'] == "record":
+                rec = convert_record_dict(subrecord)
+                if subrecord.tag in retval:
+                    retval[subrecord.tag].append(rec)
+                else:
+                    retval[subrecord.tag] = []
+                    retval[subrecord.tag].append(rec)
+
+            elif subrecord.attrib['type'] == "string":
+                retval[subrecord.tag] = subrecord.attrib['value']
+            elif subrecord.attrib['type'] == "int":
+                retval[subrecord.tag] = int(subrecord.attrib['value'])
+            elif subrecord.attrib['type'] == "float":
+                retval[subrecord.tag] = float(subrecord.attrib['value'])
+            elif subrecord.attrib['type'] == "bool":
+                retval[subrecord.tag] = bool(subrecord.attrib['value'])
+
+        return retval
+
+    """
+        This iterates over all the objectRecords elements and converts them to dictionary
+        Also it populates the objectList and add all the unique object Ids.
+        We will use objectList in coordinators. same logic is for resource_setup
+    """
+    def object_setup(root):
+
+        self.database['objectRecord'] = list()
+        self.database['objectList'] = list()
+        self.database['version'] = dict()
+
+        for record in root.iter('objectRecord'):
+            objectId = record.find('objectId')
+
+            if objectId.attrib['value'] not in self.database['objectList']:
+                self.database['objectList'].append(objectId.attrib['value'])
+
+            rec = convert_record_dict(record)
+            self.database['objectRecord'].append(rec)
+
+        # We are creating dictionary where all possible combination of (objectId, attr) is key 
+        # and its value is list of objects of DBVersion class  
+        #    ("1", "name")           = [ DBVersion(0,"Siddharth"), ..]
+        #    ("1", "moviesWatched")  = [ DBVersion(0, "9"), ..]
+        #     ....                   = ....
+        #    ("2","name")            = [ DBVersion(0,"Shikhar"), ..]
+        #    ("2", "moviesWatched")  = [ DBVersion(0,"10")]
+
+        for record in self.database['objectRecord']:
+            verDict = self.database['version']
+            for key in record:
+                verDict[(record['objectId'], key)] = [DBVersion(0,record[key])]
+
+#    def resource_setup(root):
+#        self.database['resourceRecord'] = list()
+#        self.database['resourceList'] = list()
+#        for record in root.iter('resourceRecord'):
+#            resourceId = record.find('resourceId')
+#
+#            if resourceId.attrib['value'] not in self.database['resourceList']:
+#                self.database['resourceList'].append(resourceId.attrib['value'])
+#
+#            rec = convert_record_dict(record)
+#           self.database['resourceRecord'].append(rec)
+
+    def run():
+        await(False)
+

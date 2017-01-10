@@ -1,0 +1,19 @@
+[
+  {
+    "id" : "1",
+    "name" : "customers collectively can view each movie at most 50 times; one customer can watch less than 10 total movies",
+    "action" : "view",
+    "subjectConditions" : {
+      "moviesWatched" : "<10"
+    },
+    "resourceConditions" : {
+        "viewCount" : "<50"
+    },
+    "subjectUpdates" : {
+        "moviesWatched" : "++"
+    },
+    "resourceUpdates" : {
+        "viewCount" : "++"
+    }
+  }
+]
