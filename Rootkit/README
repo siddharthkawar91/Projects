@@ -1,0 +1,76 @@
+Adroit Rootkit
+
+-----------
+Team Info |
+-----------
+Meghana D [110739940]
+Prasoon Rai [SBU_ID# 110921754]
+Shubhada Patil [SBU_ID# 110284246]
+Siddharth Kawar [SBU_ID# 110739852]
+
+---------------
+Introduction  |
+---------------
+	This project has been implemented as part of the Computer System Security course (CSE 509) Fall 2016.
+	
+	
+----------------
+FILE STRUCTURE |
+----------------
+	- /home/adroit/rootkit/rootkit.c - This file contains the main module code which performs our required functionality
+	- /home/adroit/rootkit/Makefile - This makefiles builds the rootkit.ko module
+	- /home/adroit/rootkit/test1.c	- This is a sample program to test the privilege escalation of specific processes.
+    - /home/adroit/rootkit/test2.c - This is a sample program to test hiding specific processes from 'ps' command output.
+	- /home/adroit/rootkit/test3.c - This is a sample program to test hiding specific child processes from 'ps' command output.
+	- /home/adroit/rootkit/test4.c - This is a sample program to test the privilege escalation of specific processes. 
+	                          After executing this program, you can run 'whoami' and verify 
+
+
+------------------
+COMPILE AND RUN  |
+------------------
+    - Navigate to directory '/home/adroit/rootkit' using cd command
+	
+	- Execute command: "sudo make" to create loadable module files.
+	
+	- Insert the module by executing the command(without quotes):
+		"sudo insmod rootkit.ko"
+		
+	- This will hide every file name that contains 'rootkit' string in it. In order to test,
+	  execute "ls" inside any folder. All the files which contain the substring 'rootkit' will
+	  be hidden.
+	  
+	- Backdoor account is added automatically when you insert the module. When the module is loaded,
+	  executing "cat /etc/passwd" will not list backdoor account. Now remove the module using command 
+	  "sudo rmmod rootkit.ko". Again do "cat /etc/passwd". You can see the presence of the backdoor account 
+	  "devil lurking" after removing the module. NOTE: Remove the user from the system
+	  by executing command "sudo userdel -f devil". Beware, if you don't do this and
+	  reinsert the module, then it will create multiple entries of the same account and then you have to manually
+	  delete these multiple entries. Therefore after removing the module execute "sudo userdel -f devil".	  	  
+	  
+	- Compile test program test2.c and create executable with name 'hack'.
+	  This program is nothing but a continuously running while loop. Now open a separate terminal and 
+	  execute any ps related command. This process will not show up when the module is loaded (we hide all files having name 'hack'). 
+	  Now remove the module and again use any 'ps' related command. Now you can see this process getting listed in the output.
+	  You can also compile and run /home/adroit/rootkit/test3.c with name 'hack' and veirfy that even the child processes created by executables
+	  with name 'hack' are hidden. You can use same 'ps' command to verify absence/presence of 'hack' process when module is loaded/unloaded.
+	
+	- To check for the privilege escalation, compile and execute our sample program from 
+	  /home/adroit/rootkit/test1.c. If you execute "ps" in a separate terminal, you can see that its owner
+	  is current user running when the module is not loaded. Now close the running program, insert the module
+	  and again run the program. Do "ps aux" in separate terminal. You can check that now process owner is 'root' and not current user.
+	  You can also use /home/adroit/rootkit/test4.c program to test privilage escalation. Compile and execute this program and type 'whoami' on shell. 
+	  If the module is loaded, you can see 'root' as output of whoami. If module is not loaded, then whoami outputs current user.
+		 
+
+------------
+References |
+------------
+http://www.cbs.dtu.dk/cgi-bin/nph-runsafe?man=getdents64
+https://kernelnewbies.org/Documents/Kernel-Docbooks?action=AttachFile&do=get&target=procfs-guide_2.6.29.pdf
+https://linux.die.net/lkmpg/x710.html
+https://www.kernel.org/doc/Documentation/security/credentials.txt
+The Linux Kernel Module Programming Guide
+http://phrack.org/issues/58/6.html
+http://turbochaos.blogspot.com/2013/09/linux-rootkits-101-1-of-3.html
+http://stackoverflow.com/questions/26000691/system-call-interception-via-loadable-kernel-module
